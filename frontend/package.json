@@ -1,0 +1,76 @@
+{
+  "name": "roonberg",
+  "proxy": "http://localhost:5000",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@coreui/icons": "^3.0.1",
+    "@coreui/icons-react": "^2.2.1",
+    "@coreui/react": "^4.11.0",
+    "@coreui/react-chartjs": "^2.1.3",
+    "@coreui/utils": "^2.0.2",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.19",
+    "@mui/lab": "^5.0.0-alpha.154",
+    "@mui/material": "^5.14.19",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.7",
+    "@mui/system": "^5.14.19",
+    "@mui/x-data-grid": "^6.15.0",
+    "@mui/x-date-pickers": "^6.16.0",
+    "@tinymce/tinymce-react": "^4.3.0",
+    "axios": "^1.5.0",
+    "bootstrap": "^5.3.2",
+    "dayjs": "^1.11.10",
+    "framer-motion": "^10.16.12",
+    "fs": "^0.0.1-security",
+    "fs-path": "^0.0.25",
+    "path": "^0.12.7",
+    "react": "^17.0.2",
+    "react-bootstrap": "^2.8.0",
+    "react-confirm-alert": "^3.0.6",
+    "react-dom": "^17.0.2",
+    "react-google-charts": "^4.0.1",
+    "react-icons": "^4.11.0",
+    "react-loader-spinner": "^5.4.5",
+    "react-router-dom": "^6.16.0",
+    "react-rte": "^0.16.5",
+    "react-toastify": "^9.1.3",
+    "socket.io-client": "^4.7.2",
+    "styled-components": "^6.1.1",
+    "timeago.js": "^4.0.0-beta.3",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
+    "babel-loader": "^9.1.3",
+    "eslint": "^8.55.0",
+    "html-webpack-plugin": "^5.5.3",
+    "react-scripts": "^5.0.1",
+    "webpack-dev-server": "^4.15.1"
+  }
+}
