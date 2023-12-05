@@ -4,10 +4,10 @@ import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Store } from '../../../Store';
 import ThreeLoader from '../../../Util/threeLoader';
+import { Store } from '../../../Store';
 
-export default function ProjectList() {
+export default function AgentsProjectList() {
   const navigate = useNavigate();
   const [ContractorData, setContractorData] = useState([]);
   const [projectData, setProjectData] = useState([]);
@@ -124,7 +124,10 @@ export default function ProjectList() {
         const { data } = await axios.get(`/api/task/project`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        setProjectData(data);
+        const AgentProject = data.filter((item) => {
+          return item.userId === userInfo._id;
+        });
+        setProjectData(AgentProject);
       } catch (error) {
         console.log(error);
         setError(error);

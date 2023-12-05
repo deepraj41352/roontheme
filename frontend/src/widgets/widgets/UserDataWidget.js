@@ -105,7 +105,7 @@ export default function UserDataWidget(props) {
     <>
       <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid
-          className={`tableGrid actionCenter ${theme}DataGrid`}
+          className={`tableGrid actionCenter tableBg ${theme}DataGrid`}
           rows={props.userData}
           columns={columns}
           getRowId={(row) => row._id}

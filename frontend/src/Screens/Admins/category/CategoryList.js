@@ -33,10 +33,10 @@ const columns = [
       const color = generateColorFromAscii(name);
       return (
         <>
-          {params.row.categoryImage !== 'null' ? (
+          {params.row.categoryImage ? (
             <Avatar src={params.row.categoryImage} />
           ) : (
-            <AvatarImage name={name} bgColor={color} />
+            <AvatarImage name={params.row.categoryName} bgColor={color} />
           )}
         </>
       );

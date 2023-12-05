@@ -191,7 +191,7 @@ export default function ContractorList() {
                 }}
                 pageSizeOptions={[5]}
                 disableRowSelectionOnClick
-                localeText={{ noRowsLabel: 'Admin Data Is Not Avalible' }}
+                localeText={{ noRowsLabel: 'Contractor Data Is Not Avalible' }}
               />
             </Box>
           </div>

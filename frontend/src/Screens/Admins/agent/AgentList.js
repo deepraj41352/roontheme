@@ -218,7 +218,7 @@ export default function AgentList() {
                 }}
                 pageSizeOptions={[5]}
                 disableRowSelectionOnClick
-                localeText={{ noRowsLabel: 'Admin Data Is Not Avalible' }}
+                localeText={{ noRowsLabel: 'Agent Data Is Not Avalible' }}
               />
             </Box>
           </div>

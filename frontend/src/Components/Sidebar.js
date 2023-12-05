@@ -223,21 +223,6 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                 </li>
               </Link>
             </motion.li>
-            {/* <Link
-              to="/adminContractorList"
-              className={`${theme}-text-decoration-none`}
-              onClick={handlSmallScreeneClick}
-            >
-              <li
-                className={selectedItem === 'contractorList' ? 'selected' : ''}
-                onClick={() => {
-                  setSelectedItem('contractorList');
-                }}
-              >
-                <MdGroup className="me-3 fs-5" />
-                Contractor
-              </li>
-            </Link> */}
             <motion.li
               whileHover={{
                 scale: 1.05,
@@ -294,7 +279,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/adminProjectList"
+                to="/admin/Project"
                 className={`${theme}-text-decoration-none`}
                 onClick={handlSmallScreeneClick}
               >
@@ -316,7 +301,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/tasksScreen"
+                to="/admin/tasks"
                 className={`${theme}-text-decoration-none`}
                 onClick={handlSmallScreeneClick}
               >
@@ -343,7 +328,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/project-list-screen"
+                to="/contractor/project"
                 className={`${theme}-text-decoration-none`}
                 onClick={handlSmallScreeneClick}
               >
@@ -353,21 +338,6 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                 </li>
               </Link>
             </motion.li>
-            {/* <Link
-              to="/add-project"
-              className={`${theme}-text-decoration-none`}
-              onClick={handlSmallScreeneClick}
-            >
-              <li
-                className={selectedItem === 'addProject' ? 'selected' : ''}
-                onClick={() => {
-                  setSelectedItem('addProject');
-                }}
-              >
-                <AiFillHome className="me-3 fs-5" />
-                Add Project
-              </li>
-            </Link> */}
             <motion.li
               whileHover={{
                 scale: 1.05,
@@ -380,7 +350,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/contractor-tasksScreen"
+                to="/contractor/tasks"
                 className={`${theme}-text-decoration-none`}
                 onClick={handlSmallScreeneClick}
               >
@@ -407,7 +377,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/agentProjectList"
+                to="/agent/project"
                 className={`${theme}-text-decoration-none`}
                 onClick={handlSmallScreeneClick}
               >
@@ -429,7 +399,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/taskScreen-agent"
+                to="/agent/tasks"
                 className={`${theme}-text-decoration-none`}
                 onClick={handlSmallScreeneClick}
               >

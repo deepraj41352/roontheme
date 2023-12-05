@@ -331,105 +331,109 @@ const WidgetsDropdown = React.memo(() => {
               }
             />
           </CCol> */}
-            <CCol>
-              <CWidgetStatsA
-                className="mb-4"
-                color="danger"
-                value={
-                  <>{projectData.length <= 0 ? `0` : projectData.length}</>
-                }
-                title="Total Tasks"
-                chart={
-                  <CChartBar
-                    className="mt-3 mx-3"
-                    style={{ height: '70px' }}
-                    data={{
-                      labels: [
-                        'January',
-                        'February',
-                        'March',
-                        'April',
-                        'May',
-                        'June',
-                        'July',
-                        'August',
-                        'September',
-                        'October',
-                        'November',
-                        'December',
-                        'January',
-                        'February',
-                        'March',
-                        'April',
-                      ],
-                      datasets: [
-                        {
-                          label: 'My First dataset',
-                          backgroundColor: 'rgba(255,255,255,.2)',
-                          borderColor: 'rgba(255,255,255,.55)',
-                          data: [
-                            78, 81, 80, 45, 34, 12, 40, 85, 65, 23, 12, 98, 34,
-                            84, 67, 82,
-                          ],
-                          barPercentage: 0.6,
-                        },
-                      ],
-                    }}
-                    options={{
-                      maintainAspectRatio: false,
-                      plugins: {
-                        legend: {
-                          display: false,
-                        },
-                      },
-                      scales: {
-                        x: {
-                          grid: {
-                            display: false,
-                            drawTicks: false,
+            <CCol sm={8} lg={8}>
+              <CRow>
+                <CWidgetStatsA
+                  className="mb-4"
+                  color="danger"
+                  value={
+                    <>{projectData.length <= 0 ? `0` : projectData.length}</>
+                  }
+                  title="Total Tasks"
+                  chart={
+                    <CChartBar
+                      className="mt-3 mx-3"
+                      style={{ height: '70px' }}
+                      data={{
+                        labels: [
+                          'January',
+                          'February',
+                          'March',
+                          'April',
+                          'May',
+                          'June',
+                          'July',
+                          'August',
+                          'September',
+                          'October',
+                          'November',
+                          'December',
+                          'January',
+                          'February',
+                          'March',
+                          'April',
+                        ],
+                        datasets: [
+                          {
+                            label: 'My First dataset',
+                            backgroundColor: 'rgba(255,255,255,.2)',
+                            borderColor: 'rgba(255,255,255,.55)',
+                            data: [
+                              78, 81, 80, 45, 34, 12, 40, 85, 65, 23, 12, 98,
+                              34, 84, 67, 82,
+                            ],
+                            barPercentage: 0.6,
                           },
-                          ticks: {
+                        ],
+                      }}
+                      options={{
+                        maintainAspectRatio: false,
+                        plugins: {
+                          legend: {
                             display: false,
                           },
                         },
-                        y: {
-                          grid: {
-                            display: false,
-                            drawBorder: false,
-                            drawTicks: false,
+                        scales: {
+                          x: {
+                            grid: {
+                              display: false,
+                              drawTicks: false,
+                            },
+                            ticks: {
+                              display: false,
+                            },
                           },
-                          ticks: {
-                            display: false,
+                          y: {
+                            grid: {
+                              display: false,
+                              drawBorder: false,
+                              drawTicks: false,
+                            },
+                            ticks: {
+                              display: false,
+                            },
                           },
                         },
-                      },
-                    }}
-                  />
-                }
-              />
+                      }}
+                    />
+                  }
+                />
+              </CRow>
+              <CRow>
+                <CCol className="p-0">
+                  <CCard className="mh-100 mb-4 h-100 ">
+                    <CCardHeader className="alignLeft">
+                      <b>Tasks</b>
+                    </CCardHeader>
+                    <CCardBody>
+                      <ProjectDataWidget projectData={projectData} />
+                    </CCardBody>
+                  </CCard>
+                </CCol>
+              </CRow>
             </CCol>
-          </CRow>
-
-          <CRow>
             <CCol sm={4} lg={4}>
-              <CCard className="mh-100 mb-4">
+              <CCard className="mh-100 mb-4 h-100">
                 <CCardHeader className="alignLeft">
                   <b>Tasks</b>
                 </CCardHeader>
                 <CChartDoughnut data={dataChartDoughnut} />
               </CCard>
             </CCol>
-            <CCol sm={8} lg={8}>
-              <CCard className="mh-100 mb-4">
-                <CCardHeader className="alignLeft">
-                  <b>Tasks</b>
-                </CCardHeader>
-                <CCardBody>
-                  <ProjectDataWidget projectData={projectData} />
-                </CCardBody>
-              </CCard>
-            </CCol>
           </CRow>
+
+          <CRow></CRow>
+
           {/* <CRow>
           <CCol sm={12} lg={12}>
             <CCard className="mh-100">

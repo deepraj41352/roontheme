@@ -63,6 +63,14 @@ import CategoryUpdate from './Screens/Admins/category/CategoryUpdate';
 import { IoPersonOutline } from 'react-icons/io5';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { VscColorMode } from 'react-icons/vsc';
+import TasksList from './Screens/Admins/task/TaskList';
+import TasksCreate from './Screens/Admins/task/TaskCreate';
+import ProjectList from './Screens/Admins/project/ProjectList';
+import AgentsProjectList from './Screens/Agents/project/Project';
+import AgentTasksList from './Screens/Agents/task/Task';
+import ContractorTasksList from './Screens/Contractors/task/Task';
+import ContractorTasksCreate from './Screens/Contractors/task/TaskCreate';
+import ContractorProjectList from './Screens/Contractors/project/Project';
 
 function App() {
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -137,7 +145,11 @@ function App() {
               />
             ) : null}
 
-            <div className={`px-0  w-100`}>
+            <div
+              className={`${
+                sidebarVisible ? 'px-0  w-100' : 'mainDashboardDiv px-0'
+              }`}
+            >
               {userInfo ? (
                 <Navbar expand="lg" className={`${theme}-admin-navbar`}>
                   <Container fluid>
@@ -327,7 +339,7 @@ function App() {
                       element={<SuperadminEditAdmin />}
                     /> */}
 
-                    {/* New Routes Create */}
+                    {/* New Routes Create  Admin and Super admin....................*/}
                     <Route
                       path="/admin"
                       element={
@@ -424,6 +436,80 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
+
+                    <Route
+                      path="/admin/Project"
+                      element={
+                        <ProtectedRoute>
+                          <ProjectList />
+                        </ProtectedRoute>
+                      }
+                    />
+
+                    <Route
+                      path="/admin/tasks"
+                      element={
+                        <ProtectedRoute>
+                          <TasksList />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/tasks/create"
+                      element={
+                        <ProtectedRoute>
+                          <TasksCreate />
+                        </ProtectedRoute>
+                      }
+                    />
+                    {/*.............................................................................}/}
+                    {/* agent task................ */}
+                    <Route
+                      path="/agent/project"
+                      element={
+                        <ProtectedRoute>
+                          <AgentsProjectList />
+                        </ProtectedRoute>
+                      }
+                    />
+
+                    <Route
+                      path="/agent/tasks"
+                      element={
+                        <ProtectedRoute>
+                          <AgentTasksList />
+                        </ProtectedRoute>
+                      }
+                    />
+                    {/*.............................................................................}/}
+
+                    {/* contractor task */}
+                    <Route
+                      path="/contractor/tasks-create"
+                      element={
+                        <ProtectedRoute>
+                          <ContractorTasksCreate />
+                        </ProtectedRoute>
+                      }
+                    />
+
+                    <Route
+                      path="/contractor/tasks"
+                      element={
+                        <ProtectedRoute>
+                          <ContractorTasksList />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/contractor/project"
+                      element={
+                        <ProtectedRoute>
+                          <ContractorProjectList />
+                        </ProtectedRoute>
+                      }
+                    />
+
                     {/* ........} */}
                     <Route
                       path="/dashboard"

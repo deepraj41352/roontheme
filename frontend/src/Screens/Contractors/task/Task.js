@@ -18,7 +18,7 @@ import { Store } from '../../../Store';
 import ThreeLoader from '../../../Util/threeLoader';
 import FormSubmitLoader from '../../../Util/formSubmitLoader';
 
-export default function TasksList() {
+export default function ContractorTasksList() {
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [isSubmiting, setIsSubmiting] = useState(false);
   const { state } = useContext(Store);
@@ -247,7 +247,10 @@ export default function TasksList() {
         const { data } = await axios.get(`/api/task/project`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        setProjectData(data);
+        const ContractorProject = data.filter((item) => {
+          return item.userId === userInfo._id;
+        });
+        setProjectData(ContractorProject);
       } catch (error) {
         console.log(error);
       } finally {
@@ -343,12 +346,12 @@ export default function TasksList() {
           <>
             <ul className="nav-style1">
               <li>
-                <Link to="/admin/tasks">
+                <Link to="/contractor/tasks">
                   <a className="active">Tasks</a>
                 </Link>
               </li>
               <li>
-                <Link to="/tasks/create">
+                <Link to="/contractor/tasks-create">
                   <a>Create</a>
                 </Link>
               </li>

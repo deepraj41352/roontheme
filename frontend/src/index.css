@@ -609,6 +609,9 @@ body {
   .mainConNav {
     width: 100%;
   }
+  .mainDashboardDiv {
+    width: 100% !important;
+  }
   .disNonePro {
     display: block !important;
   }
@@ -2223,3 +2226,6 @@ body {
   color: black;
 }
 /* ...................... }*/
+.mainDashboardDiv {
+  width: calc(100% - 235px) !important;
+}

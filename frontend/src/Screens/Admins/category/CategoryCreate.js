@@ -74,16 +74,13 @@ export default function CategoryCreate() {
           authorization: `Bearer ${userInfo.token}`,
         },
       });
-
-      if (data.status === 201) {
-        setUser({
-          name: '',
-          description: '',
-          image_url: '',
-        });
-        toast.success('Category Created Successfully !');
-        navigate('/category');
-      }
+      setUser({
+        name: '',
+        description: '',
+        image_url: '',
+      });
+      toast.success('Category Created Successfully !');
+      navigate('/category');
     } catch (error) {
       toast.error(error.response?.data?.message);
     } finally {
