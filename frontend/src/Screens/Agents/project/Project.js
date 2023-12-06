@@ -125,7 +125,7 @@ export default function AgentsProjectList() {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         const AgentProject = data.filter((item) => {
-          return item.userId === userInfo._id;
+          return item.agentId === userInfo._id;
         });
         setProjectData(AgentProject);
       } catch (error) {

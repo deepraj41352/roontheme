@@ -587,7 +587,8 @@ body {
   width: 100%;
   max-width: 235px;
   min-width: 235px;
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
   background-color: #070719;
   color: #fff;
   white-space: nowrap;
@@ -1787,7 +1788,7 @@ body {
   border-radius: 5px;
   height: 60px;
   margin: 5px 1px;
-  max-width: 174px;
+  max-width: 178px;
   padding: 5px;
   width: 100%;
 }
@@ -2228,4 +2229,28 @@ body {
 /* ...................... }*/
 .mainDashboardDiv {
   width: calc(100% - 235px) !important;
+}
+.cateContainerCreate {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border: 1px solid #afabab;
+  border-radius: 5px;
+  padding: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+  height: 100%;
+  width: 100%;
+}
+.css-aop0yh .MuiDataGrid-columnHeader:focus,
+.css-aop0yh .MuiDataGrid-cell:focus {
+  outline: unset !important;
+}
+.css-aop0yh .MuiDataGrid-columnHeader:focus-within,
+.css-aop0yh .MuiDataGrid-cell:focus-within {
+  outline: unset !important;
+}
+.css-ptkaw2-MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
+.css-ptkaw2-MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: unset !important;
 }

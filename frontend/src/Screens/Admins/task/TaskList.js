@@ -25,7 +25,7 @@ export default function TasksList() {
   const [formData, setFormData] = useState({
     projectStatus: 'active',
   });
-  const { toggleState, userInfo } = state;
+  const { toggleState, userInfo, projectDatatrue } = state;
   const theme = toggleState ? 'dark' : 'light';
   const [selectedRowId, setSelectedRowId] = useState(null);
   const handleCheckboxSelection = (rowId) => {
@@ -236,7 +236,7 @@ export default function TasksList() {
     };
 
     FatchcategoryData();
-  }, [success]);
+  }, [success, projectDatatrue]);
   // ......}
 
   // {Get Project .........

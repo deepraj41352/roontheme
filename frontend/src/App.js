@@ -12,7 +12,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SignUpForm from './Screens/SignInScreen';
 import RegistrationForm from './Screens/RegistrationScreen';
-import AdminProjectListScreen from './Screens/AdminProjectListScreen';
 import SearchScreen from './Screens/SearchScreen';
 import ChatWindowScreen from './Screens/ChatWindowScreen';
 import { useContext, useState, useEffect } from 'react';
@@ -34,18 +33,10 @@ import AdminDashboard from './Screens/AdminDashboard';
 import ProtectedRoute from './Components/ProtectedRoute';
 import ProfileScreen from './Screens/ProfileScreen';
 import Theme from './Components/Theme';
-import ProjectNotification from './Screens/ProjectNotification';
-import AddProject from './Screens/AddProject';
-import ContractorProject from './Contractor/ContractorProjectListScreen';
-import AgentProjectList from './Agent/AgentProjectListScreen';
 import NotificationScreen from './Screens/NotificationScreen';
-import MyComponent from './Components/MyComponent';
 import Footer from './Components/footer';
 import ConfirmRegistration from './Screens/ConfirmRegistration';
-import TasksScreen from './Screens/TasksScreen';
 import TaskAddButton from './Components/TaskAddButton';
-import ContractorTaskScreen from './Screens/ContractorTaskScreen';
-import AgentTaskScreen from './Agent/AgentTaskScreen';
 
 // NewFiles
 import AdminList from './Screens/Admins/admin/AdminList';
@@ -147,7 +138,9 @@ function App() {
 
             <div
               className={`${
-                sidebarVisible ? 'px-0  w-100' : 'mainDashboardDiv px-0'
+                !userInfo || sidebarVisible
+                  ? 'px-0  w-100'
+                  : 'mainDashboardDiv px-0'
               }`}
             >
               {userInfo ? (
@@ -312,7 +305,6 @@ function App() {
                       path="/"
                       element={userInfo ? <AdminDashboard /> : <SignUpForm />}
                     />
-                    <Route path="/test" element={<MyComponent />} />
                     <Route
                       path="/confirm/:token"
                       element={<ConfirmRegistration />}
@@ -325,19 +317,10 @@ function App() {
                       path="/ForgetPassword"
                       element={<ForgetPassword />}
                     />
-                    <Route path="/add-project" element={<AddProject />} />
                     <Route
                       path="/reset-password/:token"
                       element={<ResetPasswordScreen />}
                     />
-                    <Route
-                      path="/projectNotification"
-                      element={<ProjectNotification />}
-                    />
-                    {/* <Route
-                      path="/superadmineditadmin/:id"
-                      element={<SuperadminEditAdmin />}
-                    /> */}
 
                     {/* New Routes Create  Admin and Super admin....................*/}
                     <Route
@@ -519,45 +502,12 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
-                    <Route
-                      path="/adminProjectList"
-                      element={
-                        <ProtectedRoute>
-                          <AdminProjectListScreen />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/tasksScreen"
-                      element={
-                        <ProtectedRoute>
-                          <TasksScreen />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/contractor-tasksScreen"
-                      element={
-                        <ProtectedRoute>
-                          <ContractorTaskScreen />
-                        </ProtectedRoute>
-                      }
-                    />
 
                     <Route
                       path="/profile-screen"
                       element={
                         <ProtectedRoute>
                           <ProfileScreen />
-                        </ProtectedRoute>
-                      }
-                    />
-
-                    <Route
-                      path="/taskScreen-agent"
-                      element={
-                        <ProtectedRoute>
-                          <AgentTaskScreen />
                         </ProtectedRoute>
                       }
                     />
@@ -576,25 +526,6 @@ function App() {
                       }
                     />
 
-                    {/* Contractor */}
-                    <Route
-                      path="/project-list-screen"
-                      element={
-                        <ProtectedRoute>
-                          <ContractorProject />
-                        </ProtectedRoute>
-                      }
-                    />
-
-                    {/* agent */}
-                    <Route
-                      path="/agentProjectList"
-                      element={
-                        <ProtectedRoute>
-                          <AgentProjectList />
-                        </ProtectedRoute>
-                      }
-                    />
                     <Route
                       path="/notificationScreen"
                       element={

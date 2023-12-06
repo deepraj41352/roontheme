@@ -14,12 +14,12 @@ const columns = [
   {
     field: 'first_name',
     headerName: 'Name',
-    width: 200,
+    width: 100,
   },
   {
     field: 'email',
     headerName: 'Email',
-    width: 200,
+    width: 150,
   },
   { field: '_id', headerName: 'ID', width: 220 },
 ];
@@ -141,7 +141,7 @@ export default function ContractorList() {
                   {
                     field: 'userStatus',
                     headerName: 'Status',
-                    width: 150,
+                    width: 100,
                     renderCell: (params) => {
                       const isInactive = params.row.userStatus === 'Inactive';
                       const cellClassName = isInactive

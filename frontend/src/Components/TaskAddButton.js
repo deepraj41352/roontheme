@@ -12,7 +12,7 @@ import {
 import { ImCross } from 'react-icons/im';
 
 import Modal from '@mui/material/Modal';
-import { Alert, Dropdown, Form } from 'react-bootstrap';
+import { Alert, Card, Dropdown, Form } from 'react-bootstrap';
 import { BiPlusMedical } from 'react-icons/bi';
 import { Store } from '../Store';
 import Tab from 'react-bootstrap/Tab';
@@ -58,6 +58,8 @@ export default function TaskAddButton() {
   const [ShowErrorMessage, setShowErrorMessage] = useState(false);
   const navigate = useNavigate();
   const [selectedContractor, setSelectedContractor] = useState('');
+  const [filterCategory, setFilterCategory] = useState([]);
+  const [agentData, setAgentData] = useState([]);
 
   useEffect(() => {
     setLoading(true);
@@ -113,6 +115,18 @@ export default function TaskAddButton() {
     };
     FatchContractorData();
   }, [isModelOpen]);
+
+  useEffect(() => {
+    const FatchContractorData = async () => {
+      try {
+        const { data } = await axios.post(`/api/user/`, { role: 'agent' });
+        setAgentData(data);
+      } catch (error) {
+        toast.error(error);
+      }
+    };
+    FatchContractorData();
+  }, []);
 
   const handleAdminSubmit = async () => {
     setIsSubmiting(true);
@@ -250,9 +264,30 @@ export default function TaskAddButton() {
     }
   };
 
+  // filteried category
+  useEffect(() => {
+    const fetchData = () => {
+      const filteredCategory = agentData.flatMap(
+        (agentCate) => agentCate.agentCategory
+      );
+      console.log('filteredCategory', filteredCategory);
+
+      const matchWithCateData = filteredCategory.map((AgentsCateId) =>
+        categoryData.find((cat) => cat._id === AgentsCateId)
+      );
+      const Category = matchWithCateData ? matchWithCateData : null;
+      const finalCategory = Category.filter(Boolean);
+      setFilterCategory(finalCategory);
+      console.log('matchWithCateData', finalCategory);
+    };
+
+    fetchData();
+  }, [agentData, categoryData]);
+
   const selectedProjectContractor = (e) => {
     const selectedProject = e.target.value;
     setSelectProjectName(selectedProject);
+
     const findProject = ProjectData.find(
       (project) => project.projectName === selectedProject
     );
@@ -338,43 +373,47 @@ export default function TaskAddButton() {
             <div className="cateContainer mb-3">
               <p className="cateItem">Categories</p>
               <div className="d-flex flex-wrap cateborder ">
-                {categoryData.map((category) => (
-                  <div key={category._id} className="cateItems">
-                    <Form.Check
-                      className="d-flex align-items-center gap-2"
-                      type="radio"
-                      required
-                      id={`category-${category._id}`}
-                      name="category"
-                      value={category.categoryName}
-                      label={
-                        <div className="d-flex align-items-center">
-                          <div className="">
-                            {category.categoryImage !== 'null' ? (
-                              <Avatar src={category.categoryImage} />
-                            ) : (
-                              <AvatarImage
-                                name={category.categoryName}
-                                bgColor={generateColorFromAscii(
-                                  category.categoryName[0].toLowerCase()
-                                )}
-                              />
-                            )}
+                {filterCategory.length < 0 ? (
+                  <Card className="p-5">No categories assigned yet</Card>
+                ) : (
+                  filterCategory.map((category) => (
+                    <div key={category._id} className="cateItems">
+                      <Form.Check
+                        className="d-flex align-items-center gap-2"
+                        type="radio"
+                        required
+                        id={`category-${category._id}`}
+                        name="category"
+                        value={category.categoryName}
+                        label={
+                          <div className="d-flex align-items-center">
+                            <div className="">
+                              {category.categoryImage ? (
+                                <Avatar src={category.categoryImage} />
+                              ) : (
+                                <AvatarImage
+                                  name={category.categoryName}
+                                  bgColor={generateColorFromAscii(
+                                    category.categoryName[0].toLowerCase()
+                                  )}
+                                />
+                              )}
+                            </div>
+                            <div className="d-flex">
+                              <span
+                                className="ms-2 spanForCate"
+                                data-tooltip={category.categoryName}
+                              >
+                                {truncateText(category.categoryName, 7)}
+                              </span>
+                            </div>
                           </div>
-                          <div className="d-flex">
-                            <span
-                              className="ms-2 spanForCate"
-                              data-tooltip={category.categoryName}
-                            >
-                              {truncateText(category.categoryName, 7)}
-                            </span>
-                          </div>
-                        </div>
-                      }
-                      onChange={(e) => setCategory(e.target.value)}
-                    />
-                  </div>
-                ))}
+                        }
+                        onChange={(e) => setCategory(e.target.value)}
+                      />
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 

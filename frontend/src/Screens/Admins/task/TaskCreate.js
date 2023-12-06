@@ -147,6 +147,7 @@ export default function TasksCreate() {
       if (contractor) {
         const contractorId = contractor ? contractor[0]._id : 'not avaliable';
         setSelectedContractor(contractor);
+        console.log('contractor', contractor);
       } else {
         console.log('Contractor not found for the selected project');
       }
@@ -266,7 +267,7 @@ export default function TasksCreate() {
                 <div className="form-group">
                   <label className="form-label fw-semibold">Categories</label>
                   <div className="cateContainerCreate">
-                    {filterCategory ? (
+                    {filterCategory.length < 0 ? (
                       <Card className="p-5">No categories assigned yet</Card>
                     ) : (
                       filterCategory.map((category) => (
@@ -410,12 +411,12 @@ export default function TasksCreate() {
                     {SelectProjectName && selectedContractor ? (
                       <Select
                         className={`form-control`}
-                        value={selectedContractor}
+                        value={selectedContractor[0]._id}
                         onChange={(e) => setContractorName(e.target.value)}
                         disabled
                       >
-                        <MenuItem value={selectedContractor}>
-                          {contractorFirstName}
+                        <MenuItem value={selectedContractor[0]._id}>
+                          {selectedContractor[0].first_name}
                         </MenuItem>
                       </Select>
                     ) : (

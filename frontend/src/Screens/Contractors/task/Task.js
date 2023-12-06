@@ -227,7 +227,10 @@ export default function ContractorTasksList() {
     const FatchcategoryData = async () => {
       try {
         const { data } = await axios.get(`/api/task/tasks`);
-        SetData(data);
+        const taskData = data.filter((item) => {
+          return item.userId === userInfo._id;
+        });
+        SetData(taskData);
       } catch (error) {
         toast.error(error.data?.message);
       } finally {
