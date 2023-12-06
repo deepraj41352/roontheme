@@ -7,17 +7,13 @@ import Task from '../Models/taskModel.js';
 import projectTask from '../Models/projectTaskModel.js';
 import Conversation from '../Models/conversationModel.js';
 import Message from '../Models/messageModel.js';
+import Notification from '../Models/notificationModel.js';
 
 const seedRouter = express.Router();
 
 seedRouter.get('/', async (req, res) => {
   await User.deleteMany({});
   await Category.deleteMany({});
-  await Task.deleteMany({});
-  await projectTask.deleteMany({});
-  await Conversation.deleteMany({});
-  await Message.deleteMany({});
-  await Notification.deleteMany({});
 
   const updatedCategoryData = await Promise.all(
     data.category.map(async (el) => {
