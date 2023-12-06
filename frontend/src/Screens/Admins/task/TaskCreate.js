@@ -213,7 +213,7 @@ export default function TasksCreate() {
         setContractorName('');
         setSelectProjectName('');
         toast.success(data.data.message);
-        navigate('/tasksScreen');
+        navigate('/admin/tasks');
         setDynamicfield(false);
       }
       if (data.status === 200) {

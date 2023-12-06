@@ -64,6 +64,7 @@ import ContractorTasksCreate from './Screens/Contractors/task/TaskCreate';
 import ContractorProjectList from './Screens/Contractors/project/Project';
 import Profile from './Screens/Profile/Profile';
 import ProfileUpdate from './Screens/Profile/ProfileUpdate';
+import SignUpAndRegistration from './SignUpAndRegistration';
 
 function App() {
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -281,7 +282,7 @@ function App() {
                       <Image className="border-0" src="/logo2.png" thumbnail />
                     </Navbar.Brand>
                     {/* Remove Navbar.Toggle and Navbar.Collapse components */}
-                    <Nav className="justify-content-end login-button">
+                    {/* <Nav className="justify-content-end login-button">
                       <Nav className="login-nav ">
                         {pathName && pathName === '/registration' ? (
                           <a className="login-admin" href="/">
@@ -293,7 +294,7 @@ function App() {
                           </a>
                         )}
                       </Nav>
-                    </Nav>
+                    </Nav> */}
                   </Container>
                 </Navbar>
               )}
@@ -302,12 +303,20 @@ function App() {
                   <Routes>
                     <Route
                       path="/"
-                      element={userInfo ? <AdminDashboard /> : <SignUpForm />}
+                      element={
+                        userInfo ? (
+                          <AdminDashboard />
+                        ) : (
+                          <SignUpAndRegistration />
+                        )
+                      }
+                      // element={userInfo ? <AdminDashboard /> : <SignUpForm />}
                     />
                     <Route
                       path="/confirm/:token"
                       element={<ConfirmRegistration />}
                     />
+
                     <Route
                       path="/registration"
                       element={<RegistrationForm />}

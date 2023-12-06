@@ -71,12 +71,12 @@ function RegistrationForm() {
 
   return (
     <Container className="Sign-up-container-regis d-flex  flex-column justify-content-center align-items-center">
-      <div className="Sign-up-container-inner  py-3">
-        <Row className="mb-3">
+      <div className="Sign-up-container-inner2  py-3">
+        {/* <Row className="mb-3">
           <Col className="p-0">
             <h4>Registration</h4>
           </Col>
-        </Row>
+        </Row> */}
         <Row>
           <Col className="p-0">
             <Card>
@@ -162,11 +162,11 @@ function RegistrationForm() {
                 >
                   {isSubmiting ? 'SUBMITING...' : 'SUBMIT'}
                 </Button>
-                <Form.Group className="my-3">
+                {/* <Form.Group className="my-3">
                   <Link to="/" className="forgotPass">
                     Signin ?
                   </Link>
-                </Form.Group>
+                </Form.Group> */}
               </Form>
             </Card>
           </Col>

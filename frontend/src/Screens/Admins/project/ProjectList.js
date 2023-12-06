@@ -21,7 +21,7 @@ export default function ProjectList() {
   const columns = [
     {
       field: 'projectName',
-      headerName: 'Project Name',
+      headerName: 'Project',
       width: 150,
     },
     {
@@ -39,7 +39,7 @@ export default function ProjectList() {
     },
     {
       field: 'userId',
-      headerName: 'Contractor',
+      headerName: 'Client',
       width: 150,
       renderCell: (params) => {
         const contractor = ContractorData.find(

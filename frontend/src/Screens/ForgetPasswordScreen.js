@@ -43,7 +43,7 @@ export default function ForgetPassword() {
         </Row>
         <Row>
           <Col>
-            <Card className="p-4 formColor">
+            <Card className="p-4 formColor newwidthall">
               <Form
                 onSubmit={handleSubmit}
                 className="formWidth d-flex flex-column"

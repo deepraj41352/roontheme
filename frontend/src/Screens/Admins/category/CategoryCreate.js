@@ -10,7 +10,7 @@ import AvatarImage from '../../../Components/Avatar';
 
 export default function CategoryCreate() {
   const navigate = useNavigate();
-  const { state } = useContext(Store);
+  const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const [submiting, setsubmiting] = useState(false);
   const [color, setColor] = useState('');
@@ -21,6 +21,7 @@ export default function CategoryCreate() {
     status: true,
   });
   const [imagePreview, setImagePreview] = useState('');
+  const [success, setsuccess] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -79,6 +80,8 @@ export default function CategoryCreate() {
         description: '',
         image_url: '',
       });
+      setsuccess(!success);
+      ctxDispatch({ type: 'CATEGORIESDATA', payload: success });
       toast.success('Category Created Successfully !');
       navigate('/category');
     } catch (error) {

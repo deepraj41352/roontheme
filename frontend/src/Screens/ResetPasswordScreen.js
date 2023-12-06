@@ -67,7 +67,7 @@ export default function ResetPasswordScreen() {
         </Row>
         <Row>
           <Col>
-            <Card className="formColor">
+            <Card className="formColor newwidthall">
               <Form
                 onSubmit={submitHandler}
                 className="resetFormWidth p-4 d-flex flex-column"

@@ -661,15 +661,15 @@ function ChatWindowScreen() {
         <Card className="chatWindow">
           <CardHeader className={`d-flex ${theme}chatHead`}>
             {userInfo.role === 'admin' || userInfo.role === 'superadmin' ? (
-              <Link to={`/tasksScreen`}>
+              <Link to={`/admin/tasks`}>
                 <FaArrowLeft className={`me-3 fs-5 ${theme}backbtn `} />
               </Link>
             ) : userInfo.role === 'contractor' ? (
-              <Link to={`/Contractor-tasksScreen`}>
+              <Link to={`/contractor/tasks`}>
                 <FaArrowLeft className={`me-3 fs-5 ${theme}backbtn `} />
               </Link>
             ) : (
-              <Link to={`/Contractor-tasksScreen`}>
+              <Link to={`/agent/tasks`}>
                 <FaArrowLeft className={`me-3 fs-5 ${theme}backbtn `} />
               </Link>
             )}
@@ -798,32 +798,29 @@ function ChatWindowScreen() {
                     <Form.Group
                       className={`mb-3 projetStatusChat ${theme}chat-info-inner`}
                     >
-                      {!showTooltip && (
-                        <>
-                          <div
-                            className="tooltipShow"
-                            onClick={handleTooltipClick}
-                          >
-                            Task Description -{' '}
-                            {truncateText(projectData?.taskDescription, 30)}
-                          </div>
-                        </>
-                      )}
-                      {showTooltip && (
-                        <>
-                          <div className="d-flex justify-content-end">
-                            <button
-                              className="tooltiphide"
-                              onClick={handleTooltipClickClose}
-                            >
-                              Hide
-                            </button>
-                          </div>
-                          <div className="taskDescription">
-                            Task Description - {projectData?.taskDescription}
-                          </div>
-                        </>
-                      )}
+                      {/* {!showTooltip && (
+                  <>
+                    <div className="tooltipShow" onClick={handleTooltipClick}>
+                      Task Description -{' '}
+                      {truncateText(projectData?.taskDescription, 30)}
+                    </div>
+                  </>
+                )}
+                {showTooltip && (
+                  <>
+                    <div className="d-flex justify-content-end">
+                      <button
+                        className="tooltiphide"
+                        onClick={handleTooltipClickClose}
+                      >
+                        Hide
+                      </button>
+                    </div> */}
+                      <div className="taskDescription">
+                        Task Description - {projectData?.taskDescription}
+                      </div>
+                      {/* </>
+                )} */}
                     </Form.Group>
                     <Form.Group className="mb-3 " controlId="formBasicPassword">
                       <Form.Label className="mb-1 fw-bold">

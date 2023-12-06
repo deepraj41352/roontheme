@@ -25,7 +25,7 @@ export default function ContractorTasksList() {
   const [formData, setFormData] = useState({
     projectStatus: 'active',
   });
-  const { toggleState, userInfo } = state;
+  const { toggleState, userInfo, projectDatatrue } = state;
   const theme = toggleState ? 'dark' : 'light';
   const [selectedRowId, setSelectedRowId] = useState(null);
   const handleCheckboxSelection = (rowId) => {
@@ -89,7 +89,7 @@ export default function ContractorTasksList() {
     },
     {
       field: 'taskName',
-      headerName: 'Task Name',
+      headerName: 'Task',
       width: 300,
       renderCell: (params) => (
         <Link
@@ -105,7 +105,7 @@ export default function ContractorTasksList() {
     },
     {
       field: 'userName',
-      headerName: 'Contractor Name',
+      headerName: 'Client',
       width: 100,
       renderCell: (params) => (
         <Link
@@ -121,7 +121,7 @@ export default function ContractorTasksList() {
     },
     {
       field: 'agentName',
-      headerName: 'Agent Name',
+      headerName: 'Agent',
       width: 100,
       renderCell: (params) => (
         <Link
@@ -239,7 +239,7 @@ export default function ContractorTasksList() {
     };
 
     FatchcategoryData();
-  }, [success]);
+  }, [success, projectDatatrue]);
   // ......}
 
   // {Get Project .........
@@ -606,7 +606,7 @@ export default function ContractorTasksList() {
                   </div>
                   <Box sx={{ height: 400, width: '100%' }}>
                     <DataGrid
-                      className={`tableGrid actionCenter tableBg  ${theme}DataGrid`}
+                      className={`tableGrid actionCenter tableBg projectTable ${theme}DataGrid`}
                       rows={PendingData}
                       columns={columns}
                       getRowId={(row) => row._id}
@@ -649,7 +649,7 @@ export default function ContractorTasksList() {
                   </div>
                   <Box sx={{ height: 400, width: '100%' }}>
                     <DataGrid
-                      className={`tableGrid actionCenter tableBg  ${theme}DataGrid`}
+                      className={`tableGrid actionCenter tableBg  projectTable ${theme}DataGrid`}
                       rows={CompleteData}
                       columns={columns}
                       getRowId={(row) => row._id}

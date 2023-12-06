@@ -9,6 +9,8 @@ import {
   Select,
   TextField,
 } from '@mui/material';
+import { IoSettings } from 'react-icons/io5';
+
 import { ImCross } from 'react-icons/im';
 import Modal from '@mui/material/Modal';
 import { Alert, Dropdown, Form } from 'react-bootstrap';
@@ -177,7 +179,7 @@ export default function ProjectDataWidget() {
               }
               // onClick={() => handleEdit(params.row._id)}
             >
-              <CiSettings className="clockIcon" />
+              <IoSettings className="clockIcon" />
               {params.row.taskStatus === 'waiting'
                 ? 'Waiting On You'
                 : params.row.taskStatus === 'active'
@@ -484,7 +486,7 @@ export default function ProjectDataWidget() {
           <div>{error}</div>
         ) : (
           <>
-            <div className="tableScreen m-0 p-0">
+            <div className=" m-0 p-0">
               <div className="overlayLoading">
                 {isDeleting && (
                   <div className="overlayLoadingItem1">

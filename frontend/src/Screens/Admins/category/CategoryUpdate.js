@@ -12,7 +12,7 @@ import AvatarImage from '../../../Components/Avatar';
 export default function CategoryUpdate() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { state } = useContext(Store);
+  const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const [submiting, setsubmiting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +25,7 @@ export default function CategoryUpdate() {
   });
   const [color, setColor] = useState('');
   const [imagePreview, setImagePreview] = useState('');
+  const [success, setsuccess] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -100,6 +101,8 @@ export default function CategoryUpdate() {
           },
         }
       );
+      setsuccess(!success);
+      ctxDispatch({ type: 'CATEGORIESDATA', payload: success });
       toast.success('Category Updated Successfully');
       navigate('/category');
     } catch (err) {

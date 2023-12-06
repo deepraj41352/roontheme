@@ -75,12 +75,12 @@ function SignUpForm() {
 
   return (
     <Container className="loginPage d-flex  flex-column justify-content-center align-items-center">
-      <div className="Sign-up-container-inner py-3">
-        <Row className="mb-3 ">
+      <div className="Sign-up-container-inner2 py-3">
+        {/* <Row className="mb-3 ">
           <Col className="p-0">
             <h3>Login</h3>
           </Col>
-        </Row>
+        </Row> */}
         <Row>
           <Col className="p-0">
             <Card>

@@ -41,7 +41,7 @@ const columns = [
   {
     field: 'createdAt',
     headerName: 'Registration',
-    width: 200, // Adjust the width as needed
+    width: 200,
     renderCell: (params) => {
       const combinedDateTime = new Date(params.row.createdAt);
       const date = combinedDateTime.toISOString().split('T')[0];
@@ -61,7 +61,7 @@ const columns = [
   {
     field: 'lastLogin',
     headerName: 'Last Login',
-    width: 200, // Adjust the width as needed
+    width: 200,
     renderCell: (params) => {
       const combinedDateTime = new Date(params.row.lastLogin);
       const date = combinedDateTime.toISOString().split('T')[0];

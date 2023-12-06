@@ -90,7 +90,7 @@ export default function AgentTasksList() {
     // },
     {
       field: 'taskName',
-      headerName: 'Task Name',
+      headerName: 'Task',
       width: 300,
       renderCell: (params) => (
         <Link
@@ -106,7 +106,7 @@ export default function AgentTasksList() {
     },
     {
       field: 'userName',
-      headerName: 'Contractor Name',
+      headerName: 'Client',
       width: 100,
       renderCell: (params) => (
         <Link
@@ -122,7 +122,7 @@ export default function AgentTasksList() {
     },
     {
       field: 'agentName',
-      headerName: 'Agent Name',
+      headerName: 'Agent',
       width: 100,
       renderCell: (params) => (
         <Link
@@ -595,7 +595,7 @@ export default function AgentTasksList() {
                   </div>
                   <Box sx={{ height: 400, width: '100%' }}>
                     <DataGrid
-                      className={`tableGrid actionCenter tableBg  ${theme}DataGrid`}
+                      className={`tableGrid actionCenter tableBg projectTable ${theme}DataGrid`}
                       rows={PendingData}
                       columns={columns}
                       getRowId={(row) => row._id}
@@ -638,7 +638,7 @@ export default function AgentTasksList() {
                   </div>
                   <Box sx={{ height: 400, width: '100%' }}>
                     <DataGrid
-                      className={`tableGrid actionCenter tableBg  ${theme}DataGrid`}
+                      className={`tableGrid actionCenter tableBg projectTable ${theme}DataGrid`}
                       rows={CompleteData}
                       columns={columns}
                       getRowId={(row) => row._id}
