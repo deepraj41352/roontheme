@@ -113,7 +113,7 @@ export default function ProfileUpdate() {
                   />
                 ) : (
                   <img
-                    src="https://res.cloudinary.com/dmhxjhsrl/image/upload/v1698911473/r5jajgkngwnzr6hzj7vn.jpg"
+                    src={userInfo.profile_picture}
                     alt="image"
                     className="img-thumbnail creatForm me-2"
                   />

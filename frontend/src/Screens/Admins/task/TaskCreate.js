@@ -321,7 +321,6 @@ export default function TasksCreate() {
                     className="form-control"
                     value={SelectProjectName}
                     onChange={(e) => selectedProjectContractor(e)}
-                    required
                     MenuProps={{
                       PaperProps: {
                         style: {
