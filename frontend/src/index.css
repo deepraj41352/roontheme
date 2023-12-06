@@ -474,16 +474,17 @@ body {
 
 .globalbtnColor {
   color: #ffffff !important;
-  background-color: RGB(14, 14, 61) !important;
+  background: linear-gradient(315deg, #7b4093 0%, #080847 100%);
+  border: 1px solid RGB(14, 14, 61);
   font-weight: 700 !important;
-  border: 1px solid RGB(14, 14, 61) !important;
-  border-radius: 5px !important;
+  border-radius: 5px;
   height: 40px;
-  text-transform: unset !important;
+  text-transform: unset;
+  transition: background 0.3s, color 0.3s;
 }
+
 .globalbtnColor:hover {
-  color: RGB(14, 14, 61) !important;
-  background-color: transparent !important;
+  background: linear-gradient(315deg, #080847 0%, #7b4093 100%);
 }
 
 .pointCursor {
@@ -589,8 +590,6 @@ body {
   min-width: 235px;
   height: 100vh;
   overflow-y: auto;
-  background-color: #070719;
-  color: #fff;
   white-space: nowrap;
   overflow-x: hidden;
   transition: width 0.3s ease-in-out;
@@ -608,7 +607,7 @@ body {
     display: none;
   }
   .mainConNav {
-    width: 100%;
+    width: 100% !important;
   }
   .mainDashboardDiv {
     width: 100% !important;
@@ -1141,7 +1140,6 @@ body {
 }
 .list-group-item {
   display: flex !important;
-  align-items: center;
 }
 .NotificationMsg {
   width: 88%;
@@ -1149,19 +1147,19 @@ body {
 }
 
 .list-group-item-unseen-dark {
-  background-color: #07162c !important;
+  background-color: #2e2e4f !important;
   color: white !important;
 }
 .list-group-item-unseen-light {
-  background-color: #f8f8f8 !important;
+  background-color: #dcdce3 !important;
   color: black !important;
 }
 .list-group-item-seen-dark {
-  background-color: #afb4b9 !important;
+  background-color: #9296b5 !important;
   color: white !important;
 }
 .list-group-item-seen-light {
-  background-color: #bfbfc7 !important;
+  background-color: #f8f8f8 !important;
   color: black !important;
 }
 
@@ -1493,38 +1491,38 @@ body {
   font-weight: 500 !important;
 }
 .tableInwaitingBtn svg.clockIcon {
-  color: #ffd400;
+  color: #fff;
   margin: 0 3px 3px 0;
   font-weight: 700 !important;
   font-size: medium;
   /* padding: 10px 0; */
 }
 .tableInProgressBtn svg.clockIcon {
-  color: #04ff04;
+  color: #fff;
   margin: 0 3px 3px 0;
   font-weight: 700 !important;
   font-size: medium;
   /* padding: 10px 0; */
 }
 .tableInProgressBtn {
-  font-weight: 300;
-  font-size: 13px !important;
+  font-weight: 600;
+  font-size: 14px !important;
   border-radius: 3px;
   padding: 6px 16px !important;
   width: 170px;
-  color: #04ff04 !important;
+  color: #fff !important;
   text-transform: unset !important;
-  background: #fff !important;
+  background: #04ff04 !important;
   border: 1px solid #04ff04 !important;
 }
 .tableInwaitingBtn {
-  font-weight: 300;
-  font-size: 13px !important;
+  font-weight: 600;
+  font-size: 14px !important;
   border-radius: 3px;
   padding: 6px 16px !important;
   width: 170px;
-  color: #ffd400 !important;
-  background: #fff !important;
+  color: #fff !important;
+  background: #ffd400 !important;
   text-transform: unset !important;
   border: 1px solid #ffd400 !important;
 }
@@ -1698,7 +1696,8 @@ span[data-tooltip]:hover::before {
 }
 .light-globalbtnColor {
   color: #ffffff !important;
-  background-color: RGB(14, 14, 61) !important;
+  background: linear-gradient(315deg, #7b4093 0%, #080847 100%);
+  border: none !important;
   font-weight: 700 !important;
   border: none !important;
   text-transform: unset !important;
@@ -1832,9 +1831,7 @@ body {
 .accordion-body {
   margin-bottom: 0 !important;
 }
-.accordion {
-  padding: 10px !important;
-}
+
 .Messgae-Notification {
   width: 90% !important;
   text-align: left;
@@ -1850,41 +1847,48 @@ body {
 }
 .acco1-seen-dark .accordion-button:not(.collapsed),
 .acco1-seen-dark .accordion-item:last-of-type .accordion-button.collapsed {
-  background-color: #afb4b9 !important;
+  background-color: #787c9f !important;
   color: #fff !important;
 }
 .acco1-seen-light .accordion-button:not(.collapsed),
 .acco1-seen-light .accordion-item:last-of-type .accordion-button.collapsed {
-  background-color: #bfbfc7 !important;
+  background-color: #f0f0f0 !important;
   color: #000 !important;
 }
 .acco1-unseen-dark .accordion-button:not(.collapsed),
 .acco1-unseen-dark .accordion-item:last-of-type .accordion-button.collapsed {
-  background-color: #07162c !important;
+  background-color: #12123e !important;
   color: #fff !important;
 }
 .acco1-unseen-light .accordion-button:not(.collapsed),
 .acco1-unseen-light .accordion-item:last-of-type .accordion-button.collapsed {
-  background-color: #fff !important;
+  background-color: #d3d3d5 !important;
   color: #07162c !important;
 }
 .MarkAsRead-light {
   border-radius: 3px !important;
   border: none;
-  font-weight: 500;
+  font-weight: normal;
   color: #fff;
   background-color: #07162c;
-  width: 115px;
-  padding: 6px !important;
+  width: 126px;
+  padding: 4px !important;
 }
 .MarkAsRead-dark {
   border-radius: 3px !important;
   border: none;
-  font-weight: 500;
+  font-weight: normal;
   color: #07162c;
   background-color: #fff;
-  width: 115px;
-  padding: 6px !important;
+  width: 126px;
+  padding: 4px !important;
+  font-size: 14px;
+}
+.buttonDiv {
+  display: flex;
+  justify-content: end;
+  align-content: end;
+  width: 100%;
 }
 .dark-threeDots {
   color: #fff;
@@ -1942,12 +1946,12 @@ body {
   color: #ffd400 !important;
 }
 .tableInwaitingBtn svg.clockIcon {
-  color: #ffd400;
+  color: #fff;
   margin: 0 3px 3px 0;
   font-weight: 600 !important;
 }
 .tableInProgressBtn svg.clockIcon {
-  color: #04ff04;
+  color: #fff;
   font-weight: 600 !important;
   margin: 0 3px 3px 0;
 }
@@ -2045,8 +2049,8 @@ body {
 
 .nav-style1 li a.active,
 .nav-style1 li a:hover {
-  border-bottom: 2px solid rgb(28, 54, 171);
-  color: rgb(28, 54, 171) !important;
+  border-bottom: 2px solid rgb(32, 0, 255) !important;
+  color: rgb(32, 0, 255) !important;
 }
 .nav-style1 li a {
   font-weight: bold;
@@ -2148,7 +2152,7 @@ body {
 
 /* {Sidebar ...................... */
 .darksidebar-theme {
-  background-color: #070719;
+  background-color: #050535;
   color: #fff;
 }
 .lightsidebar-theme {
@@ -2228,7 +2232,7 @@ body {
 }
 /* ...................... }*/
 .mainDashboardDiv {
-  width: calc(100% - 235px) !important;
+  width: calc(100% - 235px);
 }
 .cateContainerCreate {
   display: flex;
@@ -2253,4 +2257,6 @@ body {
 .css-ptkaw2-MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
 .css-ptkaw2-MuiDataGrid-root .MuiDataGrid-cell:focus {
   outline: unset !important;
+}
+button::after {
 }

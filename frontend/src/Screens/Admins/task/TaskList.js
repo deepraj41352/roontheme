@@ -17,6 +17,7 @@ import { toast } from 'react-toastify';
 import { Store } from '../../../Store';
 import ThreeLoader from '../../../Util/threeLoader';
 import FormSubmitLoader from '../../../Util/formSubmitLoader';
+import { IoSettings } from 'react-icons/io5';
 
 export default function TasksList() {
   const [isModelOpen, setIsModelOpen] = useState(false);
@@ -149,7 +150,7 @@ export default function TasksList() {
                   : 'tableInwaitingBtn'
               }
             >
-              <CiSettings className="clockIcon" />
+              <IoSettings className="clockIcon" />
               {params.row.taskStatus === 'waiting'
                 ? 'Waiting On You'
                 : params.row.taskStatus === 'active'

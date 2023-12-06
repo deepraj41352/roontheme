@@ -423,6 +423,14 @@ export default function TaskAddButton() {
                 value={SelectProjectName}
                 onChange={(e) => selectedProjectContractor(e)}
                 // required
+                MenuProps={{
+                  PaperProps: {
+                    style: {
+                      maxHeight: 150,
+                      top: 0,
+                    },
+                  },
+                }}
               >
                 <MenuItem
                   disabled={dynamicfield}
@@ -500,6 +508,14 @@ export default function TaskAddButton() {
                     value={contractorName}
                     onChange={(e) => setContractorName(e.target.value)}
                     required
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: 150,
+                          top: 0,
+                        },
+                      },
+                    }}
                   >
                     <MenuItem value="" disabled>
                       Select Contractor

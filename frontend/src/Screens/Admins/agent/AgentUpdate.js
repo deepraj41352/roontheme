@@ -324,6 +324,14 @@ export default function AgentUpdate() {
                       name: 'selectcategories',
                       id: 'categories',
                     }}
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: 150,
+                          top: 0,
+                        },
+                      },
+                    }}
                   >
                     {newMergedCategory &&
                       newMergedCategory.map((option) => (

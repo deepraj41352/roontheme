@@ -62,6 +62,8 @@ import AgentTasksList from './Screens/Agents/task/Task';
 import ContractorTasksList from './Screens/Contractors/task/Task';
 import ContractorTasksCreate from './Screens/Contractors/task/TaskCreate';
 import ContractorProjectList from './Screens/Contractors/project/Project';
+import Profile from './Screens/Profile/Profile';
+import ProfileUpdate from './Screens/Profile/ProfileUpdate';
 
 function App() {
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -235,10 +237,7 @@ function App() {
                               </div>
                             </Dropdown.Item>
                             <hr />
-                            <Dropdown.Item
-                              href="/profile-screen"
-                              className="mb-2"
-                            >
+                            <Dropdown.Item href="/profile" className="mb-2">
                               <IoPersonOutline className="fs-4 me-3 pb-1" />
                               My Profile
                             </Dropdown.Item>
@@ -464,6 +463,23 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
+
+                    <Route
+                      path="/profile"
+                      element={
+                        <ProtectedRoute>
+                          <Profile />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/profile/update"
+                      element={
+                        <ProtectedRoute>
+                          <ProfileUpdate />
+                        </ProtectedRoute>
+                      }
+                    />
                     {/*.............................................................................}/}
 
                     {/* contractor task */}
@@ -504,7 +520,7 @@ function App() {
                     />
 
                     <Route
-                      path="/profile-screen"
+                      path="/profile"
                       element={
                         <ProtectedRoute>
                           <ProfileScreen />

@@ -172,7 +172,7 @@ export default function ContractorTasksCreate() {
         setCategory('');
         setSelectProjectName('');
         toast.success(data.data.message);
-        navigate('/tasksScreen');
+        navigate('/contractor/tasks');
         setDynamicfield(false);
       }
       if (data.status === 200) {
@@ -233,7 +233,7 @@ export default function ContractorTasksCreate() {
                           label={
                             <div className="d-flex align-items-center">
                               <div className="">
-                                {category.categoryImage !== 'null' ? (
+                                {category.categoryImage ? (
                                   <Avatar src={category.categoryImage} />
                                 ) : (
                                   <AvatarImage
@@ -271,7 +271,6 @@ export default function ContractorTasksCreate() {
                     className="form-control"
                     value={SelectProjectName}
                     onChange={(e) => setSelectProjectName(e.target.value)}
-                    required
                   >
                     <MenuItem
                       disabled={dynamicfield}

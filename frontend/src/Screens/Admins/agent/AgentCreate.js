@@ -290,6 +290,14 @@ export default function AgentCreate() {
                       name: 'selectcategories',
                       id: 'categories',
                     }}
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: 150,
+                          top: 474,
+                        },
+                      },
+                    }}
                   >
                     <MenuItem value="addNew">
                       <Link to={`/adminCategoriesList`} className="addCont">

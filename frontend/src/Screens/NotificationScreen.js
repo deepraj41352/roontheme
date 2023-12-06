@@ -139,8 +139,8 @@ export default function NotificationScreen() {
                         <Accordion
                           className={` ${
                             item.status === 'seen'
-                              ? `acco1-seen-${theme} p-0`
-                              : `acco1-unseen-${theme} p-0`
+                              ? `acco1-seen-${theme} pb-1`
+                              : `acco1-unseen-${theme} pb-1`
                           }`}
                         >
                           <Accordion.Item
@@ -165,9 +165,9 @@ export default function NotificationScreen() {
                                   }}
                                 />
                               </div>
-                              <div>
+                              <div className="buttonDiv">
                                 <button
-                                  className={`MarkAsRead-${theme}`}
+                                  className={`btn-sm MarkAsRead-${theme}`}
                                   style={{
                                     display:
                                       item.status == 'seen' ? 'none' : 'block',

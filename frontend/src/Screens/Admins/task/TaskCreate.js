@@ -322,6 +322,14 @@ export default function TasksCreate() {
                     value={SelectProjectName}
                     onChange={(e) => selectedProjectContractor(e)}
                     required
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          maxHeight: 150,
+                          top: 0,
+                        },
+                      },
+                    }}
                   >
                     <MenuItem
                       disabled={dynamicfield}
@@ -425,6 +433,14 @@ export default function TasksCreate() {
                         value={contractorName}
                         onChange={(e) => setContractorName(e.target.value)}
                         required
+                        MenuProps={{
+                          PaperProps: {
+                            style: {
+                              maxHeight: 150,
+                              top: 0,
+                            },
+                          },
+                        }}
                       >
                         <MenuItem value="" disabled>
                           Select Contractor

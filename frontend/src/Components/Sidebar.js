@@ -17,6 +17,7 @@ import { ImCross } from 'react-icons/im';
 import axios from 'axios';
 import { Form, InputGroup } from 'react-bootstrap';
 import { BiTask } from 'react-icons/bi';
+import { VscColorMode } from 'react-icons/vsc';
 
 function Sidebar({ sidebarVisible, setSidebarVisible }) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -40,7 +41,10 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
     console.log('oiuhjioyhi');
   });
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const [isToggled, setIsToggled] = useState(toggleState);
+  const handleChangeToggleState = () => {
+    setIsToggled(!isToggled);
+  };
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -139,6 +143,10 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
   const handleSearchScreen = () => {
     navigate('/searchScreen');
   };
+  useEffect(() => {
+    ctxDispatch({ type: 'TOGGLE_BTN', payload: isToggled });
+    localStorage.setItem('toggleState', JSON.stringify(isToggled));
+  }, [isToggled]);
 
   return (
     <div
@@ -441,21 +449,23 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
           </Link>
         </motion.li>
 
-        <Link
-          to="/profile-screen"
-          className="text-decoration-none disNonePro"
-          onClick={handlSmallScreeneClick}
+        <motion.li
+          whileHover={{
+            scale: 1.05,
+          }}
+          whileTap={{ scale: 0.9 }}
+          transition={{
+            type: 'spring',
+            stiffness: 400,
+            damping: 10,
+          }}
+          className="disNonePro"
         >
-          <motion.li
-            whileHover={{
-              scale: 1.05,
-            }}
-            whileTap={{ scale: 0.9 }}
-            transition={{
-              type: 'spring',
-              stiffness: 400,
-              damping: 10,
-            }}
+          {' '}
+          <Link
+            to="/profile"
+            className={`${theme}-text-decoration-none disNonePro`}
+            onClick={handlSmallScreeneClick}
           >
             <li>
               <img
@@ -469,8 +479,31 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               />
               Profile
             </li>
-          </motion.li>
-        </Link>
+          </Link>
+        </motion.li>
+
+        <motion.li
+          whileHover={{
+            scale: 1.05,
+          }}
+          whileTap={{ scale: 0.9 }}
+          transition={{
+            type: 'spring',
+            stiffness: 400,
+            damping: 10,
+          }}
+          className="disNonePro"
+        >
+          <Link
+            className={`${theme}-text-decoration-none disNonePro`}
+            onClick={handleChangeToggleState}
+          >
+            <li>
+              <VscColorMode className="fs-4 me-3 pb-1 " />
+              {theme === 'light' ? 'Dark' : 'Light'} Mode
+            </li>
+          </Link>
+        </motion.li>
 
         <motion.li
           whileHover={{
