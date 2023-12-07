@@ -317,7 +317,6 @@ export default function TasksList() {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
-
       if (data.status === 200) {
         setSuccess(!success);
         setShowModal(false);

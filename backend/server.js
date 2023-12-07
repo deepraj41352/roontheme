@@ -88,7 +88,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Function to send an email
 function sendEmail(to, subject, message) {
   const mailOptions = {
     from: 'deepraj41352@email.com',
@@ -113,7 +112,6 @@ export async function storeNotification(message, notifyUser, status, type) {
     status,
     message,
   });
-  // console.log("newNotification-------", newNotification);
 
   const notify = await newNotification.save();
   return notify;
@@ -134,10 +132,10 @@ app.use((err, req, res, next) => {
 const io = new Server(server, {
   cors: {
     origin: [
-      'https://roonberg.onrender.com',
+      'https://roontheme.onrender.com',
       'http://localhost:3000',
       'http://localhost:5000',
-    ], // Replace with your frontend URL
+    ],
   },
 });
 

@@ -5,14 +5,13 @@ import {
   CardFooter,
   CardHeader,
   Form,
-  Image,
   InputGroup,
 } from 'react-bootstrap';
 import { IoSendSharp } from 'react-icons/io5';
 import { RxFontStyle } from 'react-icons/rx';
 import MyStatefulEditor from '../Components/rte_test';
 import { Store } from '../Store';
-import { Socket, io } from 'socket.io-client';
+import { io } from 'socket.io-client';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -65,13 +64,22 @@ function ChatWindowScreen() {
   const [MessageWithImage, setMessageWithImage] = useState('');
 
   const [showImage, setShowImage] = useState(false);
-
+  const [connetct, setConnetct] = useState(false);
   const [mediaType, setMediaType] = useState('image');
   const audioChunks = useRef([]);
   const audioRef = useRef();
   const SocketUrl = process.env.REACT_APP_SOCKETURL;
-  // const socket = io(SocketUrl); // Replace with your server URL
   const [showTooltip, setShowTooltip] = useState(false);
+
+  useEffect(() => {
+    setConnetct(!connetct);
+  }, [id]);
+
+  useEffect(() => {
+    socket.current.emit('addUser', userInfo._id, userInfo.role);
+    socket.current.on('getUsers', (users) => {});
+    console.log(userInfo._id, userInfo.role);
+  }, [userInfo, connetct]);
 
   const handleTooltipClick = () => {
     setShowTooltip(true);
@@ -178,7 +186,7 @@ function ChatWindowScreen() {
   }, [arrivalMessage, conversationID]);
 
   const startRecording = (e) => {
-    e.preventDefault(); // Prevent the form from submitting and the page from refreshing
+    e.preventDefault();
 
     navigator.mediaDevices
       .getUserMedia({ audio: true })
@@ -254,11 +262,6 @@ function ChatWindowScreen() {
       setIsRecording(false);
     }
   };
-
-  useEffect(() => {
-    socket.current.emit('addUser', userInfo._id, userInfo.role);
-    socket.current.on('getUsers', (users) => {});
-  }, [userInfo]);
 
   useEffect(() => {
     const getMessages = async () => {
