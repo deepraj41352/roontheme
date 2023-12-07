@@ -353,6 +353,7 @@ function ChatWindowScreen() {
     const receiverdId = conversationID?.members.find(
       (member) => member !== userInfo._id
     );
+    console.log('receiverdId', receiverdId);
     const getChatMemberName = async () => {
       try {
         const { data } = await axios.get(`/api/user/${receiverdId}`);
