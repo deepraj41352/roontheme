@@ -1,36 +1,17 @@
-import Box from '@mui/material/Box';
-import { DataGrid } from '@mui/x-data-grid';
 import { Grid } from '@mui/material';
-import { useContext, useEffect, useReducer, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import ThreeLoader from '../../../Util/threeLoader';
-import FormSubmitLoader from '../../../Util/formSubmitLoader';
 import { Store } from '../../../Store';
 import { confirmAlert } from 'react-confirm-alert';
-
-const columns = [
-  {
-    field: 'first_name',
-    headerName: 'Name',
-    width: 200,
-  },
-  {
-    field: 'email',
-    headerName: 'Email',
-    width: 200,
-  },
-  { field: '_id', headerName: 'ID', width: 200 },
-];
-
-const getRowId = (row) => row._id;
+import DataTable from '../../../Components/DataTable';
 
 export default function AdminList() {
   const navigate = useNavigate();
-  const [isDeleting, setIsDeleting] = useState(false);
   const [adminData, setAdminData] = useState([]);
-  const [loading, setLoding] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleEdit = (rowId) => {
@@ -38,16 +19,14 @@ export default function AdminList() {
   };
 
   const { state } = useContext(Store);
-  const { toggleState, userInfo } = state;
-  const theme = toggleState ? 'dark' : 'light';
+  const { userInfo } = state;
 
   useEffect(() => {
     const FatchAdminData = async () => {
-      setLoding(true);
+      setLoading(true);
       try {
-        const response = await axios.post(`/api/user/`, { role: 'admin' });
-        const datas = response.data;
-        const rowData = datas.map((items) => {
+        const { data } = await axios.post(`/api/user/`, { role: 'admin' });
+        const rowData = data.map((items) => {
           return {
             ...items,
             _id: items._id,
@@ -58,34 +37,43 @@ export default function AdminList() {
         });
         setAdminData(rowData);
       } catch (error) {
-        setError(error);
-        console.log(error);
+        setError('An Error Ocurred');
       } finally {
-        setLoding(false);
+        setLoading(false);
       }
     };
 
     FatchAdminData();
-  }, [isDeleting]);
+  }, [loading]);
 
   const confirmDelete = (Id) => {
-    console.log('runing');
+    const isMobile = window.innerWidth <= 300;
+
+    const alertStyle = isMobile
+      ? {
+          width: '90%',
+          margin: '0 auto',
+        }
+      : {};
     confirmAlert({
       title: 'Confirm to delete',
       message: 'Are you sure to delete this?',
       buttons: [
         {
+          className: 'globalbtnColor',
           label: 'Yes',
           onClick: () => deleteHandle(Id),
         },
         {
+          className: 'globalbtnColor',
           label: 'No',
         },
       ],
     });
   };
+
   const deleteHandle = async (userid) => {
-    setIsDeleting(true);
+    setLoading(true);
     try {
       const response = await axios.delete(`/api/user/${userid}`, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -96,105 +84,95 @@ export default function AdminList() {
         toast.error('Failed To Delete Admin.');
       }
     } catch (error) {
-      console.error(error);
       toast.error('An Error Occurred While Deleting Admin.');
     } finally {
-      setIsDeleting(false);
+      setLoading(false);
     }
   };
 
+  const columns = [
+    {
+      field: 'first_name',
+      headerName: 'Name',
+      minWidth: 100,
+      flex: 1,
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      minWidth: 200,
+      flex: 1,
+    },
+    { field: '_id', headerName: 'ID', minWidth: 230 },
+    {
+      field: 'userStatus',
+      headerName: 'Status',
+      minWidth: 150,
+      flex: 0.5,
+      renderCell: (params) => {
+        const isInactive = params.row.userStatus === 'Inactive';
+        const cellClassName = isInactive ? 'inactive-cell' : 'active-cell';
+
+        return (
+          <div className={`status-cell ${cellClassName}`}>
+            {params.row.userStatus}
+          </div>
+        );
+      },
+    },
+    {
+      field: 'action',
+      headerName: 'Action',
+      minWidth: 250,
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <Grid item xs={8}>
+            <button
+              variant="contained"
+              className="mx-2 edit-btn"
+              onClick={() => handleEdit(params.row._id)}
+            >
+              Edit
+            </button>
+            <button
+              variant="outlined"
+              className="mx-2 delete-btn global-font"
+              onClick={() => confirmDelete(params.row._id)}
+            >
+              Delete
+            </button>
+          </Grid>
+        );
+      },
+    },
+  ];
   return (
     <>
       {loading ? (
-        <>
-          <ThreeLoader />
-        </>
+        <ThreeLoader />
       ) : error ? (
         <div>{error}</div>
       ) : (
         <>
           <ul className="nav-style1">
             <li>
-              <Link to="/admin">
+              <Link to="/admin-screen">
                 <a className="active">Admin</a>
               </Link>
             </li>
             <li>
-              <Link to="/admin/create">
+              <Link to="/admin/create-screen">
                 <a>Create</a>
               </Link>
             </li>
           </ul>
-          {isDeleting && <FormSubmitLoader />}
 
-          <div className="overlayLoading">
-            <Box sx={{ width: '100%', height: '400px' }}>
-              <DataGrid
-                className={
-                  theme == 'light'
-                    ? `${theme}DataGrid mx-2 tableContainer`
-                    : `tableContainer ${theme}DataGrid mx-2`
-                }
-                rows={adminData}
-                columns={[
-                  ...columns,
-                  {
-                    field: 'userStatus',
-                    headerName: 'Status',
-                    width: 100,
-                    renderCell: (params) => {
-                      const isInactive = params.row.userStatus === 'Inactive';
-                      const cellClassName = isInactive
-                        ? 'inactive-cell'
-                        : 'active-cell';
-
-                      return (
-                        <div className={`status-cell ${cellClassName}`}>
-                          {params.row.userStatus}
-                        </div>
-                      );
-                    },
-                  },
-                  {
-                    field: 'action',
-                    headerName: 'Action',
-                    width: 280,
-                    renderCell: (params) => {
-                      return (
-                        <Grid item xs={8}>
-                          <button
-                            variant="contained"
-                            className="mx-2 edit-btn"
-                            onClick={() => handleEdit(params.row._id)}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            variant="outlined"
-                            className="mx-2 delete-btn global-font"
-                            onClick={() => confirmDelete(params.row._id)}
-                          >
-                            Delete
-                          </button>
-                        </Grid>
-                      );
-                    },
-                  },
-                ]}
-                getRowId={getRowId}
-                initialState={{
-                  pagination: {
-                    paginationModel: {
-                      pageSize: 5,
-                    },
-                  },
-                }}
-                pageSizeOptions={[5]}
-                disableRowSelectionOnClick
-                localeText={{ noRowsLabel: 'Admin Data Is Not Avalible' }}
-              />
-            </Box>
-          </div>
+          <DataTable
+            rowdata={adminData}
+            columns={columns}
+            label={'Admin Data Is Not Avalible'}
+          />
         </>
       )}
     </>

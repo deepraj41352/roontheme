@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import { Container, Row, Col, Card } from 'react-bootstrap/';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Validations from '../Components/Validations';
 import { useContext, useState, useEffect } from 'react';
 import { Store } from '../Store';
@@ -14,7 +14,6 @@ function RegistrationForm() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -23,7 +22,7 @@ function RegistrationForm() {
     setShowPassword(!showPassword);
   };
 
-  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { state } = useContext(Store);
   const { userInfo, validationMsg } = state;
 
   const submitHandler = async (e) => {
@@ -57,7 +56,9 @@ function RegistrationForm() {
       setPassword('');
       setConfirmPassword('');
     } catch (err) {
-      toast.error(err.response?.data?.message);
+      toast.error(
+        'Your registration has failed. Please check and register again.'
+      );
     } finally {
       setIsSubmiting(false);
     }
@@ -72,11 +73,6 @@ function RegistrationForm() {
   return (
     <Container className="Sign-up-container-regis d-flex  flex-column justify-content-center align-items-center">
       <div className="Sign-up-container-inner2  py-3">
-        {/* <Row className="mb-3">
-          <Col className="p-0">
-            <h4>Registration</h4>
-          </Col>
-        </Row> */}
         <Row>
           <Col className="p-0">
             <Card>
@@ -160,13 +156,8 @@ function RegistrationForm() {
                   type="submit"
                   disabled={isSubmiting}
                 >
-                  {isSubmiting ? 'SUBMITING...' : 'SUBMIT'}
+                  {isSubmiting ? 'SUBMITING' : 'SUBMIT'}
                 </Button>
-                {/* <Form.Group className="my-3">
-                  <Link to="/" className="forgotPass">
-                    Signin ?
-                  </Link>
-                </Form.Group> */}
               </Form>
             </Card>
           </Col>

@@ -56,7 +56,10 @@ userRouter.post(
     try {
       const confirmedUsers = await User.find({ role }).sort({ createdAt: -1 });
       const users = confirmedUsers.filter((user) => user.isConfirmed === true);
-      res.json(users);
+      const sanitizedUsers = users.map(
+        ({ password, passresetToken, ...other }) => other._doc
+      );
+      res.json(sanitizedUsers);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });

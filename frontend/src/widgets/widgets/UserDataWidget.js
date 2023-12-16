@@ -1,36 +1,33 @@
-import Box from '@mui/material/Box';
-import { DataGrid } from '@mui/x-data-grid';
-
-import { Button, Grid } from '@mui/material';
-
-import axios from 'axios';
-
+import { useContext } from 'react';
+import DataTable from '../../Components/DataTable';
 import { Store } from '../../Store';
-
-import { useContext, useEffect, useState } from 'react';
 
 const columns = [
   {
     field: 'first_name',
     headerName: 'First Name',
-    width: 120,
+    minWidth: 120,
+    flex: 1,
   },
   {
     field: 'last_name',
     headerName: 'Last Name',
-    width: 120,
+    minWidth: 120,
+    flex: 1,
     renderCell: (params) =>
       params.row.last_name ? params.row.last_name : 'NA',
   },
   {
     field: 'email',
     headerName: 'Email',
-    width: 130,
+    minWidth: 130,
+    flex: 1,
   },
   {
     field: 'role',
     headerName: 'Role',
-    width: 150,
+    minWidth: 150,
+    flex: 1,
     renderCell: (params) => {
       const capitalizeFirstLetter = (str) => {
         return str.charAt(0).toUpperCase() + str.slice(1);
@@ -41,7 +38,8 @@ const columns = [
   {
     field: 'createdAt',
     headerName: 'Registration',
-    width: 200,
+    minWidth: 220,
+    flex: 1,
     renderCell: (params) => {
       const combinedDateTime = new Date(params.row.createdAt);
       const date = combinedDateTime.toISOString().split('T')[0];
@@ -61,7 +59,8 @@ const columns = [
   {
     field: 'lastLogin',
     headerName: 'Last Login',
-    width: 200,
+    minWidth: 200,
+    flex: 1,
     renderCell: (params) => {
       const combinedDateTime = new Date(params.row.lastLogin);
       const date = combinedDateTime.toISOString().split('T')[0];
@@ -81,7 +80,8 @@ const columns = [
   {
     field: 'userStatus',
     headerName: 'Status',
-    width: 100,
+    minWidth: 200,
+    flex: 1,
     renderCell: (params) => {
       const isInactive = params.row.userStatus === false;
       const cellClassName = isInactive ? 'inactive-cell' : 'active-cell';
@@ -97,30 +97,17 @@ const columns = [
 
 export default function UserDataWidget(props) {
   const { state } = useContext(Store);
-  const { toggleState } = state;
-
-  const theme = toggleState ? 'dark' : 'light';
-
+  const { sidebar } = state;
   return (
     <>
-      <Box sx={{ height: 400, width: '100%' }}>
-        <DataGrid
-          className={`tableGrid actionCenter tableBg ${theme}DataGrid`}
-          rows={props.userData}
+      <div className={!sidebar ? 'w-100' : 'maxClassTable'}>
+        <DataTable
+          rowdata={props.userData}
           columns={columns}
-          getRowId={(row) => row._id}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5,
-              },
-            },
-          }}
-          pageSizeOptions={[5]}
-          // checkboxSelection
-          disableRowSelectionOnClick
+          label={'User Not Avalible'}
+          extracss={'tableGrid actionCenter'}
         />
-      </Box>
+      </div>
     </>
   );
 }

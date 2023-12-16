@@ -45,7 +45,7 @@ const data = {
     {
       first_name: 'Sarah',
       last_name: 'Brown',
-      email: 'sarah01@gmail.com',
+      email: 'abhay.vyas25v06@gmail.com',
       password: 'RoonBerg@123',
       role: 'contractor',
     },
@@ -59,14 +59,14 @@ const data = {
     {
       first_name: 'Ethan',
       last_name: 'Reynolds',
-      email: 'ethan01@gmail.com',
-      password: 'roonBerg@123',
+      email: 'abhay.vyas25v07@gmail.com',
+      password: 'RoonBerg@123',
       role: 'contractor',
     },
     {
       first_name: 'Christopher',
       last_name: 'Taylor',
-      email: 'christopher01@gmail.com',
+      email: 'dodiyadsvv@gmail.com',
       password: 'RoonBerg@123',
       role: 'agent',
     },
@@ -80,14 +80,14 @@ const data = {
     {
       first_name: 'David',
       last_name: 'Wilson',
-      email: 'david01@gmail.com',
+      email: 'gaytridodiya20@gmail.com',
       password: 'RoonBerg@123',
       role: 'agent',
     },
     {
       first_name: 'Amanda',
       last_name: 'Anderson',
-      email: 'amanda01@gmail.com',
+      email: 'abhay.vyas25v05@gmail.com',
       password: 'RoonBerg@123',
       role: 'agent',
     },
@@ -101,7 +101,7 @@ const data = {
     {
       first_name: 'Jessica',
       last_name: 'Martinez',
-      email: 'jessica01@gmail.com',
+      email: 'mbrsdchouhan@gmail.com',
       password: 'RoonBerg@123',
       role: 'agent',
     },

@@ -665,15 +665,15 @@ function ChatWindowScreen() {
         <Card className="chatWindow">
           <CardHeader className={`d-flex ${theme}chatHead`}>
             {userInfo.role === 'admin' || userInfo.role === 'superadmin' ? (
-              <Link to={`/admin/tasks`}>
+              <Link to={`/admin/task-screen`}>
                 <FaArrowLeft className={`me-3 fs-5 ${theme}backbtn `} />
               </Link>
             ) : userInfo.role === 'contractor' ? (
-              <Link to={`/contractor/tasks`}>
+              <Link to={`/client/task-screen`}>
                 <FaArrowLeft className={`me-3 fs-5 ${theme}backbtn `} />
               </Link>
             ) : (
-              <Link to={`/agent/tasks`}>
+              <Link to={`/agent/task-screen`}>
                 <FaArrowLeft className={`me-3 fs-5 ${theme}backbtn `} />
               </Link>
             )}

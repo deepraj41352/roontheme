@@ -83,10 +83,10 @@ export default function AdminCreate() {
           image_url: '',
         });
         toast.success('Admin Created Successfully !');
-        navigate('/admin');
+        navigate('/admin-screen');
       }
     } catch (error) {
-      toast.error(error.response?.data?.message);
+      toast.error('Failed To Create Admin');
     } finally {
       setsubmiting(false);
     }
@@ -96,12 +96,12 @@ export default function AdminCreate() {
     <>
       <ul className="nav-style1">
         <li>
-          <Link to="/admin">
+          <Link to="/admin-screen">
             <a>Admin</a>
           </Link>
         </li>
         <li>
-          <Link to="/admin/create">
+          <Link to="/admin/create-screen">
             <a className="active">Create</a>
           </Link>
         </li>

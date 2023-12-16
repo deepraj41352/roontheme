@@ -1,56 +1,40 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
-import { HiClipboardList, HiUserGroup } from 'react-icons/hi';
-import { CiBoxList } from 'react-icons/ci';
-import { FaListAlt, FaListUl } from 'react-icons/fa';
-import { FaPeopleGroup } from 'react-icons/fa';
+import { HiUserGroup } from 'react-icons/hi';
+import { FaListUl } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-
 import { IoMdNotifications } from 'react-icons/io';
 import { AiFillHome, AiOutlineProject } from 'react-icons/ai';
-import { CgProfile } from 'react-icons/cg';
-import { MdGroup, MdGroups2, MdLogout, MdOutlineGroups2 } from 'react-icons/md';
-import { BsFillChatLeftQuoteFill, BsSearch } from 'react-icons/bs';
-import { Link, useNavigate } from 'react-router-dom';
+import { MdGroup, MdLogout, MdOutlineGroups2 } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 import { Store } from '../Store';
 import { ImCross } from 'react-icons/im';
 import axios from 'axios';
-import { Form, InputGroup } from 'react-bootstrap';
 import { BiTask } from 'react-icons/bi';
 import { VscColorMode } from 'react-icons/vsc';
 
 function Sidebar({ sidebarVisible, setSidebarVisible }) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo, NotificationData } = state;
-  const [unseeNote, setUnseenNote] = useState(NotificationData);
-
   const [isSmallScreen, setIsSmallScreen] = useState(true);
-  const [searchValue, setSearchValue] = useState('');
-  const navigate = useNavigate();
   const { toggleState } = state;
   const theme = toggleState ? 'dark' : 'light';
-
   const socketUrl = process.env.REACT_APP_SOCKETURL;
-  const socket = io(socketUrl); // Replace with your server URL
-
-  // const SocketUrl = process.env.SOCKETURL;
-  // const socket = io(SocketUrl);
-  // const socket = io('https://roonsocket.onrender.com'); // Replace with your server URL
-
+  const socket = io(socketUrl);
   socket.emit('connectionForNotify', () => {
     console.log('oiuhjioyhi');
   });
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const [isToggled, setIsToggled] = useState(toggleState);
   const handleChangeToggleState = () => {
     setIsToggled(!isToggled);
   };
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-  const closeDropdown = () => {
-    setIsDropdownOpen(false);
-  };
+  const [activeTab, setActiveTab] = useState(
+    localStorage.getItem('activeTab') || 'dashboard'
+  );
+  useEffect(() => {
+    localStorage.setItem('activeTab', activeTab);
+  }, [activeTab]);
 
   useEffect(() => {
     const handleNotification = (notifyUser, message) => {
@@ -66,8 +50,6 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
 
   useEffect(() => {
     const handleNotification = async (notifyUser, message) => {
-      console.log('notificationformsocke');
-
       const { data } = await axios.get(`/api/notification/${userInfo._id}`, {
         headers: { Authorization: ` Bearer ${userInfo.token}` },
       });
@@ -83,8 +65,10 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
+    localStorage.removeItem('activeTab');
     window.location.href = '/';
   };
+
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 1179);
@@ -95,18 +79,17 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
   const handleResponsiveSidebarVisable = () => {
     setSidebarVisible(!sidebarVisible);
   };
+
   const handlSmallScreeneClick = () => {
     if (isSmallScreen) {
       setSidebarVisible(!sidebarVisible);
     }
   };
-  // const handelforNOtification = () => {
-  //   ctxDispatch({ type: 'NOTIFICATION-NULL' });
 
-  // };
   useEffect(() => {
     const fetchNotificationData = async () => {
       ctxDispatch({ type: 'NOTIFICATION-NULL' });
@@ -130,6 +113,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
   }, []);
 
   const uniqueNotificationData = [...new Set(NotificationData)];
+
   useEffect(() => {
     const noteData = [...NotificationData];
     const data = noteData.filter((note) => {
@@ -137,12 +121,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
       }
     });
   }, []);
-  const handleInputChange = (event) => {
-    setSearchValue(event.target.value);
-  };
-  const handleSearchScreen = () => {
-    navigate('/searchScreen');
-  };
+
   useEffect(() => {
     ctxDispatch({ type: 'TOGGLE_BTN', payload: isToggled });
     localStorage.setItem('toggleState', JSON.stringify(isToggled));
@@ -174,11 +153,18 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
           <Link
             to="/dashboard"
             className={`${theme}-text-decoration-none`}
-            onClick={handlSmallScreeneClick}
+            onClick={() => {
+              handlSmallScreeneClick();
+              setActiveTab('dashboard');
+            }}
           >
-            <li>
+            <li
+              className={
+                activeTab === 'dashboard' ? 'activeBack liCon' : 'liCon'
+              }
+            >
               <AiFillHome className="me-3 fs-5" />
-              Dashboard
+              <div className="mt-1">Dashboard</div>
             </li>
           </Link>
         </motion.li>
@@ -195,13 +181,18 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
             }}
           >
             <Link
-              to="/admin"
+              to="/admin-screen"
               className={`${theme}-text-decoration-none`}
-              onClick={handlSmallScreeneClick}
+              onClick={() => {
+                handlSmallScreeneClick();
+                setActiveTab('admin');
+              }}
             >
-              <li>
+              <li
+                className={activeTab === 'admin' ? 'activeBack liCon' : 'liCon'}
+              >
                 <MdOutlineGroups2 className="me-3 fs-5" />
-                Admin
+                <div className="mt-1">Admin</div>
               </li>
             </Link>
           </motion.li>
@@ -221,13 +212,20 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/agent"
+                to="/agent-screen"
                 className={`${theme}-text-decoration-none`}
-                onClick={handlSmallScreeneClick}
+                onClick={() => {
+                  handlSmallScreeneClick();
+                  setActiveTab('agent');
+                }}
               >
-                <li>
+                <li
+                  className={
+                    activeTab === 'agent' ? 'activeBack liCon' : 'liCon'
+                  }
+                >
                   <HiUserGroup className="me-3 fs-5" />
-                  Agent
+                  <div className="mt-1">Agent</div>
                 </li>
               </Link>
             </motion.li>
@@ -243,13 +241,20 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/contractor"
+                to="/client-screen"
                 className={`${theme}-text-decoration-none`}
-                onClick={handlSmallScreeneClick}
+                onClick={() => {
+                  handlSmallScreeneClick();
+                  setActiveTab('contractor');
+                }}
               >
-                <li>
+                <li
+                  className={
+                    activeTab === 'contractor' ? 'activeBack liCon' : 'liCon'
+                  }
+                >
                   <MdGroup className="me-3 fs-5" />
-                  Client
+                  <div className="mt-1">Client</div>
                 </li>
               </Link>
             </motion.li>
@@ -265,13 +270,20 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/category"
+                to="/category-screen"
                 className={`${theme}-text-decoration-none`}
-                onClick={handlSmallScreeneClick}
+                onClick={() => {
+                  handlSmallScreeneClick();
+                  setActiveTab('category');
+                }}
               >
-                <li>
+                <li
+                  className={
+                    activeTab === 'category' ? 'activeBack liCon' : 'liCon'
+                  }
+                >
                   <FaListUl className="me-3 fs-5" />
-                  Categories
+                  <div className="mt-1">Categories</div>
                 </li>
               </Link>
             </motion.li>
@@ -287,13 +299,20 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/admin/Project"
+                to="/admin/project-screen"
                 className={`${theme}-text-decoration-none`}
-                onClick={handlSmallScreeneClick}
+                onClick={() => {
+                  handlSmallScreeneClick();
+                  setActiveTab('adminProject');
+                }}
               >
-                <li>
+                <li
+                  className={
+                    activeTab === 'adminProject' ? 'activeBack liCon' : 'liCon'
+                  }
+                >
                   <AiOutlineProject className="me-3 fs-5" />
-                  Project
+                  <div className="mt-1">Project</div>
                 </li>
               </Link>
             </motion.li>
@@ -309,13 +328,20 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/admin/tasks"
+                to="/admin/task-screen"
                 className={`${theme}-text-decoration-none`}
-                onClick={handlSmallScreeneClick}
+                onClick={() => {
+                  handlSmallScreeneClick();
+                  setActiveTab('adminTasks');
+                }}
               >
-                <li>
+                <li
+                  className={
+                    activeTab === 'adminTasks' ? 'activeBack liCon' : 'liCon'
+                  }
+                >
                   <BiTask className="me-3 fs-5" />
-                  Task
+                  <div className="mt-1">Task</div>
                 </li>
               </Link>
             </motion.li>
@@ -336,13 +362,22 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/contractor/project"
+                to="/client/project-screen"
                 className={`${theme}-text-decoration-none`}
-                onClick={handlSmallScreeneClick}
+                onClick={() => {
+                  handlSmallScreeneClick();
+                  setActiveTab('contractorProject');
+                }}
               >
-                <li>
+                <li
+                  className={
+                    activeTab === 'contractorProject'
+                      ? 'activeBack liCon'
+                      : 'liCon'
+                  }
+                >
                   <AiOutlineProject className="me-3 fs-5" />
-                  Project
+                  <div className="mt-1">Project</div>
                 </li>
               </Link>
             </motion.li>
@@ -358,13 +393,22 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/contractor/tasks"
+                to="/client/task-screen"
                 className={`${theme}-text-decoration-none`}
-                onClick={handlSmallScreeneClick}
+                onClick={() => {
+                  handlSmallScreeneClick();
+                  setActiveTab('contractorTasks');
+                }}
               >
-                <li>
+                <li
+                  className={
+                    activeTab === 'contractorTasks'
+                      ? 'activeBack liCon'
+                      : 'liCon'
+                  }
+                >
                   <BiTask className="me-3 fs-5" />
-                  Task
+                  <div className="mt-1">Task</div>
                 </li>
               </Link>
             </motion.li>
@@ -385,13 +429,20 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/agent/project"
+                to="/agent/project-screen"
                 className={`${theme}-text-decoration-none`}
-                onClick={handlSmallScreeneClick}
+                onClick={() => {
+                  handlSmallScreeneClick();
+                  setActiveTab('agentProject');
+                }}
               >
-                <li>
+                <li
+                  className={
+                    activeTab === 'agentProject' ? 'activeBack liCon' : 'liCon'
+                  }
+                >
                   <AiOutlineProject className="me-3 fs-5" />
-                  Project
+                  <div className="mt-1">Project</div>
                 </li>
               </Link>
             </motion.li>
@@ -407,18 +458,26 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }}
             >
               <Link
-                to="/agent/tasks"
+                to="/agent/task-screen"
                 className={`${theme}-text-decoration-none`}
-                onClick={handlSmallScreeneClick}
+                onClick={() => {
+                  handlSmallScreeneClick();
+                  setActiveTab('agentTasks');
+                }}
               >
-                <li>
+                <li
+                  className={
+                    activeTab === 'agentTasks' ? 'activeBack liCon' : 'liCon'
+                  }
+                >
                   <BiTask className="me-3 fs-5" />
-                  Task
+                  <div className="mt-1">Task</div>
                 </li>
               </Link>
             </motion.li>
           </>
         ) : null}
+
         <motion.li
           whileHover={{
             scale: 1.05,
@@ -431,11 +490,20 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
           }}
         >
           <Link
-            to="/notificationScreen"
+            to="/notification-screen"
             className={`${theme}-text-decoration-none`}
-            onClick={handlSmallScreeneClick}
+            onClick={() => {
+              handlSmallScreeneClick();
+              setActiveTab('notificationScreen');
+            }}
           >
-            <li className="d-flex">
+            <li
+              className={
+                activeTab === 'notificationScreen'
+                  ? 'activeBack d-flex'
+                  : 'd-flex'
+              }
+            >
               <IoMdNotifications className="me-3 fs-5 " />
               <div className="position-relative">
                 Notification
@@ -461,13 +529,15 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
           }}
           className="disNonePro"
         >
-          {' '}
           <Link
-            to="/profile"
+            to="/profile-screen"
             className={`${theme}-text-decoration-none disNonePro`}
-            onClick={handlSmallScreeneClick}
+            onClick={() => {
+              handlSmallScreeneClick();
+              setActiveTab('profile');
+            }}
           >
-            <li>
+            <li className={activeTab === 'profile' ? 'activeBack' : ''}>
               <img
                 className="profile-icon2 profile-icon-inner fs-5 img-fornavs"
                 src={

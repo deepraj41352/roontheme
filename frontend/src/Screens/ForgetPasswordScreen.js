@@ -9,12 +9,11 @@ import { useNavigate } from 'react-router-dom';
 
 export default function ForgetPassword() {
   const navigate = useNavigate();
-  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { state } = useContext(Store);
   const { userInfo, validationMsg } = state;
   const [email, setEmail] = useState('');
   const [isSubmiting, setIsSubmiting] = useState(false);
   const [submited, setSubmited] = useState(false);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmiting(true);
@@ -34,8 +33,8 @@ export default function ForgetPassword() {
     }
   }, [userInfo, navigate]);
   return !submited ? (
-    <Container className="loginPage d-flex  flex-column justify-content-center align-items-center windowCal1">
-      <div className="Sign-up-container-inner py-3">
+    <div className="loginPage d-flex  flex-column justify-content-center align-items-center windowCal1">
+      <div className="Sign-up-container-inner2 foramaxWidth py-3">
         <Row>
           <Col>
             <h4 className="mb-3 heading4">Forget Password</h4>
@@ -43,7 +42,7 @@ export default function ForgetPassword() {
         </Row>
         <Row>
           <Col>
-            <Card className="p-4 formColor newwidthall">
+            <Card className="p-4 formColor">
               <Form
                 onSubmit={handleSubmit}
                 className="formWidth d-flex flex-column"
@@ -62,7 +61,7 @@ export default function ForgetPassword() {
                 <Button
                   type="submit"
                   className="globalbtnColor px-5 py-1"
-                  disabled={isSubmiting}
+                  disabled={isSubmiting || validationMsg !== null}
                 >
                   {isSubmiting ? 'SUBMITTING' : 'SUBMIT '}
                 </Button>
@@ -71,21 +70,20 @@ export default function ForgetPassword() {
           </Col>
         </Row>
       </div>
-    </Container>
+    </div>
   ) : (
     <Container className="loginPage d-flex  flex-column justify-content-center align-items-center windowCal1">
-      <div className="Sign-up-container-inner py-3">
+      <div className="Sign-up-container-inner2 foramaxWidth py-3">
         <Row>
           <Col>
             <Card className="p-4 formColor">
               <h6 className="mb-4 heading4">
-                We have sent a link on your registered email. please check!
+                We have sent a link to your registered email. Please check!
               </h6>
 
               <Button
-                onClick={handleSubmit}
                 type="submit"
-                className="globalbtnColor btn-resend px-5 py-1"
+                className="globalbtnColor px-5 py-1"
                 disabled={isSubmiting}
               >
                 {isSubmiting ? 'RESENDING' : 'RESEND'}

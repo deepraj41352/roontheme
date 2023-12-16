@@ -30,7 +30,7 @@ export default function ContractorTasksCreate() {
   const [filterCategory, setFilterCategory] = useState([]);
   const [agentData, setAgentData] = useState([]);
   const [error, setError] = useState('');
-  // {Get Project .........
+
   useEffect(() => {
     setLoading(true);
     const FatchProject = async () => {
@@ -48,8 +48,7 @@ export default function ContractorTasksCreate() {
           setProjectData(data);
         }
       } catch (error) {
-        console.log(error);
-        setError(error);
+        setError('An Error Occurred');
       } finally {
         setLoading(false);
       }
@@ -57,7 +56,6 @@ export default function ContractorTasksCreate() {
     FatchProject();
   }, [isModelOpen]);
 
-  // Get Category
   useEffect(() => {
     setLoading(true);
     const FatchCategory = async () => {
@@ -68,7 +66,7 @@ export default function ContractorTasksCreate() {
         const datas = response.data;
         setCategoryData(datas);
       } catch (error) {
-        console.log(error);
+        setError('An Error Occurred');
       } finally {
         setLoading(false);
       }
@@ -76,14 +74,13 @@ export default function ContractorTasksCreate() {
     FatchCategory();
   }, [isModelOpen]);
 
-  // {Get Agent User}
   useEffect(() => {
     const FatchContractorData = async () => {
       try {
         const { data } = await axios.post(`/api/user/`, { role: 'agent' });
         setAgentData(data);
       } catch (error) {
-        toast.error(error);
+        setError('An Error Occurred');
       }
     };
     FatchContractorData();
@@ -119,21 +116,17 @@ export default function ContractorTasksCreate() {
     }
   };
 
-  // filteried category
   useEffect(() => {
     const fetchData = () => {
       const filteredCategory = agentData.flatMap(
         (agentCate) => agentCate.agentCategory
       );
-      console.log('filteredCategory', filteredCategory);
-
       const matchWithCateData = filteredCategory.map((AgentsCateId) =>
         categoryData.find((cat) => cat._id === AgentsCateId)
       );
       const Category = matchWithCateData ? matchWithCateData : null;
       const finalCategory = Category.filter(Boolean);
       setFilterCategory(finalCategory);
-      console.log('matchWithCateData', finalCategory);
     };
 
     fetchData();
@@ -143,14 +136,6 @@ export default function ContractorTasksCreate() {
     e.preventDefault();
     setsubmiting(true);
     try {
-      console.log(
-        'submitData',
-        SelectProjectName,
-        projectName,
-        taskName,
-        taskDesc,
-        category
-      );
       const data = await axios.post(
         `/api/task/contractor`,
         {
@@ -172,20 +157,15 @@ export default function ContractorTasksCreate() {
         setCategory('');
         setSelectProjectName('');
         toast.success(data.data.message);
-        navigate('/contractor/tasks');
+        navigate('/client/task-screen');
         setDynamicfield(false);
       }
       if (data.status === 200) {
         setDynamicfield(false);
         toast.error(data.data.message);
-        setProjectName('');
-        setTaskName('');
-        setTaskDesc('');
-        setCategory('');
-        setSelectProjectName('');
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error('Failed To Create Task');
     } finally {
       setsubmiting(false);
     }
@@ -194,21 +174,19 @@ export default function ContractorTasksCreate() {
   return (
     <>
       {loading ? (
-        <>
-          <ThreeLoader />
-        </>
+        <ThreeLoader />
       ) : error ? (
         <div>{error}</div>
       ) : (
         <>
           <ul className="nav-style1">
             <li>
-              <Link to="/contractor/tasks">
+              <Link to="/client/task-screen">
                 <a>Tasks</a>
               </Link>
             </li>
             <li>
-              <Link to="/contractor/tasks-create">
+              <Link to="/client/task/create-screen">
                 <a className="active">Create</a>
               </Link>
             </li>
@@ -221,43 +199,47 @@ export default function ContractorTasksCreate() {
                 <div className="form-group">
                   <label className="form-label fw-semibold">Categories</label>
                   <div className="cateContainerCreate">
-                    {filterCategory.map((category) => (
-                      <div key={category._id} className="cateItems">
-                        <Form.Check
-                          className="d-flex align-items-center gap-2"
-                          type="radio"
-                          required
-                          id={`category-${category._id}`}
-                          name="category"
-                          value={category.categoryName}
-                          label={
-                            <div className="d-flex align-items-center">
-                              <div className="">
-                                {category.categoryImage ? (
-                                  <Avatar src={category.categoryImage} />
-                                ) : (
-                                  <AvatarImage
-                                    name={category.categoryName}
-                                    bgColor={generateColorFromAscii(
-                                      category.categoryName[0].toLowerCase()
-                                    )}
-                                  />
-                                )}
+                    {filterCategory.length === 0 ? (
+                      <div className="p-2">No categories assigned yet</div>
+                    ) : (
+                      filterCategory.map((category) => (
+                        <div key={category._id} className="cateItems">
+                          <Form.Check
+                            className="d-flex align-items-center gap-2"
+                            type="radio"
+                            required
+                            id={`category-${category._id}`}
+                            name="category"
+                            value={category.categoryName}
+                            label={
+                              <div className="d-flex align-items-center">
+                                <div className="">
+                                  {category.categoryImage ? (
+                                    <Avatar src={category.categoryImage} />
+                                  ) : (
+                                    <AvatarImage
+                                      name={category.categoryName}
+                                      bgColor={generateColorFromAscii(
+                                        category.categoryName[0].toLowerCase()
+                                      )}
+                                    />
+                                  )}
+                                </div>
+                                <div className="d-flex">
+                                  <span
+                                    className="ms-2 spanForCate"
+                                    data-tooltip={category.categoryName}
+                                  >
+                                    {truncateText(category.categoryName, 7)}
+                                  </span>
+                                </div>
                               </div>
-                              <div className="d-flex">
-                                <span
-                                  className="ms-2 spanForCate"
-                                  data-tooltip={category.categoryName}
-                                >
-                                  {truncateText(category.categoryName, 7)}
-                                </span>
-                              </div>
-                            </div>
-                          }
-                          onChange={(e) => setCategory(e.target.value)}
-                        />
-                      </div>
-                    ))}
+                            }
+                            onChange={(e) => setCategory(e.target.value)}
+                          />
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
               </div>

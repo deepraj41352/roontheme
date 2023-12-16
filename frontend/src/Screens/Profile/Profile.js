@@ -1,32 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { ColorRing } from 'react-loader-spinner';
-import {
-  Alert,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from '@mui/material';
-import { RiImageEditFill } from 'react-icons/ri';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
-import dayjs from 'dayjs';
+import { MenuItem, Select } from '@mui/material';
 import { Store } from '../../Store';
 import Validations from '../../Components/Validations';
 import FormSubmitLoader from '../../Util/formSubmitLoader';
-// import { countries } from 'countries-list';
 
-function ProfileUpdate() {
+function Profile() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { toggleState, userInfo } = state;
-  const theme = toggleState ? 'dark' : 'light';
-  const navigate = useNavigate();
+  const { userInfo } = state;
 
   const [firstName, setFirstName] = useState(
     userInfo.first_name ? userInfo.first_name : ''
@@ -48,8 +32,6 @@ function ProfileUpdate() {
   );
 
   const [isSubmiting, setIsSubmiting] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [selectedFileName, setSelectedFileName] = useState('');
 
   var countrylist = [
     'Afghanistan',
@@ -283,7 +265,7 @@ function ProfileUpdate() {
       ctxDispatch({ type: 'USER_UPDATE', payload: data.userData });
       localStorage.setItem('userInfo', JSON.stringify(data.userData));
     } catch (err) {
-      toast.error(err.response?.data?.message);
+      toast.error('Failed To Update Your Profile');
     } finally {
       setIsSubmiting(false);
     }
@@ -293,12 +275,12 @@ function ProfileUpdate() {
     <>
       <ul className="nav-style1">
         <li>
-          <Link to="/profile">
+          <Link to="/profile-screen">
             <a className="active">Profile</a>
           </Link>
         </li>
         <li>
-          <Link to="/profile/update">
+          <Link to="/profile/picture">
             <a>Picture</a>
           </Link>
         </li>
@@ -436,4 +418,4 @@ function ProfileUpdate() {
   );
 }
 
-export default ProfileUpdate;
+export default Profile;

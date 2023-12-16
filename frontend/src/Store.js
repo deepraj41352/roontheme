@@ -4,6 +4,7 @@ export const Store = createContext();
 
 const initialValue = {
   validationMsg: null,
+  sidebar: true,
   NotificationData: [],
   toggleState: localStorage.getItem('toggleState')
     ? JSON.parse(localStorage.getItem('toggleState'))
@@ -11,9 +12,10 @@ const initialValue = {
   userInfo: localStorage.getItem('userInfo')
     ? JSON.parse(localStorage.getItem('userInfo'))
     : null,
-  categoriesDatatrue: false,
-  projectDatatrue: false,
-  contractorDatatrue: false,
+  categoriesDatatrue: null,
+  projectDatatrue: null,
+  contractorDatatrue: null,
+  contractorSuccesstrue: null,
 };
 
 const reducer = (state, action) => {
@@ -49,6 +51,8 @@ const reducer = (state, action) => {
       return { ...state, categoriesDatatrue: action.payload };
     case 'PROJECTDATA':
       return { ...state, projectDatatrue: action.payload };
+    case 'CONTRACTORPROJECTDATA':
+      return { ...state, contractorSuccesstrue: action.payload };
     case 'CONTRACTORDATA':
       return { ...state, contractorDatatrue: action.payload };
     case 'SIDEBAR':

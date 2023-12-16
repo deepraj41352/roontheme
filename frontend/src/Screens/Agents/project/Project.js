@@ -1,46 +1,43 @@
-import { DataGrid } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import ThreeLoader from '../../../Util/threeLoader';
 import { Store } from '../../../Store';
+import DataTable from '../../../Components/DataTable';
 
 export default function AgentsProjectList() {
-  const navigate = useNavigate();
   const [ContractorData, setContractorData] = useState([]);
   const [projectData, setProjectData] = useState([]);
   const [loading, setLoding] = useState(false);
   const [error, setError] = useState('');
   const [taskData, SetTaskData] = useState([]);
   const { state } = useContext(Store);
-  const { toggleState, userInfo, projectDatatrue } = state;
-  const theme = toggleState ? 'dark' : 'light';
+  const { userInfo, projectDatatrue } = state;
 
   const columns = [
     {
       field: 'projectName',
       headerName: 'Project',
-      width: 150,
+      minWidth: 150,
+      flex: 1,
     },
     {
       field: 'NumberTasks',
       headerName: 'Number of Tasks',
-      width: 150,
+      minWidth: 150,
+      flex: 1,
       renderCell: (params) => {
         const tasks = taskData.filter((item) => {
           return item.projectId === params.row._id;
         });
         const numberOfTasks = tasks.length;
-
         return <div>{numberOfTasks}</div>;
       },
     },
     {
       field: 'userId',
       headerName: 'Client',
-      width: 150,
+      minWidth: 150,
+      flex: 1,
       renderCell: (params) => {
         const contractor = ContractorData.find(
           (item) => item._id === params.row.userId
@@ -52,7 +49,8 @@ export default function AgentsProjectList() {
     {
       field: 'createdAt',
       headerName: 'Project Create Date',
-      width: 200,
+      minWidth: 220,
+      flex: 1,
       renderCell: (params) => {
         const combinedDateTime = new Date(params.row.createdAt);
         const date = combinedDateTime.toISOString().split('T')[0];
@@ -72,24 +70,19 @@ export default function AgentsProjectList() {
     {
       field: '_id',
       headerName: 'Project Id',
-      width: 150,
+      minWidth: 220,
+      flex: 1,
     },
   ];
 
-  const handleEdit = (rowId) => {
-    navigate(`/adminEditCategory/${rowId}`);
-  };
-
-  // get contractor
   useEffect(() => {
     setLoding(true);
-
     const fetchContractorData = async () => {
       try {
         const { data } = await axios.post(`/api/user/`, { role: 'contractor' });
         setContractorData(data);
       } catch (error) {
-        console.error('Error fetching contractor data:', error);
+        setError('An Error Occurred');
       } finally {
         setLoding(false);
       }
@@ -97,26 +90,24 @@ export default function AgentsProjectList() {
     fetchContractorData();
   }, []);
 
-  // {Get tasks.........
   useEffect(() => {
     setLoding(true);
-    const FatchcategoryData = async () => {
+    const FatchtaskData = async () => {
       try {
         const { data } = await axios.get(`/api/task/tasks`);
-        SetTaskData(data);
+        const tasks = data.filter((item) => {
+          return item.agentId === userInfo._id;
+        });
+        SetTaskData(tasks);
       } catch (error) {
-        toast.error(error.data?.message);
-        setError(error);
+        setError('An Error Occurred');
       } finally {
         setLoding(false);
       }
     };
-
-    FatchcategoryData();
+    FatchtaskData();
   }, [projectDatatrue]);
-  // ......}
 
-  //   get project
   useEffect(() => {
     setLoding(true);
     const FatchProject = async () => {
@@ -124,13 +115,12 @@ export default function AgentsProjectList() {
         const { data } = await axios.get(`/api/task/project`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        const AgentProject = data.filter((item) => {
-          return item.agentId === userInfo._id;
+        const projectData = data.filter((item) => {
+          return item.agentId.includes(userInfo._id);
         });
-        setProjectData(AgentProject);
+        setProjectData(projectData);
       } catch (error) {
-        console.log(error);
-        setError(error);
+        setError('An Error Occurred');
       } finally {
         setLoding(false);
       }
@@ -141,33 +131,16 @@ export default function AgentsProjectList() {
   return (
     <>
       {loading ? (
-        <>
-          <ThreeLoader />
-        </>
+        <ThreeLoader />
       ) : error ? (
         <div>{error}</div>
       ) : (
         <>
-          <Box sx={{ height: 400, width: '100%' }}>
-            <DataGrid
-              className={`tableBg projectTable mx-2 ${theme}DataGrid`}
-              rows={projectData}
-              columns={columns}
-              getRowId={(row) => row._id}
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    pageSize: 5,
-                  },
-                },
-              }}
-              pageSizeOptions={[5]}
-              disableRowSelectionOnClick
-              localeText={{
-                noRowsLabel: 'Project Is Not Avalible',
-              }}
-            />
-          </Box>
+          <DataTable
+            rowdata={projectData}
+            columns={columns}
+            label={'Project Is Not Avalible'}
+          />
         </>
       )}
     </>

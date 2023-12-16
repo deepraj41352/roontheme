@@ -7,7 +7,6 @@ import FormSubmitLoader from '../../../Util/formSubmitLoader';
 import Validations from '../../../Components/Validations';
 import { toast } from 'react-toastify';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { MdAddCircleOutline } from 'react-icons/md';
 import ThreeLoader from '../../../Util/threeLoader';
 
 export default function AgentUpdate() {
@@ -43,13 +42,13 @@ export default function AgentUpdate() {
         });
         setCategoryData(data);
       } catch (error) {
-        console.log(error);
+        setError('An Error Occurred');
       } finally {
         setIsLoading(false);
       }
     };
     FatchCategory();
-  }, []);
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -91,7 +90,7 @@ export default function AgentUpdate() {
         const { data } = await axios.post(`/api/user/`, { role: 'agent' });
         setAgentData(data);
       } catch (error) {
-        console.log(error);
+        setError('An Error Occurred');
       } finally {
         setIsLoading(false);
       }
@@ -104,7 +103,6 @@ export default function AgentUpdate() {
       setIsLoading(true);
       try {
         const { data } = await axios.get(`/api/user/${id}`);
-        console.log(data);
         setUser({
           firstName: data.first_name,
           lastName: data.last_name,
@@ -115,7 +113,7 @@ export default function AgentUpdate() {
           selectcategories: data.agentCategory,
         });
       } catch (error) {
-        setError(error.response?.data?.message || 'An error occurred');
+        setError('An error occurred');
       } finally {
         setIsLoading(false);
       }
@@ -125,24 +123,30 @@ export default function AgentUpdate() {
 
   useEffect(() => {
     const filteredCategory = () => {
-      const assignedCategories = agentData.flatMap(
-        (agent) => agent.agentCategory
-      );
-      const apiCategory = categoryData
-        .filter((categoryData) =>
-          user.selectcategories.includes(categoryData._id)
-        )
-        .map((assignedCategory) => assignedCategory);
-      setCurrentUsercategories(apiCategory);
-      const unassignedCategories = categoryData.filter(
-        (category) => !assignedCategories.includes(category._id)
-      );
-      if (unassignedCategories.length > 0) {
-        setFilteredCategories(unassignedCategories);
-        return unassignedCategories;
+      setIsLoading(true);
+      try {
+        const assignedCategories = agentData.flatMap(
+          (agent) => agent.agentCategory
+        );
+        const apiCategory = categoryData
+          .filter((categoryData) =>
+            user.selectcategories.includes(categoryData._id)
+          )
+          .map((assignedCategory) => assignedCategory);
+        setCurrentUsercategories(apiCategory);
+        const unassignedCategories = categoryData.filter(
+          (category) => !assignedCategories.includes(category._id)
+        );
+        if (unassignedCategories.length > 0) {
+          setFilteredCategories(unassignedCategories);
+          return unassignedCategories;
+        }
+      } catch (error) {
+        setError('An error occurred');
+      } finally {
+        setIsLoading(false);
       }
     };
-
     filteredCategory();
   }, [categoryData, agentData]);
 
@@ -172,10 +176,10 @@ export default function AgentUpdate() {
       });
       if (response.status === 200) {
         toast.success('Agent Updated Successfully !');
-        navigate('/agent');
+        navigate('/agent-screen');
       }
     } catch (error) {
-      toast.error(error.data?.message);
+      toast.error('Failed To Update Agent');
     } finally {
       setsubmiting(false);
     }
@@ -184,32 +188,29 @@ export default function AgentUpdate() {
   return (
     <>
       {isLoading ? (
-        <>
-          <ThreeLoader />
-        </>
+        <ThreeLoader />
       ) : error ? (
         <div>{error}</div>
       ) : (
         <>
           <ul className="nav-style1">
             <li>
-              <Link to="/agent">
+              <Link to="/agent-screen">
                 <a>Agent</a>
               </Link>
             </li>
             <li>
-              <Link to="/agent/create">
+              <Link to="/agent/create-screen">
                 <a>Create</a>
               </Link>
             </li>
             <li>
-              <Link to="/agent/update">
+              <Link to="/agent/:id">
                 <a className="active">Update</a>
               </Link>
             </li>
           </ul>
           {submiting && <FormSubmitLoader />}
-
           <form onSubmit={handleSubmit}>
             <div className="row">
               <div className="col-md-12">
@@ -223,7 +224,6 @@ export default function AgentUpdate() {
                     onChange={handleChange}
                   />
                   <div className="form-text">Upload image size 300x300!</div>
-
                   <div className="mt-2">
                     {imagePreview ? (
                       <img

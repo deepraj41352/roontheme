@@ -24,7 +24,6 @@ export default function TasksCreate() {
   const [contractorName, setContractorName] = useState('');
   const [categoryData, setCategoryData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isModelOpen, setIsModelOpen] = useState(false);
   const [dynamicfield, setDynamicfield] = useState(false);
   const [ProjectData, setProjectData] = useState([]);
   const [ShowErrorMessage, setShowErrorMessage] = useState(false);
@@ -34,7 +33,7 @@ export default function TasksCreate() {
   const [selectedContractor, setSelectedContractor] = useState('');
   const [agentData, setAgentData] = useState([]);
   const [error, setError] = useState('');
-  // {Get Project .........
+
   useEffect(() => {
     setLoading(true);
     const FatchProject = async () => {
@@ -52,27 +51,26 @@ export default function TasksCreate() {
           setProjectData(data);
         }
       } catch (error) {
-        console.log(error);
-        setError(error);
+        setError('An Error Ocurred');
       } finally {
         setLoading(false);
       }
     };
     FatchProject();
-  }, [isModelOpen]);
+  }, []);
 
-  // {Get  Contractor User.........
   useEffect(() => {
     const FatchContractorData = async () => {
       try {
         const { data } = await axios.post(`/api/user/`, { role: 'contractor' });
         setContractorData(data);
-      } catch (error) {}
+      } catch (error) {
+        setError('An Error Ocurred');
+      }
     };
     FatchContractorData();
-  }, [isModelOpen]);
+  }, []);
 
-  // Get Category
   useEffect(() => {
     setLoading(true);
     const FatchCategory = async () => {
@@ -83,22 +81,21 @@ export default function TasksCreate() {
         const datas = response.data;
         setCategoryData(datas);
       } catch (error) {
-        console.log(error);
+        setError('An Error Ocurred');
       } finally {
         setLoading(false);
       }
     };
     FatchCategory();
-  }, [isModelOpen]);
+  }, []);
 
-  // {Get Agent User}
   useEffect(() => {
     const FatchContractorData = async () => {
       try {
         const { data } = await axios.post(`/api/user/`, { role: 'agent' });
         setAgentData(data);
       } catch (error) {
-        toast.error(error);
+        setError('An Error Ocurred');
       }
     };
     FatchContractorData();
@@ -147,28 +144,23 @@ export default function TasksCreate() {
       if (contractor) {
         const contractorId = contractor ? contractor[0]._id : 'not avaliable';
         setSelectedContractor(contractor);
-        console.log('contractor', contractor);
       } else {
-        console.log('Contractor not found for the selected project');
+        setError('An Error Occurred');
       }
     }
   };
 
-  // filteried category
   useEffect(() => {
     const fetchData = () => {
       const filteredCategory = agentData.flatMap(
         (agentCate) => agentCate.agentCategory
       );
-      console.log('filteredCategory', filteredCategory);
-
       const matchWithCateData = filteredCategory.map((AgentsCateId) =>
         categoryData.find((cat) => cat._id === AgentsCateId)
       );
       const Category = matchWithCateData ? matchWithCateData : null;
       const finalCategory = Category.filter(Boolean);
       setFilterCategory(finalCategory);
-      console.log('matchWithCateData', finalCategory);
     };
 
     fetchData();
@@ -178,16 +170,6 @@ export default function TasksCreate() {
     e.preventDefault();
     setsubmiting(true);
     try {
-      console.log(
-        'submitData',
-        SelectProjectName,
-        projectName,
-        contractorName,
-        selectedContractor,
-        taskName,
-        taskDesc,
-        category
-      );
       const data = await axios.post(
         `/api/task/admin`,
         {
@@ -213,7 +195,7 @@ export default function TasksCreate() {
         setContractorName('');
         setSelectProjectName('');
         toast.success(data.data.message);
-        navigate('/admin/tasks');
+        navigate('/admin/task-screen');
         setDynamicfield(false);
       }
       if (data.status === 200) {
@@ -227,16 +209,12 @@ export default function TasksCreate() {
         setSelectProjectName('');
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error('Failed To Create Task');
     } finally {
       setsubmiting(false);
     }
   };
 
-  const filteredContractors = contractorData.filter(
-    (item) => item._id === contractorName
-  );
-  const contractorFirstName = filteredContractors.first_name;
   return (
     <>
       {loading ? (
@@ -249,12 +227,12 @@ export default function TasksCreate() {
         <>
           <ul className="nav-style1">
             <li>
-              <Link to="/admin/tasks">
+              <Link to="/admin/task-screen">
                 <a>Tasks</a>
               </Link>
             </li>
             <li>
-              <Link to="/tasks/create">
+              <Link to="/task/create-screen">
                 <a className="active">Create</a>
               </Link>
             </li>
@@ -267,8 +245,8 @@ export default function TasksCreate() {
                 <div className="form-group">
                   <label className="form-label fw-semibold">Categories</label>
                   <div className="cateContainerCreate">
-                    {filterCategory.length < 0 ? (
-                      <Card className="p-5">No categories assigned yet</Card>
+                    {filterCategory.length === 0 ? (
+                      <div className="p-2">No categories assigned yet</div>
                     ) : (
                       filterCategory.map((category) => (
                         <div key={category._id} className="cateItems">
@@ -339,7 +317,6 @@ export default function TasksCreate() {
                     >
                       <MdAddCircleOutline /> Add New Project
                     </MenuItem>
-                    {console.log('ProjectData', ProjectData)}
                     {ProjectData &&
                       ProjectData.map((items) => (
                         <MenuItem
@@ -413,7 +390,7 @@ export default function TasksCreate() {
                 <div className="col-md-12">
                   <div className="form-group">
                     <label className="form-label fw-semibold">
-                      Select Contractor
+                      Select Client
                     </label>
                     {SelectProjectName && selectedContractor ? (
                       <Select
@@ -441,12 +418,9 @@ export default function TasksCreate() {
                           },
                         }}
                       >
-                        <MenuItem value="" disabled>
-                          Select Contractor
-                        </MenuItem>
                         <MenuItem value="addNew">
-                          <Link to={`/adminContractorList`} className="addCont">
-                            <MdAddCircleOutline /> Add New Contractor
+                          <Link to={`/contractor/create`} className="addCont">
+                            <MdAddCircleOutline /> Add New Client
                           </Link>
                         </MenuItem>
                         {contractorData.map((item) => (

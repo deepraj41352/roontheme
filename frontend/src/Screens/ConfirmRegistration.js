@@ -1,15 +1,5 @@
 import React, { useContext, useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Modal,
-  Row,
-  Spinner,
-} from 'react-bootstrap';
-import Validations from '../Components/Validations';
+import { Button, Card } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -17,16 +7,17 @@ import { Store } from '../Store';
 import { CardHeader } from '@mui/material';
 import { CCardBody, CCardFooter } from '@coreui/react';
 import { useEffect } from 'react';
+import ThreeLoader from '../Util/threeLoader';
 
 export default function ConfirmRegistration() {
   const navigate = useNavigate();
   const { token } = useParams();
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userInfo, validationMsg } = state;
+  const { state } = useContext(Store);
+  const { userInfo } = state;
   const [isSubmiting, setIsSubmiting] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const [status, setStatus] = useState();
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const confirmUser = async () => {
@@ -34,14 +25,12 @@ export default function ConfirmRegistration() {
         const response = await axios.post(`/api/user/massege`, { token });
         setStatus(response.status);
       } catch (error) {
-        console.error(error.response.status);
         setStatus(error.response.status);
-        setConfirmationMessage('you are already confirmed.');
+        setConfirmationMessage('You are already confirmed.');
       } finally {
-        setIsLoading(false); // Set loading to false when the request is completed
+        setIsLoading(false);
       }
     };
-
     confirmUser();
   }, [token]);
 
@@ -52,7 +41,6 @@ export default function ConfirmRegistration() {
       const { data } = await axios.post(`/api/user/confirm`, {
         token,
       });
-      console.log(data);
       toast.success(data.message);
       navigate('/');
     } catch (err) {
@@ -73,16 +61,14 @@ export default function ConfirmRegistration() {
 
   return (
     <>
-      <div className="d-flex flex-column align-items-center justify-content-center confirmRHeight newwidthall">
-        {isLoading ? ( // Show loader if still loading
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
+      <div className="loginPage d-flex  flex-column justify-content-center align-items-center windowCal1">
+        {isLoading ? (
+          <ThreeLoader />
         ) : (
-          <Card className="text-center">
+          <Card className="Sign-up-container-inner2 text-center foramaxWidth">
             {status && status === 400 ? (
               <CCardBody>
-                <p>{confirmationMessage}</p>
+                <spam>{confirmationMessage}</spam>
               </CCardBody>
             ) : (
               <>
@@ -94,12 +80,12 @@ export default function ConfirmRegistration() {
                   <Button
                     variant="secondary"
                     onClick={handleCancel}
-                    className="m-1"
+                    className="m-1 globalbtnColor"
                   >
                     Cancel
                   </Button>
                   <Button
-                    className="m-1"
+                    className="m-1 globalbtnColor"
                     variant="primary"
                     type="button"
                     disabled={isSubmiting}

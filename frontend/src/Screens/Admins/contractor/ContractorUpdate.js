@@ -4,7 +4,6 @@ import { Store } from '../../../Store';
 import { Button } from 'react-bootstrap';
 import { MenuItem, Select } from '@mui/material';
 import FormSubmitLoader from '../../../Util/formSubmitLoader';
-import Validations from '../../../Components/Validations';
 import { toast } from 'react-toastify';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import ThreeLoader from '../../../Util/threeLoader';
@@ -40,7 +39,7 @@ export default function ContractorUpdate() {
           image_url: data.profile_picture,
         });
       } catch (error) {
-        setError(error.response?.data?.message || 'An error occurred');
+        setError('An error occurred');
       } finally {
         setIsLoading(false);
       }
@@ -50,32 +49,33 @@ export default function ContractorUpdate() {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-
-    if (name === 'image_url') {
-      const image_url = files[0].size / 1024 / 1024;
-      if (image_url > 2) {
-        toast.error(
-          'The photo size greater than 2 MB. Make sure less than 2 MB.',
-          {
-            style: {
-              border: '1px solid #ff0033',
-              padding: '16px',
-              color: '#ff0033',
-            },
-            iconTheme: {
-              primary: '#ff0033',
-              secondary: '#FFFAEE',
-            },
-          }
-        );
-        e.target.value = null;
-        return;
+    if (files && files.length > 0) {
+      if (name === 'image_url') {
+        const image_url = files[0].size / 1024 / 1024;
+        if (image_url > 2) {
+          toast.error(
+            'The photo size greater than 2 MB. Make sure less than 2 MB.',
+            {
+              style: {
+                border: '1px solid #ff0033',
+                padding: '16px',
+                color: '#ff0033',
+              },
+              iconTheme: {
+                primary: '#ff0033',
+                secondary: '#FFFAEE',
+              },
+            }
+          );
+          e.target.value = null;
+          return;
+        }
+        setUser((prevState) => ({
+          ...prevState,
+          image_url: files[0],
+        }));
+        setImagePreview(window.URL.createObjectURL(files[0]));
       }
-      setUser((prevState) => ({
-        ...prevState,
-        image_url: files[0],
-      }));
-      setImagePreview(window.URL.createObjectURL(files[0]));
     } else {
       setUser((prevState) => ({ ...prevState, [name]: value }));
     }
@@ -98,11 +98,11 @@ export default function ContractorUpdate() {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       if (response.status === 200) {
-        toast.success('client Updated Successfully !');
-        navigate('/contractor');
+        toast.success('Client Updated Successfully !');
+        navigate('/client-screen');
       }
     } catch (error) {
-      toast.error(error.data?.message);
+      toast.error('Failed To Update Client');
     } finally {
       setsubmiting(false);
     }
@@ -111,21 +111,19 @@ export default function ContractorUpdate() {
   return (
     <>
       {isLoading ? (
-        <>
-          <ThreeLoader />
-        </>
+        <ThreeLoader />
       ) : error ? (
         <div>{error}</div>
       ) : (
         <>
           <ul className="nav-style1">
             <li>
-              <Link to="/contractor">
+              <Link to="/client-screen">
                 <a>Client</a>
               </Link>
             </li>
             <li>
-              <Link to="/contractor/create">
+              <Link to="/client/create-screen">
                 <a>Create</a>
               </Link>
             </li>
@@ -157,7 +155,7 @@ export default function ContractorUpdate() {
                       <img
                         src={imagePreview}
                         alt="image"
-                        className="img-thumbnail w-100px me-2"
+                        className="img-thumbnail creatForm w-100px me-2"
                       />
                     ) : (
                       <img

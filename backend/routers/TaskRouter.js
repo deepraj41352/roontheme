@@ -79,12 +79,6 @@ TaskRouter.post(
         let user = await User.findOne({
           _id: contractorId,
         });
-        // if (user === null) {
-        //   res.status(200).json({
-        //     message: 'Contractor Not Exists',
-        //   });
-        // }
-
         let selectProject = await projectTask.findOne({
           projectName: selectProjectName,
         });
@@ -125,6 +119,21 @@ TaskRouter.post(
               message: 'Contractor Not Exists Any Project',
             });
           }
+          console.log('project.agentId', selectProject);
+          const isAgentIdAlreadyPresent = selectProject.agentId.includes(
+            agent._id
+          );
+          const agentIds = isAgentIdAlreadyPresent
+            ? [...selectProject.agentId]
+            : [...selectProject.agentId, agent._id];
+
+          const updatedProject = await projectTask.findOneAndUpdate(
+            { projectName: selectProject.projectName },
+            { $set: { agentId: agentIds } },
+            { new: true }
+          );
+          console.log('Updated project:', updatedProject);
+
           const newTask = await new Task({
             taskName: taskName,
             projectName: selectProjectName,
@@ -189,12 +198,12 @@ TaskRouter.post(
             .status(201)
             .json({ message: 'Task Created Successfully!!', task: newTask });
         } else {
-          project = await new projectTask({
+          const project = await new projectTask({
             projectName,
             userId: user._id,
             agentId: agent._id,
           }).save();
-
+          console.log('project', project);
           const newTask = await new Task({
             taskName: taskName,
             taskDescription: req.body.taskDescription,
@@ -330,6 +339,20 @@ TaskRouter.post(
             message: 'A Task With The Same Name Already Exists.',
           });
         } else if (selectProject) {
+          console.log('project.agentId', selectProject);
+          const isAgentIdAlreadyPresent = selectProject.agentId.includes(
+            agent._id
+          );
+          const agentIds = isAgentIdAlreadyPresent
+            ? [...selectProject.agentId]
+            : [...selectProject.agentId, agent._id];
+
+          const updatedProject = await projectTask.findOneAndUpdate(
+            { projectName: selectProject.projectName },
+            { $set: { agentId: agentIds } },
+            { new: true }
+          );
+          console.log('Updated project:', updatedProject);
           const newTask = await new Task({
             taskName: taskName,
             projectName: selectProjectName,

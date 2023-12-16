@@ -30,6 +30,7 @@ export default function AgentCreate() {
     role: 'agent',
     selectcategories: [],
   });
+
   const [imagePreview, setImagePreview] = useState('');
 
   const handleChange = (e) => {
@@ -74,7 +75,7 @@ export default function AgentCreate() {
         });
         setCategoryData(data);
       } catch (error) {
-        console.log(error);
+        setError('An Error Occurred');
       } finally {
         setIsLoading(false);
       }
@@ -89,7 +90,7 @@ export default function AgentCreate() {
         const { data } = await axios.post(`/api/user/`, { role: 'agent' });
         setAgentData(data);
       } catch (error) {
-        console.log(error);
+        setError('An Error Occurred');
       } finally {
         setIsLoading(false);
       }
@@ -145,10 +146,10 @@ export default function AgentCreate() {
           image_url: '',
         });
         toast.success('Agent Created Successfully !');
-        navigate('/agent');
+        navigate('/agent-screen');
       }
     } catch (error) {
-      toast.error(error.response?.data?.message);
+      toast.error('Failed To Create Agent');
     } finally {
       setsubmiting(false);
     }
@@ -157,21 +158,19 @@ export default function AgentCreate() {
   return (
     <>
       {isLoading ? (
-        <>
-          <ThreeLoader />
-        </>
+        <ThreeLoader />
       ) : error ? (
         <div>{error}</div>
       ) : (
         <>
           <ul className="nav-style1">
             <li>
-              <Link to="/agent">
+              <Link to="/agent-screen">
                 <a>Agent</a>
               </Link>
             </li>
             <li>
-              <Link to="/agent/create">
+              <Link to="/agent/create-screen">
                 <a className="active">Create</a>
               </Link>
             </li>

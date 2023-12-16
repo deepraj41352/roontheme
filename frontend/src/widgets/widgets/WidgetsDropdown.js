@@ -3,25 +3,18 @@ import {
   CCard,
   CRow,
   CCol,
-  CTableHead,
-  CTableRow,
-  CTableHeaderCell,
   CCardHeader,
   CCardBody,
-  CTable,
   CWidgetStatsA,
-  CTableBody,
 } from '@coreui/react';
 import { getStyle } from '@coreui/utils';
 import { CChartBar, CChartLine } from '@coreui/react-chartjs';
-import CIcon from '@coreui/icons-react';
-import { cilPeople } from '@coreui/icons';
 import axios from 'axios';
 import { Store } from '../../Store';
 import { CChartDoughnut } from '@coreui/react-chartjs';
 import UserDataWidget from './UserDataWidget';
 import ProjectDataWidget from './ProjectDataWidget';
-import { ThreeDots } from 'react-loader-spinner';
+import ThreeLoader from '../../Util/threeLoader';
 
 const WidgetsDropdown = React.memo(() => {
   const { state } = useContext(Store);
@@ -29,8 +22,8 @@ const WidgetsDropdown = React.memo(() => {
   const [admin, setAdmin] = useState([]);
   const [adminDates, setAdminDates] = useState([]);
   const [contractor, setContractor] = useState([]);
+  const [error, setError] = useState('');
   const [agent, setAgent] = useState([]);
-
   const [userData, setUserData] = useState([]);
   const [projectData, setProjectData] = useState([]);
   const [activeProject, setActiveProject] = useState([]);
@@ -42,7 +35,6 @@ const WidgetsDropdown = React.memo(() => {
       try {
         setLoading(true);
         const { data } = await axios.get(`/api/user/`);
-        console.log('userData', data);
         setUserData(data);
         const adminData = data.filter((el) => el.role == 'admin');
         const dates = adminData.map((user) => user.createdAt);
@@ -80,8 +72,7 @@ const WidgetsDropdown = React.memo(() => {
         setProjectData(projectData);
         setLoading(false);
       } catch (error) {
-        console.log(error);
-
+        setError('An Error Occurred');
         setLoading(false);
       }
     };
@@ -113,24 +104,11 @@ const WidgetsDropdown = React.memo(() => {
   return (
     <>
       {loading ? (
-        <>
-          <div className="ThreeDot">
-            <ThreeDots
-              height="80"
-              width="80"
-              radius="9"
-              className="ThreeDot justi`fy-content-center"
-              color="#0e0e3d"
-              ariaLabel="three-dots-loading"
-              wrapperStyle={{}}
-              wrapperClassName=""
-              visible={true}
-            />
-          </div>
-        </>
+        <ThreeLoader />
+      ) : error ? (
+        <div>{error}</div>
       ) : (
         <>
-          {/* ----------------------------- */}
           <CRow>
             <CCol sm={8} lg={8} md={6} className="p-0">
               <CRow>
@@ -139,18 +117,10 @@ const WidgetsDropdown = React.memo(() => {
                     <CWidgetStatsA
                       className="mb-4"
                       color="primary"
-                      value={
-                        <>
-                          {admin.length <= 0 ? `0` : admin.length}
-                          {/* <span className="fs-6 fw-normal">
-               (-12.4% <CIcon icon={cilArrowBottom} />)
-             </span> */}
-                        </>
-                      }
+                      value={<>{admin.length <= 0 ? `0` : admin.length}</>}
                       title="Total Admin"
                       chart={
                         <CChartLine
-                          // className="mt-3 mx-3"
                           style={{ height: '180px' }}
                           data={{
                             labels: adminDates.map((date) =>
@@ -235,7 +205,6 @@ const WidgetsDropdown = React.memo(() => {
                     title="Total Contractor"
                     chart={
                       <CChartLine
-                        // className="mt-3 mx-3"
                         style={{ height: '180px' }}
                         data={{
                           labels: [
@@ -314,7 +283,6 @@ const WidgetsDropdown = React.memo(() => {
                     title="Total Agent"
                     chart={
                       <CChartLine
-                        // className="mt-3"
                         style={{ height: '180px' }}
                         data={{
                           labels: [
@@ -382,8 +350,6 @@ const WidgetsDropdown = React.memo(() => {
                     title="Total Tasks"
                     chart={
                       <CChartBar
-                        // className="mt-3 mx-3"
-                        // className="mt-3 mx-3"
                         style={{ height: '180px' }}
                         data={{
                           labels: [

@@ -1,46 +1,32 @@
 import Box from '@mui/material/Box';
-import { DataGrid } from '@mui/x-data-grid';
 import {
   Avatar,
+  Backdrop,
   FormControl,
-  Grid,
   InputLabel,
   MenuItem,
   Select,
   TextField,
 } from '@mui/material';
 import { ImCross } from 'react-icons/im';
-
 import Modal from '@mui/material/Modal';
-import { Alert, Card, Dropdown, Form } from 'react-bootstrap';
-import { BiPlusMedical } from 'react-icons/bi';
+import { Alert, Card, Form } from 'react-bootstrap';
 import { Store } from '../Store';
-import Tab from 'react-bootstrap/Tab';
-import { ColorRing, ThreeDots } from 'react-loader-spinner';
-import Tabs from 'react-bootstrap/Tabs';
-import { MdAddCircleOutline, MdRemoveCircleOutline } from 'react-icons/md';
+import { MdAddCircleOutline } from 'react-icons/md';
 import { Button } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
-import { useContext, useEffect, useReducer, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import datas from '../dummyData';
-import { FaRegClock } from 'react-icons/fa';
 import AvatarImage from '../Components/Avatar';
-import { CiSettings } from 'react-icons/ci';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { FiPlus } from 'react-icons/fi';
 import truncateText from '../TruncateText';
+import FormSubmitLoader from '../Util/formSubmitLoader';
 
 export default function TaskAddButton() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const {
-    toggleState,
-    userInfo,
-    categoriesDatatrue,
-    projectDatatrue,
-    contractorDatatrue,
-  } = state;
+  const { userInfo } = state;
   const [loading, setLoading] = useState(true);
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [isSubmiting, setIsSubmiting] = useState(false);
@@ -56,7 +42,6 @@ export default function TaskAddButton() {
   const [contractorData, setContractorData] = useState([]);
   const [success, setSuccess] = useState(false);
   const [ShowErrorMessage, setShowErrorMessage] = useState(false);
-  const navigate = useNavigate();
   const [selectedContractor, setSelectedContractor] = useState('');
   const [filterCategory, setFilterCategory] = useState([]);
   const [agentData, setAgentData] = useState([]);
@@ -71,7 +56,7 @@ export default function TaskAddButton() {
         const datas = response.data;
         setCategoryData(datas);
       } catch (error) {
-        console.log(error);
+        toast.error('An Error Occurred');
       } finally {
         setLoading(false);
       }
@@ -79,7 +64,6 @@ export default function TaskAddButton() {
     FatchCategory();
   }, [isModelOpen]);
 
-  // {Get Project .........
   useEffect(() => {
     setLoading(true);
     const FatchProject = async () => {
@@ -97,7 +81,7 @@ export default function TaskAddButton() {
           setProjectData(data);
         }
       } catch (error) {
-        console.log(error);
+        toast.error('An Error Occurred');
       } finally {
         setLoading(false);
       }
@@ -105,13 +89,14 @@ export default function TaskAddButton() {
     FatchProject();
   }, [isModelOpen]);
 
-  // {Get  Contractor User.........
   useEffect(() => {
     const FatchContractorData = async () => {
       try {
         const { data } = await axios.post(`/api/user/`, { role: 'contractor' });
         setContractorData(data);
-      } catch (error) {}
+      } catch (error) {
+        toast.error('An Error Occurred');
+      }
     };
     FatchContractorData();
   }, [isModelOpen]);
@@ -122,7 +107,7 @@ export default function TaskAddButton() {
         const { data } = await axios.post(`/api/user/`, { role: 'agent' });
         setAgentData(data);
       } catch (error) {
-        toast.error(error);
+        toast.error('An Error Occurred');
       }
     };
     FatchContractorData();
@@ -147,11 +132,11 @@ export default function TaskAddButton() {
       );
       if (data.status === 201) {
         setSuccess(!success);
-        ctxDispatch({ type: 'PROJECTDATA', payload: success });
         toast.success(data.data.message);
         setDynamicfield(false);
         setIsSubmiting(false);
         setIsModelOpen(false);
+        ctxDispatch({ type: 'PROJECTDATA', payload: success });
         setProjectName('');
         setTaskName('');
         setTaskDesc('');
@@ -171,7 +156,7 @@ export default function TaskAddButton() {
         setSelectProjectName('');
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error('Failed To Create Task');
       setIsModelOpen(false);
       setDynamicfield(false);
     } finally {
@@ -197,11 +182,14 @@ export default function TaskAddButton() {
       );
       if (data.status === 201) {
         setSuccess(!success);
-        ctxDispatch({ type: 'PROJECTDATA', payload: success });
         toast.success(data.data.message);
         setDynamicfield(false);
         setIsSubmiting(false);
         setIsModelOpen(false);
+        ctxDispatch({
+          type: 'CONTRACTORPROJECTDATA',
+          payload: success,
+        });
         setProjectName('');
         setTaskName('');
         setTaskDesc('');
@@ -212,14 +200,9 @@ export default function TaskAddButton() {
         setDynamicfield(false);
         toast.error(data.data.message);
         setIsModelOpen(false);
-        setProjectName('');
-        setTaskName('');
-        setTaskDesc('');
-        setCategory('');
-        setSelectProjectName('');
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error('Failed To Create Task');
       setIsModelOpen(false);
       setDynamicfield(false);
     } finally {
@@ -228,7 +211,7 @@ export default function TaskAddButton() {
   };
 
   const handleNew = () => {
-    setIsModelOpen(true);
+    setIsModelOpen(!isModelOpen);
   };
 
   const handleCloseRow = () => {
@@ -264,13 +247,11 @@ export default function TaskAddButton() {
     }
   };
 
-  // filteried category
   useEffect(() => {
     const fetchData = () => {
       const filteredCategory = agentData.flatMap(
         (agentCate) => agentCate.agentCategory
       );
-      console.log('filteredCategory', filteredCategory);
 
       const matchWithCateData = filteredCategory.map((AgentsCateId) =>
         categoryData.find((cat) => cat._id === AgentsCateId)
@@ -278,7 +259,6 @@ export default function TaskAddButton() {
       const Category = matchWithCateData ? matchWithCateData : null;
       const finalCategory = Category.filter(Boolean);
       setFilterCategory(finalCategory);
-      console.log('matchWithCateData', finalCategory);
     };
 
     fetchData();
@@ -296,10 +276,7 @@ export default function TaskAddButton() {
         (contractor) => contractor._id === findProject.userId
       );
       if (contractor) {
-        const contractorName = contractor ? contractor[0]._id : 'not avaliable';
         setSelectedContractor(contractor);
-      } else {
-        console.log('Contractor not found for the selected project');
       }
     }
   };
@@ -321,11 +298,31 @@ export default function TaskAddButton() {
           <FiPlus />
         </div>
       )}
-
+      {isSubmiting && (
+        <Backdrop open={true} style={{ zIndex: 9999 }}>
+          <FormSubmitLoader />
+        </Backdrop>
+      )}
       <Modal
         open={isModelOpen}
         onClose={handleCloseRow}
-        className="overlayLoading modaleWidth p-0"
+        className="overlayLoading modaleWidthButton p-0"
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '90%',
+          maxWidth: 700,
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 4,
+          borderRadius: 1,
+          '@media (max-width: 600px)': {
+            maxWidth: '90%',
+            margin: '0 auto',
+          },
+        }}
       >
         <Box
           className="modelBg modelContainer"
@@ -341,24 +338,6 @@ export default function TaskAddButton() {
             borderRadius: 1,
           }}
         >
-          {isSubmiting && (
-            <div className="overlayLoadingItem1 y-3">
-              <ColorRing
-                visible={true}
-                height="40"
-                width="40"
-                ariaLabel="blocks-loading"
-                wrapperStyle={{}}
-                wrapperClass="blocks-wrapper"
-                colors={[
-                  'rgba(0, 0, 0, 1) 0%',
-                  'rgba(255, 255, 255, 1) 68%',
-                  'rgba(0, 0, 0, 1) 93%',
-                ]}
-              />
-            </div>
-          )}
-
           <Form
             className="scrollInAdminproject p-3 "
             onSubmit={handelBothSubmit}
@@ -372,9 +351,9 @@ export default function TaskAddButton() {
 
             <div className="cateContainer mb-3">
               <p className="cateItem">Categories</p>
-              <div className="d-flex flex-wrap cateborder ">
-                {filterCategory.length < 0 ? (
-                  <Card className="p-5">No categories assigned yet</Card>
+              <div className="d-flex flex-wrap cateborder">
+                {filterCategory.length === 0 ? (
+                  <div className="p-2">No categories assigned yet</div>
                 ) : (
                   filterCategory.map((category) => (
                     <div key={category._id} className="cateItems">
@@ -417,12 +396,13 @@ export default function TaskAddButton() {
               </div>
             </div>
 
-            <FormControl className={dynamicfield ? 'disable mb-3' : 'mb-3'}>
+            <FormControl
+              className={dynamicfield ? 'disable mb-3 w-100' : 'mb-3 w-100'}
+            >
               <InputLabel>Select Project </InputLabel>
               <Select
                 value={SelectProjectName}
                 onChange={(e) => selectedProjectContractor(e)}
-                // required
                 MenuProps={{
                   PaperProps: {
                     style: {
@@ -491,8 +471,8 @@ export default function TaskAddButton() {
             />
 
             {(userInfo.role == 'superadmin' || userInfo.role == 'admin') && (
-              <FormControl className={'mb-3'}>
-                <InputLabel>Select Contractor</InputLabel>
+              <FormControl className={'mb-3 w-100'}>
+                <InputLabel>Select Client</InputLabel>
                 {SelectProjectName && selectedContractor ? (
                   <Select
                     value={selectedContractor[0]._id}
@@ -517,12 +497,9 @@ export default function TaskAddButton() {
                       },
                     }}
                   >
-                    <MenuItem value="" disabled>
-                      Select Contractor
-                    </MenuItem>
                     <MenuItem value="addNew">
-                      <Link to={`/adminContractorList`} className="addCont">
-                        <MdAddCircleOutline /> Add New Contractor
+                      <Link to={`/contractor/create`} className="addCont">
+                        <MdAddCircleOutline /> Add New Client
                       </Link>
                     </MenuItem>
                     {contractorData.map((item) => (

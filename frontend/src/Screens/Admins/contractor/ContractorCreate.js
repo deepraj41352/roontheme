@@ -83,10 +83,10 @@ export default function ContractorCreate() {
           image_url: '',
         });
         toast.success('Client Created Successfully !');
-        navigate('/contractor');
+        navigate('/client-screen');
       }
     } catch (error) {
-      toast.error(error.response?.data?.message);
+      toast.error('Failed To Create Client');
     } finally {
       setsubmiting(false);
     }
@@ -96,12 +96,12 @@ export default function ContractorCreate() {
     <>
       <ul className="nav-style1">
         <li>
-          <Link to="/contractor">
+          <Link to="/client-screen">
             <a>Client</a>
           </Link>
         </li>
         <li>
-          <Link to="/contractor/create">
+          <Link to="/client/create-screen">
             <a className="active">Create</a>
           </Link>
         </li>
@@ -127,7 +127,7 @@ export default function ContractorCreate() {
                   <img
                     src={imagePreview}
                     alt="image"
-                    className="img-thumbnail w-100px me-2"
+                    className="img-thumbnail creatForm w-100px me-2"
                   />
                 ) : (
                   <img

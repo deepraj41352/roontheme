@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Store } from '../../../Store';
 import { Button } from 'react-bootstrap';
-import { MenuItem, Select } from '@mui/material';
+import { Alert, MenuItem, Select } from '@mui/material';
 import FormSubmitLoader from '../../../Util/formSubmitLoader';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,6 +13,8 @@ export default function CategoryCreate() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const [submiting, setsubmiting] = useState(false);
+  const [ShowErrorMessage, setShowErrorMessage] = useState(false);
+
   const [color, setColor] = useState('');
   const [user, setUser] = useState({
     image_url: '',
@@ -53,6 +55,14 @@ export default function CategoryCreate() {
       setImagePreview(window.URL.createObjectURL(files[0]));
     } else {
       setUser((prevState) => ({ ...prevState, [name]: value }));
+
+      const firstLetterRegex = /^[a-zA-Z]/;
+      const check = firstLetterRegex.test(value.charAt(0));
+      if (name === 'name' && !check) {
+        setShowErrorMessage(true);
+      } else {
+        setShowErrorMessage(false);
+      }
     }
   };
 
@@ -66,8 +76,6 @@ export default function CategoryCreate() {
       submitData.append('categoryDescription', user.description);
       submitData.append('categoryStatus', user.status);
       submitData.append('categoryImage', user.image_url);
-
-      console.log('submitData', submitData);
 
       const { data } = await axios.post(`/api/category/`, submitData, {
         headers: {
@@ -83,9 +91,9 @@ export default function CategoryCreate() {
       setsuccess(!success);
       ctxDispatch({ type: 'CATEGORIESDATA', payload: success });
       toast.success('Category Created Successfully !');
-      navigate('/category');
+      navigate('/category-screen');
     } catch (error) {
-      toast.error(error.response?.data?.message);
+      toast.error('Failed To Create Category');
     } finally {
       setsubmiting(false);
     }
@@ -113,18 +121,17 @@ export default function CategoryCreate() {
     <>
       <ul className="nav-style1">
         <li>
-          <Link to="/category">
+          <Link to="/category-screen">
             <a>Categories</a>
           </Link>
         </li>
         <li>
-          <Link to="/category/create">
+          <Link to="/category/create-screen">
             <a className="active">Create</a>
           </Link>
         </li>
       </ul>
       {submiting && <FormSubmitLoader />}
-
       <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-12">
@@ -146,7 +153,7 @@ export default function CategoryCreate() {
                     alt="image"
                     className="img-thumbnail creatForm me-2"
                   />
-                ) : user.name ? (
+                ) : user.name && !ShowErrorMessage ? (
                   <div className="avtarImage">
                     <AvatarImage
                       id="cateEditImgAvatar creatForm"
@@ -178,7 +185,18 @@ export default function CategoryCreate() {
               />
             </div>
           </div>
-
+          {ShowErrorMessage && (
+            <div className="col-md-12">
+              <div className="form-group">
+                <Alert
+                  severity="warning"
+                  className="error nameValidationErrorBox"
+                >
+                  The first letter of the category should be an alphabet
+                </Alert>
+              </div>
+            </div>
+          )}
           <div className="col-md-12">
             <div className="form-group">
               <label className="form-label fw-semibold">Description</label>
@@ -221,7 +239,7 @@ export default function CategoryCreate() {
               variant="contained"
               color="primary"
               type="submit"
-              disabled={submiting}
+              disabled={submiting || ShowErrorMessage}
             >
               {submiting ? 'SUBMITTING' : 'SUBMIT '}
             </Button>

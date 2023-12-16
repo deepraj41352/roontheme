@@ -1,42 +1,18 @@
-import Box from '@mui/material/Box';
-import { DataGrid } from '@mui/x-data-grid';
 import { Grid } from '@mui/material';
-import { useContext, useEffect, useReducer, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
 import { Store } from '../../../Store';
-import FormSubmitLoader from '../../../Util/formSubmitLoader';
 import ThreeLoader from '../../../Util/threeLoader';
-
-const columns = [
-  {
-    field: 'first_name',
-    headerName: 'Name',
-    width: 100,
-  },
-  {
-    field: 'email',
-    headerName: 'Email',
-    width: 200,
-  },
-  {
-    field: 'agentCategory',
-    headerName: 'Category',
-    width: 110,
-  },
-  { field: '_id', headerName: 'ID', width: 200 },
-];
-
-const getRowId = (row) => row._id;
+import DataTable from '../../../Components/DataTable';
 
 export default function AgentList() {
   const navigate = useNavigate();
-  const [isDeleting, setIsDeleting] = useState(false);
   const [agentData, setAgentData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
-  const [loading, setLoding] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleEdit = (rowId) => {
@@ -44,19 +20,20 @@ export default function AgentList() {
   };
 
   const { state } = useContext(Store);
-  const { toggleState, userInfo } = state;
-  const theme = toggleState ? 'dark' : 'light';
+  const { userInfo } = state;
 
   useEffect(() => {
     const FatchCategory = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get(`/api/category/`, {
+        const { data } = await axios.get(`/api/category/`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        const datas = response.data;
-        setCategoryData(datas);
+        setCategoryData(data);
       } catch (error) {
-        console.log(error);
+        setError('An Error Occured');
+      } finally {
+        setLoading(false);
       }
     };
     FatchCategory();
@@ -64,36 +41,19 @@ export default function AgentList() {
 
   useEffect(() => {
     const FatchAgentData = async () => {
-      setLoding(true);
+      setLoading(true);
       try {
-        const response = await axios.post(`/api/user/`, { role: 'agent' });
-        const datas = response.data;
-        const rowData = datas.map((items) => {
-          return {
-            ...items,
-            _id: items._id,
-            first_name: items.first_name,
-            email: items.email,
-            userStatus: items.userStatus == true ? 'Active' : 'Inactive',
-            agentCategory: items.agentCategory.map((categoryId) => {
-              const category = categoryData.find(
-                (cat) => cat._id === categoryId
-              );
-              return category ? category.categoryName : 'N/A';
-            }),
-          };
-        });
-        setAgentData(rowData);
+        const { data } = await axios.post(`/api/user/`, { role: 'agent' });
+        setAgentData(data);
       } catch (error) {
-        setError(error);
-        console.log(error);
+        setError('An Error Occurred');
       } finally {
-        setLoding(false);
+        setLoading(false);
       }
     };
 
     FatchAgentData();
-  }, [isDeleting, categoryData]);
+  }, [categoryData]);
 
   const confirmDelete = (Id) => {
     confirmAlert({
@@ -101,10 +61,12 @@ export default function AgentList() {
       message: 'Are you sure to delete this?',
       buttons: [
         {
+          className: 'globalbtnColor',
           label: 'Yes',
           onClick: () => deleteHandle(Id),
         },
         {
+          className: 'globalbtnColor',
           label: 'No',
         },
       ],
@@ -112,7 +74,7 @@ export default function AgentList() {
   };
 
   const deleteHandle = async (userid) => {
-    setIsDeleting(true);
+    setLoading(true);
     try {
       const response = await axios.delete(`/api/user/${userid}`, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -124,103 +86,118 @@ export default function AgentList() {
         toast.error('Failed To Delete Admin.');
       }
     } catch (error) {
-      console.error(error);
       toast.error('An Error Occurred While Deleting Admin.');
     } finally {
-      setIsDeleting(false);
+      setLoading(false);
     }
   };
 
+  const columns = [
+    {
+      field: 'first_name',
+      headerName: 'Name',
+      minWidth: 100,
+      flex: 1,
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      minWidth: 200,
+      flex: 1,
+    },
+    {
+      field: 'agentCategory',
+      headerName: 'Category',
+      minWidth: 110,
+      flex: 1,
+      renderCell: (params) => {
+        const categoryNames = params.row.agentCategory.map(
+          (categoryId) =>
+            categoryData.find((cat) => cat._id === categoryId)?.categoryName ||
+            'N/A'
+        );
+
+        return (
+          <span className="ms-2 spanForCate" data-tooltip2={categoryNames}>
+            {categoryNames.join(', ')}
+          </span>
+        );
+      },
+    },
+    { field: '_id', headerName: 'ID', minWidth: 200 },
+    {
+      field: 'userStatus',
+      headerName: 'Status',
+      minWidth: 100,
+      flex: 0.5,
+      renderCell: (params) => {
+        const userStatusData =
+          params.row.userStatus == true ? 'Active' : 'Inactive';
+        const isInactive = userStatusData === 'Inactive';
+        const cellClassName = isInactive ? 'inactive-cell' : 'active-cell';
+        return (
+          <div className={`status-cell ${cellClassName}`}>{userStatusData}</div>
+        );
+      },
+    },
+    {
+      field: 'action',
+      headerName: 'Action',
+      minWidth: 280,
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <Grid item xs={8}>
+            <button
+              variant="contained"
+              className="mx-2 edit-btn"
+              onClick={() => handleEdit(params.row._id)}
+            >
+              Edit
+            </button>
+            <button
+              variant="outlined"
+              className="mx-2 delete-btn global-font"
+              onClick={() => confirmDelete(params.row._id)}
+            >
+              Delete
+            </button>
+          </Grid>
+        );
+      },
+    },
+  ];
+  const customRowRenderer = (params) => {
+    const isSpecialRow = params.row;
+    return isSpecialRow ? 'special-row-class' : '';
+  };
   return (
     <>
       {loading ? (
-        <>
-          <ThreeLoader />
-        </>
+        <ThreeLoader />
       ) : error ? (
         <div>{error}</div>
       ) : (
         <>
           <ul className="nav-style1">
             <li>
-              <Link to="/agent">
+              <Link to="/agent-screen">
                 <a className="active">Agent</a>
               </Link>
             </li>
             <li>
-              <Link to="/agent/create">
+              <Link to="/agent/create-screen">
                 <a>Create</a>
               </Link>
             </li>
           </ul>
-          {isDeleting && <FormSubmitLoader />}
           <div className="overlayLoading">
-            <Box sx={{ width: '100%', height: '400px' }}>
-              <DataGrid
-                className={
-                  theme == 'light'
-                    ? `${theme}DataGrid mx-2 tableContainer`
-                    : `tableContainer ${theme}DataGrid mx-2`
-                }
-                rows={agentData}
-                columns={[
-                  ...columns,
-                  {
-                    field: 'userStatus',
-                    headerName: 'Status',
-                    width: 100,
-                    renderCell: (params) => {
-                      const isInactive = params.row.userStatus === 'Inactive';
-                      const cellClassName = isInactive
-                        ? 'inactive-cell'
-                        : 'active-cell';
-
-                      return (
-                        <div className={`status-cell ${cellClassName}`}>
-                          {params.row.userStatus}
-                        </div>
-                      );
-                    },
-                  },
-                  {
-                    field: 'action',
-                    headerName: 'Action',
-                    width: 280,
-                    renderCell: (params) => {
-                      return (
-                        <Grid item xs={8}>
-                          <button
-                            variant="contained"
-                            className="mx-2 edit-btn"
-                            onClick={() => handleEdit(params.row._id)}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            variant="outlined"
-                            className="mx-2 delete-btn global-font"
-                            onClick={() => confirmDelete(params.row._id)}
-                          >
-                            Delete
-                          </button>
-                        </Grid>
-                      );
-                    },
-                  },
-                ]}
-                getRowId={getRowId}
-                initialState={{
-                  pagination: {
-                    paginationModel: {
-                      pageSize: 5,
-                    },
-                  },
-                }}
-                pageSizeOptions={[5]}
-                disableRowSelectionOnClick
-                localeText={{ noRowsLabel: 'Agent Data Is Not Avalible' }}
-              />
-            </Box>
+            <DataTable
+              rowdata={agentData}
+              columns={columns}
+              label={'Agent Data Is Not Avalible'}
+              customRowRenderer={customRowRenderer}
+            />
           </div>
         </>
       )}

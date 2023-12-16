@@ -1,11 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { Store } from '../Store';
+
 export default function Validations({ type, value }) {
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-
+  const { dispatch: ctxDispatch } = useContext(Store);
   let validationMessage = null;
-
   if (type === 'email' && value) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(value)) {
@@ -43,7 +42,7 @@ export default function Validations({ type, value }) {
   }, [validationMessage, ctxDispatch]);
 
   return validationMessage ? (
-    <Alert variant="danger" className="error ">
+    <Alert variant="danger" className="error">
       {validationMessage}
     </Alert>
   ) : null;

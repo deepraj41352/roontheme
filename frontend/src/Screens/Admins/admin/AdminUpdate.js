@@ -4,7 +4,6 @@ import { Store } from '../../../Store';
 import { Button } from 'react-bootstrap';
 import { MenuItem, Select } from '@mui/material';
 import FormSubmitLoader from '../../../Util/formSubmitLoader';
-import Validations from '../../../Components/Validations';
 import { toast } from 'react-toastify';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import ThreeLoader from '../../../Util/threeLoader';
@@ -42,7 +41,7 @@ export default function AdminUpdate() {
           role: 'admin',
         });
       } catch (error) {
-        setError(error.response?.data?.message || 'An error occurred');
+        setError('An Error Occurred');
       } finally {
         setIsLoading(false);
       }
@@ -101,10 +100,10 @@ export default function AdminUpdate() {
       });
       if (response.status === 200) {
         toast.success('Admin Updated Successfully !');
-        navigate('/admin');
+        navigate('/admin-screen');
       }
     } catch (error) {
-      toast.error(error.data?.message);
+      toast.error('Failed To Update Admin');
     } finally {
       setsubmiting(false);
     }
@@ -122,17 +121,17 @@ export default function AdminUpdate() {
         <>
           <ul className="nav-style1">
             <li>
-              <Link to="/admin">
+              <Link to="/admin-screen">
                 <a>Admin</a>
               </Link>
             </li>
             <li>
-              <Link to="/admin/create">
+              <Link to="/admin/create-screen">
                 <a>Create</a>
               </Link>
             </li>
             <li>
-              <Link to="/admin/update">
+              <Link to="/admin/:id">
                 <a className="active">Update</a>
               </Link>
             </li>

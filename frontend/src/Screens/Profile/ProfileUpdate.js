@@ -8,9 +8,8 @@ import FormSubmitLoader from '../../Util/formSubmitLoader';
 
 export default function ProfileUpdate() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { toggleState, userInfo } = state;
+  const { userInfo } = state;
   const [isSubmiting, setIsSubmiting] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
 
   const [user, setUser] = useState({
     image_url: '',
@@ -64,11 +63,11 @@ export default function ProfileUpdate() {
         },
       });
 
-      toast.success('Profile Updated Successfully !');
+      toast.success('Profile Picture Updated Successfully !');
       ctxDispatch({ type: 'USER_UPDATE', payload: data.userData });
       localStorage.setItem('userInfo', JSON.stringify(data.userData));
     } catch (err) {
-      toast.error(err.response?.data?.message);
+      toast.error('Failed To Update Your Profile Picture');
     } finally {
       setIsSubmiting(false);
     }
@@ -77,12 +76,12 @@ export default function ProfileUpdate() {
     <>
       <ul className="nav-style1">
         <li>
-          <Link to="/profile">
+          <Link to="/profile-screen">
             <address>Profile</address>
           </Link>
         </li>
         <li>
-          <Link to="/profile/update">
+          <Link to="/profile/picture">
             <a className="active">Picture</a>
           </Link>
         </li>

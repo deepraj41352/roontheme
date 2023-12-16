@@ -11,9 +11,7 @@ function Theme() {
   const handleToggle = () => {
     setIsToggled(!isToggled);
     if (isToggled) {
-      // window.alert("Light theme activated");
     } else {
-      // window.alert("Dark theme activated");
     }
   };
   useEffect(() => {

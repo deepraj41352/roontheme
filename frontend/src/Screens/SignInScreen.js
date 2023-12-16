@@ -6,7 +6,6 @@ import Validations from '../Components/Validations';
 import { FaEye, FaRegEyeSlash } from 'react-icons/fa';
 import { useContext, useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
-
 import { Store } from '../Store';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -56,7 +55,7 @@ function SignUpForm() {
         password,
       });
       if (!data.profile_picture) {
-        data.profile_picture = './avatar.png'; // Replace with your default avatar URL
+        data.profile_picture = './avatar.png';
       }
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
@@ -76,11 +75,6 @@ function SignUpForm() {
   return (
     <Container className="loginPage d-flex  flex-column justify-content-center align-items-center">
       <div className="Sign-up-container-inner2 py-3">
-        {/* <Row className="mb-3 ">
-          <Col className="p-0">
-            <h3>Login</h3>
-          </Col>
-        </Row> */}
         <Row>
           <Col className="p-0">
             <Card>

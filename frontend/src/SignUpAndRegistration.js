@@ -15,7 +15,7 @@ function SignUpAndRegistration() {
           <div className="row">
             <div className="col-lg-6 d-none-img">
               <div className="register-img">
-                <img className="w-100" src="logdash.jpg" alt="Image" />
+                <img className="w-100" src="logdash.png" alt="Image" />
               </div>
             </div>
             <div className="col-lg-6">
