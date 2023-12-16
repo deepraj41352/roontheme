@@ -24,7 +24,6 @@ export default function AgentList() {
 
   useEffect(() => {
     const FatchCategory = async () => {
-      setLoading(true);
       try {
         const { data } = await axios.get(`/api/category/`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -32,8 +31,6 @@ export default function AgentList() {
         setCategoryData(data);
       } catch (error) {
         setError('An Error Occured');
-      } finally {
-        setLoading(false);
       }
     };
     FatchCategory();
@@ -51,7 +48,6 @@ export default function AgentList() {
         setLoading(false);
       }
     };
-
     FatchAgentData();
   }, [categoryData]);
 

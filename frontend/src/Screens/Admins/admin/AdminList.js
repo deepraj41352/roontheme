@@ -44,7 +44,7 @@ export default function AdminList() {
     };
 
     FatchAdminData();
-  }, [loading]);
+  }, []);
 
   const confirmDelete = (Id) => {
     const isMobile = window.innerWidth <= 300;
@@ -55,6 +55,7 @@ export default function AdminList() {
           margin: '0 auto',
         }
       : {};
+
     confirmAlert({
       title: 'Confirm to delete',
       message: 'Are you sure to delete this?',

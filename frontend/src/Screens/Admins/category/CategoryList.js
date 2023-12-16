@@ -52,7 +52,7 @@ export default function CategoryList() {
       }
     };
     FatchcategoryData();
-  }, [updateData, loading]);
+  }, [updateData]);
 
   const confirmDelete = (Id) => {
     confirmAlert({
