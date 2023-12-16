@@ -45,7 +45,7 @@ export default function ContractorList() {
     };
 
     FatchContractorData();
-  }, [loading]);
+  }, []);
 
   const confirmDelete = (Id) => {
     confirmAlert({
