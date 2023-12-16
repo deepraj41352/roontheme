@@ -159,7 +159,7 @@ export default function ContractorUpdate() {
                       />
                     ) : (
                       <img
-                        src="https://res.cloudinary.com/dmhxjhsrl/image/upload/v1698911473/r5jajgkngwnzr6hzj7vn.jpg"
+                        src={user.image_url}
                         alt="image"
                         className="img-thumbnail creatForm me-2"
                       />
