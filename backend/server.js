@@ -115,7 +115,6 @@ export async function storeNotification(message, notifyUser, status, type) {
 
   const notify = await newNotification.save();
   return notify;
-  console.log('notifyme-------', notify);
 }
 
 const _dirname = path.resolve();

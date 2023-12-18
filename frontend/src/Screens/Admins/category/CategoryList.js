@@ -43,7 +43,6 @@ export default function CategoryList() {
               items.categoryStatus == true ? 'Active' : 'Inactive',
           };
         });
-        console.log('rowData', rowData);
         setCategoryData(rowData);
       } catch (error) {
         setError('An Error Occurred');

@@ -13,7 +13,7 @@ import ThreeLoader from '../../../Util/threeLoader';
 
 export default function TasksCreate() {
   const navigate = useNavigate();
-  const { state } = useContext(Store);
+  const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const [submiting, setsubmiting] = useState(false);
   const [projectName, setProjectName] = useState('');
@@ -29,7 +29,7 @@ export default function TasksCreate() {
   const [ShowErrorMessage, setShowErrorMessage] = useState(false);
   const [contractorData, setContractorData] = useState([]);
   const [filterCategory, setFilterCategory] = useState([]);
-
+  const [toggleNot, setToggleNot] = useState(false);
   const [selectedContractor, setSelectedContractor] = useState('');
   const [agentData, setAgentData] = useState([]);
   const [error, setError] = useState('');
@@ -188,6 +188,7 @@ export default function TasksCreate() {
       );
 
       if (data.status === 201) {
+        setToggleNot(!toggleNot);
         setProjectName('');
         setTaskName('');
         setTaskDesc('');
@@ -197,6 +198,9 @@ export default function TasksCreate() {
         toast.success(data.data.message);
         navigate('/admin/task-screen');
         setDynamicfield(false);
+
+        ctxDispatch({ type: 'NOTIFICATION_TOGGLE', payload: !toggleNot });
+        // setToggleNot(false);
       }
       if (data.status === 200) {
         setDynamicfield(false);

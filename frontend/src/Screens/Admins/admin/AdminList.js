@@ -13,6 +13,7 @@ export default function AdminList() {
   const [adminData, setAdminData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [updateData, setUpdateData] = useState(true);
 
   const handleEdit = (rowId) => {
     navigate(`/admin/${rowId}`);
@@ -44,7 +45,7 @@ export default function AdminList() {
     };
 
     FatchAdminData();
-  }, []);
+  }, [updateData]);
 
   const confirmDelete = (Id) => {
     const isMobile = window.innerWidth <= 300;
@@ -81,6 +82,7 @@ export default function AdminList() {
       });
       if (response.status === 200) {
         toast.success('Admin Deleted Successfully!');
+        setUpdateData(!updateData);
       } else {
         toast.error('Failed To Delete Admin.');
       }

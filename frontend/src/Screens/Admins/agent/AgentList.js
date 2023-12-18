@@ -14,6 +14,7 @@ export default function AgentList() {
   const [categoryData, setCategoryData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [updateData, setUpdateData] = useState(true);
 
   const handleEdit = (rowId) => {
     navigate(`/agent/${rowId}`);
@@ -49,7 +50,7 @@ export default function AgentList() {
       }
     };
     FatchAgentData();
-  }, [categoryData]);
+  }, [categoryData, updateData]);
 
   const confirmDelete = (Id) => {
     confirmAlert({
@@ -78,11 +79,12 @@ export default function AgentList() {
 
       if (response.status === 200) {
         toast.success('Agent Deleted Successfully!');
+        setUpdateData(!updateData);
       } else {
-        toast.error('Failed To Delete Admin.');
+        toast.error('Failed To Delete Agent.');
       }
     } catch (error) {
-      toast.error('An Error Occurred While Deleting Admin.');
+      toast.error('An Error Occurred While Deleting Agent.');
     } finally {
       setLoading(false);
     }

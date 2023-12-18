@@ -107,7 +107,7 @@ export default function ProjectDataWidget() {
     {
       field: 'taskStatus',
       headerName: 'Status',
-      minWidth: 150,
+      minWidth: 250,
       flex: 1,
       renderCell: (params) => {
         return (
@@ -283,7 +283,9 @@ export default function ProjectDataWidget() {
                 activeKey={selectedTab}
                 onSelect={(tab) => handleTabSelect(tab)}
                 id="uncontrolled-tab-example"
-                className={`mb-0 tab-btn tabBack dropTab3`}
+                className={`mb-0 tab-btn tabBack dropTab3  ${
+                  !sidebar ? 'w-100' : 'maxClassTable'
+                }`}
               >
                 <Tab
                   className="tab-color"

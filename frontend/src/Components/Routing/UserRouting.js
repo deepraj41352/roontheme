@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import AdminList from '../../Screens/Admins/admin/AdminList';
 import AdminCreate from '../../Screens/Admins/admin/AdminCreate';
 import AdminUpdate from '../../Screens/Admins/admin/AdminUpdate';
@@ -26,8 +26,11 @@ import Dashboard from '../../Screens/Dashboard';
 import ChatWindowScreen from '../../Screens/ChatWindowScreen';
 import NotificationScreen from '../../Screens/NotificationScreen';
 import TaskAddButton from '../TaskAddButton';
+import ChatBotScreen from '../../Screens/ChatBotScreen';
+import { useMediaQuery } from 'react-responsive';
 
 export default function UserRouting() {
+  const isSmallScreen = useMediaQuery({ maxWidth: 767 });
   return (
     <>
       <Routes>
@@ -62,6 +65,10 @@ export default function UserRouting() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/chatWindowScreen/:id" element={<ChatWindowScreen />} />
         <Route path="/notification-screen" element={<NotificationScreen />} />
+        <Route
+          path="/help-screen"
+          element={isSmallScreen ? <ChatBotScreen /> : <Navigate to="/" />}
+        />
         <Route path="/*" element={<Dashboard />} />
       </Routes>
       <TaskAddButton />

@@ -16,6 +16,7 @@ const initialValue = {
   projectDatatrue: null,
   contractorDatatrue: null,
   contractorSuccesstrue: null,
+  Notificationtoggle: null,
 };
 
 const reducer = (state, action) => {
@@ -26,6 +27,7 @@ const reducer = (state, action) => {
       return { ...state, userInfo: action.payload };
     case 'VALIDATION_MSG':
       return { ...state, validationMsg: action.payload };
+
     case 'USER_SIGNOUT':
       return {
         ...state,
@@ -57,6 +59,9 @@ const reducer = (state, action) => {
       return { ...state, contractorDatatrue: action.payload };
     case 'SIDEBAR':
       return { ...state, sidebar: action.payload };
+    case 'NOTIFICATION_TOGGLE':
+      console.log('Notificationtoggle');
+      return { ...state, Notificationtoggle: action.payload };
     default:
       return state;
   }

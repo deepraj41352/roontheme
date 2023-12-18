@@ -876,7 +876,6 @@ function ChatWindowScreen() {
                               {item.senderFirstName} {item.senderLastName}
                             </div>
                             <div className="chatAboveDiv">
-                              {' '}
                               <p
                                 className={`chat-receiverMsg-inner ${theme}MsgThemeR p-2 px-3 mb-0`}
                                 dangerouslySetInnerHTML={{ __html: item.text }}

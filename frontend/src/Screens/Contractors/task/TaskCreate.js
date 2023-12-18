@@ -13,7 +13,7 @@ import ThreeLoader from '../../../Util/threeLoader';
 
 export default function ContractorTasksCreate() {
   const navigate = useNavigate();
-  const { state } = useContext(Store);
+  const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const [submiting, setsubmiting] = useState(false);
   const [projectName, setProjectName] = useState('');
@@ -30,6 +30,7 @@ export default function ContractorTasksCreate() {
   const [filterCategory, setFilterCategory] = useState([]);
   const [agentData, setAgentData] = useState([]);
   const [error, setError] = useState('');
+  const [toggleNot, setToggleNot] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -151,6 +152,7 @@ export default function ContractorTasksCreate() {
       );
 
       if (data.status === 201) {
+        setToggleNot(!toggleNot);
         setProjectName('');
         setTaskName('');
         setTaskDesc('');
@@ -159,6 +161,7 @@ export default function ContractorTasksCreate() {
         toast.success(data.data.message);
         navigate('/client/task-screen');
         setDynamicfield(false);
+        ctxDispatch({ type: 'NOTIFICATION_TOGGLE', payload: !toggleNot });
       }
       if (data.status === 200) {
         setDynamicfield(false);

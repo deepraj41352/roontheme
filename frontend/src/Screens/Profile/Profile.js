@@ -11,7 +11,6 @@ import FormSubmitLoader from '../../Util/formSubmitLoader';
 function Profile() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
-
   const [firstName, setFirstName] = useState(
     userInfo.first_name ? userInfo.first_name : ''
   );
@@ -30,7 +29,6 @@ function Profile() {
   const [country, setCountry] = useState(
     userInfo.country ? userInfo.country : ''
   );
-
   const [isSubmiting, setIsSubmiting] = useState(false);
 
   var countrylist = [
@@ -262,6 +260,7 @@ function Profile() {
       });
 
       toast.success('Profile Updated Successfully !');
+
       ctxDispatch({ type: 'USER_UPDATE', payload: data.userData });
       localStorage.setItem('userInfo', JSON.stringify(data.userData));
     } catch (err) {

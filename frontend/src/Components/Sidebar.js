@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 import { HiUserGroup } from 'react-icons/hi';
 import { FaListUl } from 'react-icons/fa';
 import { motion } from 'framer-motion';
@@ -19,11 +19,12 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
   const [isSmallScreen, setIsSmallScreen] = useState(true);
   const { toggleState } = state;
   const theme = toggleState ? 'dark' : 'light';
-  const socketUrl = process.env.REACT_APP_SOCKETURL;
-  const socket = io(socketUrl);
-  socket.emit('connectionForNotify', () => {
-    console.log('oiuhjioyhi');
-  });
+  const [newNotification, setnewNotification] = useState([]);
+  // const socketUrl = process.env.REACT_APP_SOCKETURL;
+  // const socket = io(socketUrl);
+  // socket.emit('connectionForNotify', () => {
+  //   console.log('oiuhjioyhi');
+  // });
 
   const [isToggled, setIsToggled] = useState(toggleState);
   const handleChangeToggleState = () => {
@@ -36,17 +37,17 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
     localStorage.setItem('activeTab', activeTab);
   }, [activeTab]);
 
-  useEffect(() => {
-    const handleNotification = (notifyUser, message) => {
-      if (notifyUser == userInfo._id) {
-        ctxDispatch({ type: 'NOTIFICATION', payload: { notifyUser, message } });
-      }
-    };
-    socket.on('notifyProjectFrontend', handleNotification);
-    return () => {
-      socket.off('notifyProjectFrontend', handleNotification);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleNotification = (notifyUser, message) => {
+  //     if (notifyUser == userInfo._id) {
+  //       ctxDispatch({ type: 'NOTIFICATION', payload: { notifyUser, message } });
+  //     }
+  //   };
+  //   socket.on('notifyProjectFrontend', handleNotification);
+  //   return () => {
+  //     socket.off('notifyProjectFrontend', handleNotification);
+  //   };
+  // }, []);
 
   useEffect(() => {
     const handleNotification = async (notifyUser, message) => {
@@ -59,7 +60,8 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
           ctxDispatch({ type: 'NOTIFICATION', payload: { item } });
       });
     };
-    socket.on('notifyUserFrontend', handleNotification);
+    handleNotification();
+    // socket.on('notifyUserFrontend', handleNotification);
   }, []);
 
   const signoutHandler = () => {
@@ -90,37 +92,41 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
     }
   };
 
-  useEffect(() => {
-    const fetchNotificationData = async () => {
-      ctxDispatch({ type: 'NOTIFICATION-NULL' });
-      try {
-        const response = await axios.get(`/api/notification/${userInfo._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
-        const NotifyData = response.data;
-        ctxDispatch({ type: 'NOTIFICATION-NULL' });
+  // useEffect(() => {
+  //   const fetchNotificationData = async () => {
+  //     // ctxDispatch({ type: 'NOTIFICATION-NULL' });
+  //     try {
+  //       const { data } = await axios.get(`/api/notification/${userInfo._id}`, {
+  //         headers: { Authorization: `Bearer ${userInfo.token}` },
+  //       });
+  //       const unseenNotifications = data.filter(
+  //         (notification) => notification.status === 'unseen'
+  //       );
+  //       setnewNotification(unseenNotifications);
+  //       // const NotifyData = response.data;
+  //       // ctxDispatch({ type: 'NOTIFICATION-NULL' });
 
-        NotifyData.map((item) => {
-          if (item.status == 'unseen')
-            ctxDispatch({ type: 'NOTIFICATION', payload: { item } });
-        });
-      } catch (error) {
-        console.error('Error fetching notification data:', error);
-      }
-    };
+  //       // NotifyData.map((item) => {
+  //       //   if (item.status == 'unseen')
+  //       //     ctxDispatch({ type: 'NOTIFICATION', payload: { item } });
+  //       // });
+  //     } catch (error) {
+  //       console.error('Error fetching notification data:', error);
+  //     }
+  //   };
 
-    fetchNotificationData();
-  }, []);
+  //   fetchNotificationData();
+  // }, [NotificationData]);
 
-  const uniqueNotificationData = [...new Set(NotificationData)];
+  // const uniqueNotificationData = [...new Set(NotificationData)];
 
-  useEffect(() => {
-    const noteData = [...NotificationData];
-    const data = noteData.filter((note) => {
-      if (note.notificationId) {
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   const noteData = [...NotificationData];
+  //   const data = noteData.filter((note) => {
+  //     if (note.notificationId) {
+  //     }
+  //   });
+  // }, []);
 
   useEffect(() => {
     ctxDispatch({ type: 'TOGGLE_BTN', payload: isToggled });
@@ -507,9 +513,9 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               <IoMdNotifications className="me-3 fs-5 " />
               <div className="position-relative">
                 Notification
-                {uniqueNotificationData.length > 0 && (
+                {NotificationData.length > 0 && (
                   <span className="position-absolute notification-badge top-0 start-110 translate-middle badge rounded-pill bg-danger">
-                    {uniqueNotificationData.length}
+                    {NotificationData.length}
                   </span>
                 )}
               </div>
@@ -571,6 +577,32 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
             <li>
               <VscColorMode className="fs-4 me-3 pb-1 " />
               {theme === 'light' ? 'Dark' : 'Light'} Mode
+            </li>
+          </Link>
+        </motion.li>
+
+        <motion.li
+          whileHover={{
+            scale: 1.05,
+          }}
+          whileTap={{ scale: 0.9 }}
+          transition={{
+            type: 'spring',
+            stiffness: 400,
+            damping: 10,
+          }}
+          className="help-sbtn"
+        >
+          <Link
+            to="/help-screen"
+            className={`${theme}-text-decoration-none disNonePro`}
+            onClick={() => {
+              handlSmallScreeneClick();
+              setActiveTab('helpScreen');
+            }}
+          >
+            <li className={activeTab === 'helpScreen' ? 'activeBack' : ''}>
+              Help?
             </li>
           </Link>
         </motion.li>

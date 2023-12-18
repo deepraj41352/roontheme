@@ -1350,7 +1350,7 @@ span[data-tooltip]:hover::before {
   border: none;
   font-weight: normal;
   color: #07162c;
-  background-color: #fff;
+  background-color: #c7c7c7;
   width: 126px;
   padding: 4px !important;
   font-size: 14px;
@@ -1489,9 +1489,9 @@ span[data-tooltip]:hover::before {
   }
 }
 
-@media only screen and (min-width: 1200px) and (max-width: 1300px) {
+@media only screen and (min-width: 1200px) and (max-width: 1490px) {
   .maxClassTable {
-    max-width: 913px;
+    max-width: 800px;
     margin: 0 auto;
   }
   .maxAllTable {
@@ -1667,3 +1667,99 @@ span[data-tooltip2]:hover::before {
 .spanForCate {
   /* Add your styling for the category text */
 }
+
+/* chatbot css start */
+
+.botMsg-You {
+  text-align: end;
+}
+.botMsg-Bot {
+  text-align: start;
+}
+.chatbot-visibility {
+  height: 80vh;
+  position: absolute;
+  bottom: 42px;
+  width: 40%;
+  right: 56px;
+  z-index: 20;
+}
+.chatbot-sbtn {
+  cursor: pointer;
+}
+.chatbot-body {
+  min-height: calc(80vh - 105px) !important;
+  height: calc(80vh - 105px) !important;
+  overflow-y: auto;
+}
+.chatbot-user-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #070719;
+}
+.chatbot-user-icon-inner {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.chatbot-bot-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #070719;
+}
+.chatbot-bot-icon-inner {
+  height: 22px !important;
+  background-color: #070719;
+}
+.chatBot-globalBtn {
+  color: #ffffff !important;
+  background-color: RGB(14, 14, 61) !important;
+  border: none !important;
+}
+.globalBtnParentDiv {
+  gap: 10px;
+  margin-top: 4px;
+  /* background-color: red; */
+  justify-content: start;
+  display: flex;
+  flex-wrap: wrap;
+}
+.height-inputBox {
+  height: 38px !important;
+}
+.img-loader-bot {
+  background: none;
+}
+.chatbot-header {
+  height: 41px;
+}
+.height-inputBox:focus {
+  border: 1px solid #86b7fe !important;
+}
+.help-sbtn {
+  display: none;
+}
+@media only screen and (max-width: 767px) {
+  .chatbot-sbtn {
+    display: none;
+  }
+  .help-sbtn {
+    display: block !important;
+  }
+  .chatbot-body {
+    min-height: calc(100vh - 300px) !important;
+    height: calc(100vh - 300px) !important;
+    overflow-y: auto;
+  }
+}
+.light-send-Btn-help {
+  background-color: #070719 !important;
+  color: #fff !important;
+}
+.dark-send-Btn-help {
+  background-color: #fff !important;
+  color: #070719 !important;
+}
+/* chatbot css end */

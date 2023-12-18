@@ -45,6 +45,7 @@ export default function TaskAddButton() {
   const [selectedContractor, setSelectedContractor] = useState('');
   const [filterCategory, setFilterCategory] = useState([]);
   const [agentData, setAgentData] = useState([]);
+  const [toggleNot, setToggleNot] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -229,11 +230,13 @@ export default function TaskAddButton() {
 
   const handelBothSubmit = (e) => {
     e.preventDefault();
+    setToggleNot(!toggleNot);
     if (userInfo.role === 'admin' || userInfo.role === 'superadmin') {
       handleAdminSubmit();
     } else if (userInfo.role === 'contractor') {
       handleContractorSubmit();
     }
+    ctxDispatch({ type: 'NOTIFICATION_TOGGLE', payload: !toggleNot });
   };
 
   const validation = (e) => {

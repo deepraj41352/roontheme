@@ -141,7 +141,7 @@ export default function ContractorProjectList() {
           <DataTable
             rowdata={projectData}
             columns={columns}
-            label={'Task Is Not Avalible'}
+            label={'Project Is Not Avalible'}
           />
         </>
       )}
