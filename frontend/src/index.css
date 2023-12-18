@@ -1498,6 +1498,9 @@ span[data-tooltip]:hover::before {
     max-width: 989px;
     margin: 0 auto;
   }
+  .mainWidthtbl {
+    max-width: 86% !important;
+  }
 }
 
 @media only screen and (max-width: 1200px) {
@@ -1763,3 +1766,7 @@ span[data-tooltip2]:hover::before {
   color: #070719 !important;
 }
 /* chatbot css end */
+.mainWidthtbl {
+  max-width: 95%;
+  margin: 0 auto;
+}

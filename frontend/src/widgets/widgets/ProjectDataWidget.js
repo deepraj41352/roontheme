@@ -252,7 +252,7 @@ export default function ProjectDataWidget() {
         ) : (
           <>
             <div className=" m-0 p-0">
-              <Dropdown className={`mb-0 dropTab2 tab-btn`}>
+              <Dropdown className={`mb-0 dropTab2 tab-btn mainWidthtbl`}>
                 <Dropdown.Toggle variant="secondary" id="dropdown-tabs">
                   {selectedTab}
                 </Dropdown.Toggle>
@@ -283,9 +283,7 @@ export default function ProjectDataWidget() {
                 activeKey={selectedTab}
                 onSelect={(tab) => handleTabSelect(tab)}
                 id="uncontrolled-tab-example"
-                className={`mb-0 tab-btn tabBack dropTab3  ${
-                  !sidebar ? 'w-100' : 'maxClassTable'
-                }`}
+                className={`mb-0 tab-btn tabBack dropTab3 mainWidthtbl `}
               >
                 <Tab
                   className="tab-color"

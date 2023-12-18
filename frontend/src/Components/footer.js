@@ -7,7 +7,6 @@ export default function Footer() {
   const { toggleState } = state;
   const theme = toggleState ? 'dark' : 'light';
   const [isOpen, setIsOpen] = useState(false);
-
   // return <div className={`${theme}-footer`}>© RoonBerg 2023</div>;
   return (
     <>

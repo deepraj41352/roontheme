@@ -9,6 +9,7 @@ import { IoPersonOutline } from 'react-icons/io5';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { VscColorMode } from 'react-icons/vsc';
 import truncateText from '../../TruncateText';
+import { BiHelpCircle } from 'react-icons/bi';
 
 export default function UserNav({ toggleSidebar }) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -39,6 +40,7 @@ export default function UserNav({ toggleSidebar }) {
     ctxDispatch({ type: 'TOGGLE_BTN', payload: isToggled });
     localStorage.setItem('toggleState', JSON.stringify(isToggled));
   }, [isToggled]);
+
   return (
     <>
       <Navbar expand="lg" className={`${theme}-admin-navbar`}>
@@ -65,6 +67,12 @@ export default function UserNav({ toggleSidebar }) {
               style={{ maxHeight: '100px' }}
               navbarScroll
             >
+              <div className="py-2">
+                <BiHelpCircle
+                  className={`fs-4 admin-btn-logo ${theme}-navbar-Btn`}
+                  title="Help?"
+                />
+              </div>
               <div className="py-2">
                 <Theme />
               </div>

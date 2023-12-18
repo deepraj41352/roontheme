@@ -320,7 +320,7 @@ export default function AgentTasksList() {
   );
 
   const lastLogin = () => (
-    <div className="lastLogin">
+    <div className="lastLogin mainWidthtbl">
       <FaRegClock className="clockIcontab" />
       {formattedLastLogin}
     </div>
@@ -367,7 +367,7 @@ export default function AgentTasksList() {
               </Dropdown>
             </div>
             <div>
-              <Dropdown className={`mb-0 dropTab1 tab-btn`}>
+              <Dropdown className={`mb-0 dropTab1 tab-btn mainWidthtbl`}>
                 <Dropdown.Toggle variant="secondary" id="dropdown-tabs">
                   {selectedTab}
                 </Dropdown.Toggle>
@@ -399,7 +399,7 @@ export default function AgentTasksList() {
                 activeKey={selectedTab}
                 onSelect={(tab) => handleTabSelect(tab)}
                 id="uncontrolled-tab-example"
-                className={`mb-0 tab-btn tabBack dropTab`}
+                className={`mb-0 tab-btn tabBack dropTab mainWidthtbl`}
               >
                 <Tab
                   className="tab-color"

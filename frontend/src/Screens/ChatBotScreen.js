@@ -21,7 +21,24 @@ function ChatBotScreen() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { toggleState, userInfo } = state;
   const theme = toggleState ? 'dark' : 'light';
-  console.log('userInfo', userInfo);
+
+  function lastLoginDate(lastLogin) {
+    const lastLoginTimestamp = lastLogin;
+    const now = new Date();
+    const lastLoginDate = new Date(lastLoginTimestamp);
+    const minutesAgo = Math.floor((now - lastLoginDate) / (1000 * 60));
+    const hours = Math.floor(minutesAgo / 60);
+    const remainingMinutes = minutesAgo % 60;
+    const formattedLastLogin = `Last Login: ${
+      hours > 0 ? `${hours} ${hours === 1 ? 'Hour' : 'Hours'}` : ''
+    }${hours > 0 && remainingMinutes > 0 ? ', ' : ''}${
+      remainingMinutes > 0
+        ? `${remainingMinutes} ${remainingMinutes === 1 ? 'Minute' : 'Minutes'}`
+        : '0 Minute'
+    } ago`;
+
+    return formattedLastLogin;
+  }
 
   //API Call Code
   const FatchcategoryData = async () => {
@@ -233,36 +250,37 @@ function ChatBotScreen() {
     if (message.trim() !== '') {
       setChatHistory([...chatHistory, { sender: 'You', message }]);
       setMessage(''); // Clear the input field after sending a message
-    }
-    // ------------
 
-    const lowercasedMessage = message.toLowerCase();
-    const keyword = 'roonberg';
+      // ------------
 
-    if (lowercasedMessage.includes(keyword)) {
-      setChatHistory([
-        ...chatHistory,
-        { sender: 'You', message },
-        { sender: 'Bot', message: 'Welcome to Roonberg' },
-        {
-          sender: 'Bot',
-          message: 'Roonberg can help you to manage your tasks easily.',
-        },
-      ]);
-    } else if (lowercasedMessage.includes('agent')) {
-      handleButtonUser2('notRequire');
-    } else if (lowercasedMessage.includes('project')) {
-      handleButtonProject1('notRequire');
-    } else if (lowercasedMessage.includes('task')) {
-      handleButtonTask1('notRequire');
-    } else if (lowercasedMessage.includes('user')) {
-      handleButtonUser('notRequire', U_Msg1);
-    } else {
-      setChatHistory([
-        ...chatHistory,
-        { sender: 'You', message },
-        { sender: 'Bot', message: randomBotResponse },
-      ]);
+      const lowercasedMessage = message.toLowerCase();
+      const keyword = 'roonberg';
+
+      if (lowercasedMessage.includes(keyword)) {
+        setChatHistory([
+          ...chatHistory,
+          { sender: 'You', message },
+          { sender: 'Bot', message: 'Welcome to Roonberg' },
+          {
+            sender: 'Bot',
+            message: 'Roonberg can help you to manage your tasks easily.',
+          },
+        ]);
+      } else if (lowercasedMessage.includes('agent')) {
+        handleButtonUser2('notRequire');
+      } else if (lowercasedMessage.includes('project')) {
+        handleButtonProject1('notRequire');
+      } else if (lowercasedMessage.includes('task')) {
+        handleButtonTask1('notRequire');
+      } else if (lowercasedMessage.includes('user')) {
+        handleButtonUser('notRequire', U_Msg1);
+      } else {
+        setChatHistory([
+          ...chatHistory,
+          { sender: 'You', message },
+          { sender: 'Bot', message: randomBotResponse },
+        ]);
+      }
     }
   };
   // -----------------------------------------------
@@ -325,8 +343,8 @@ function ChatBotScreen() {
               <p>First Name : {`${userInfo.first_name}`} </p>
               <p>Last Name : {`${userInfo.last_name}`} </p>
               <p>Email : {`${userInfo.email}`} </p>
-              <p>Role : {`${userInfo.role}`} </p>
-              <p>Last Login : {`${userInfo.lastLogin}`} </p>
+              <p>Role : {userInfo.role} </p>
+              <p>{lastLoginDate(userInfo.lastLogin)} </p>
               <Link to="/profile-screen">Go to Profile</Link>
             </div>
           </div>
@@ -1134,7 +1152,7 @@ function ChatBotScreen() {
               <p>Last Name : {`${filteredData2.last_name}`} </p>
               <p>Email : {`${filteredData2.email}`} </p>
               <p>Role : {`${filteredData2.role}`} </p>
-              <p>Last Login : {`${filteredData2.lastLogin}`} </p>
+              <p>{lastLoginDate(filteredData2.lastLogin)} </p>
             </div>
             <div>
               <div className="w-50">
@@ -1187,7 +1205,7 @@ function ChatBotScreen() {
               <p>Last Name : {`${fetchedData.last_name}`} </p>
               <p>Email : {`${fetchedData.email}`} </p>
               <p>Role : {`${fetchedData.role}`} </p>
-              <p>Last Login : {`${fetchedData.lastLogin}`} </p>
+              <p>{lastLoginDate(fetchedData.lastLogin)} </p>
             </div>
             <div className="w-50">
               {`Select Category`}
@@ -1238,7 +1256,7 @@ function ChatBotScreen() {
               <p>Last Name : {`${fetchedData.last_name}`} </p>
               <p>Email : {`${fetchedData.email}`} </p>
               <p>Role : {`${fetchedData.role}`} </p>
-              <p>Last Login : {`${fetchedData.lastLogin}`} </p>
+              <p>{lastLoginDate(fetchedData.lastLogin)} </p>
             </div>
           </div>
         ),
@@ -1269,7 +1287,7 @@ function ChatBotScreen() {
               <p>Email : {`${filteredData1.email}`} </p>
               <p>Role : {`${filteredData1.role}`} </p>
               <p>Status : {`${filteredData1.userStatus}`} </p>
-              <p>Last Login : {`${filteredData1.lastLogin}`} </p>
+              <p>{lastLoginDate(filteredData1.lastLogin)} </p>
               {/* <div>
                 {filteredData2.map((item) => (
                   <p>

@@ -12,6 +12,7 @@ import { ImCross } from 'react-icons/im';
 import axios from 'axios';
 import { BiTask } from 'react-icons/bi';
 import { VscColorMode } from 'react-icons/vsc';
+import { BiHelpCircle } from 'react-icons/bi';
 
 function Sidebar({ sidebarVisible, setSidebarVisible }) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -601,8 +602,13 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               setActiveTab('helpScreen');
             }}
           >
-            <li className={activeTab === 'helpScreen' ? 'activeBack' : ''}>
-              Help?
+            <li
+              className={
+                activeTab === 'helpScreen' ? 'activeBack liCon' : 'liCon'
+              }
+            >
+              <BiHelpCircle className="me-3 fs-5" />
+              <div className="mt-1">Help?</div>
             </li>
           </Link>
         </motion.li>

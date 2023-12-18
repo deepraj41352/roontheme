@@ -5,6 +5,7 @@ export const Store = createContext();
 const initialValue = {
   validationMsg: null,
   sidebar: true,
+  helpToggle: {},
   NotificationData: [],
   toggleState: localStorage.getItem('toggleState')
     ? JSON.parse(localStorage.getItem('toggleState'))
@@ -60,8 +61,9 @@ const reducer = (state, action) => {
     case 'SIDEBAR':
       return { ...state, sidebar: action.payload };
     case 'NOTIFICATION_TOGGLE':
-      console.log('Notificationtoggle');
       return { ...state, Notificationtoggle: action.payload };
+    case 'HELPTOGGLE':
+      return { ...state, helpToggle: action.payload };
     default:
       return state;
   }
