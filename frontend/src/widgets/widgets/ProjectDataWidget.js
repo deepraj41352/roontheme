@@ -252,82 +252,85 @@ export default function ProjectDataWidget() {
         ) : (
           <>
             <div className=" m-0 p-0">
-              <Dropdown className={`mb-0 dropTab2 tab-btn mainWidthtbl`}>
-                <Dropdown.Toggle variant="secondary" id="dropdown-tabs">
-                  {selectedTab}
-                </Dropdown.Toggle>
+              <div className={!sidebar ? 'w-100' : 'maxClassTable'}>
+                <Dropdown className={`mb-0 dropTab2 tab-btn mainWidthtbl`}>
+                  <Dropdown.Toggle variant="secondary" id="dropdown-tabs">
+                    {selectedTab}
+                  </Dropdown.Toggle>
 
-                <Dropdown.Menu className="dropMenu">
-                  <Dropdown.Item
-                    className="dropMenuCon"
-                    onClick={() => handleTabSelect('Active Task')}
-                  >
-                    <span class="position-relative">Active Task</span>
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    className="dropMenuCon"
-                    onClick={() => handleTabSelect('Parked Task')}
-                  >
-                    <span class="position-relative">Parked Task</span>
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    active
-                    className="dropMenuCon"
-                    onClick={() => handleTabSelect('Completed Task')}
-                  >
-                    <span class="position-relative">Completed Task</span>
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-              <Tabs
-                activeKey={selectedTab}
-                onSelect={(tab) => handleTabSelect(tab)}
-                id="uncontrolled-tab-example"
-                className={`mb-0 tab-btn tabBack dropTab3 mainWidthtbl `}
-              >
-                <Tab
-                  className="tab-color"
-                  eventKey="Active Task"
-                  title={<span class="position-relative">Active Task</span>}
+                  <Dropdown.Menu className="dropMenu">
+                    <Dropdown.Item
+                      className="dropMenuCon"
+                      onClick={() => handleTabSelect('Active Task')}
+                    >
+                      <span class="position-relative">Active Task</span>
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      className="dropMenuCon"
+                      onClick={() => handleTabSelect('Parked Task')}
+                    >
+                      <span class="position-relative">Parked Task</span>
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      active
+                      className="dropMenuCon"
+                      onClick={() => handleTabSelect('Completed Task')}
+                    >
+                      <span class="position-relative">Completed Task</span>
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+                <Tabs
+                  activeKey={selectedTab}
+                  onSelect={(tab) => handleTabSelect(tab)}
+                  id="uncontrolled-tab-example"
+                  className={`mb-0 tab-btn tabBack dropTab3 mainWidthtbl `}
                 >
-                  <div className={!sidebar ? 'w-100' : 'maxClassTable'}>
+                  <Tab
+                    className="tab-color"
+                    eventKey="Active Task"
+                    title={<span class="position-relative">Active Task</span>}
+                  >
                     <DataTable
                       rowdata={ActiveData}
                       columns={columns}
                       label={'Task Is Not Avalible'}
                       extracss={'tableGrid actionCenter'}
                     />
-                  </div>
-                </Tab>
-                <Tab
-                  className="tab-color"
-                  eventKey="Parked Task"
-                  title={<span class="position-relative">Parked Task</span>}
-                >
-                  <div className={!sidebar ? 'w-100' : 'maxClassTable'}>
+                  </Tab>
+                  <Tab
+                    className="tab-color"
+                    eventKey="Parked Task"
+                    title={<span class="position-relative">Parked Task</span>}
+                  >
+                    {/* <div className={!sidebar ? 'w-100' : 'maxClassTable'}> */}
                     <DataTable
                       rowdata={PendingData}
                       columns={columns}
                       label={'Task Is Not Avalible'}
                       extracss={'tableGrid actionCenter'}
                     />
-                  </div>
-                </Tab>
-                <Tab
-                  className={`tableGrid actionCenter tableBg  ${theme}DataGrid`}
-                  eventKey="Completed Task"
-                  title={<span class="position-relative">Completed Task</span>}
-                >
-                  <div className={!sidebar ? 'w-100' : 'maxClassTable'}>
+                    {/* </div> */}
+                  </Tab>
+                  <Tab
+                    className={`tableGrid actionCenter tableBg  ${theme}DataGrid`}
+                    eventKey="Completed Task"
+                    title={
+                      <span class="position-relative">Completed Task</span>
+                    }
+                  >
+                    {/* <div className={!sidebar ? 'w-100' : 'maxClassTable'}> */}
                     <DataTable
                       rowdata={CompleteData}
                       columns={columns}
                       label={'Task Is Not Avalible'}
                       extracss={'tableGrid actionCenter'}
                     />
-                  </div>
-                </Tab>
-              </Tabs>
+
+                    {/* </div> */}
+                  </Tab>
+                </Tabs>
+              </div>
             </div>
           </>
         )}

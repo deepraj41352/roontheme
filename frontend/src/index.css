@@ -1489,18 +1489,18 @@ span[data-tooltip]:hover::before {
   }
 }
 
-@media only screen and (min-width: 1200px) and (max-width: 1490px) {
+@media only screen and (min-width: 1200px) and (max-width: 1450px) {
   .maxClassTable {
-    max-width: 800px;
+    max-width: 890px;
     margin: 0 auto;
   }
   .maxAllTable {
     max-width: 989px;
     margin: 0 auto;
   }
-  .mainWidthtbl {
+  /* .mainWidthtbl {
     max-width: 86% !important;
-  }
+  }  */
 }
 
 @media only screen and (max-width: 1200px) {
@@ -1766,7 +1766,7 @@ span[data-tooltip2]:hover::before {
   color: #070719 !important;
 }
 /* chatbot css end */
-.mainWidthtbl {
+/* .mainWidthtbl {
   max-width: 95%;
   margin: 0 auto;
-}
+} */

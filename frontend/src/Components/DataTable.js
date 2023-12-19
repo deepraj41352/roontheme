@@ -15,7 +15,7 @@ export default function DataTable({
   const theme = toggleState ? 'dark' : 'light';
   return (
     <div className={!sidebar ? 'w-100' : 'maxAllTable'}>
-      <Box sx={{ height: 400, width: '95%', margin: '0 auto' }}>
+      <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid
           className={`tableBg ${extracss} projectTable ${theme}DataGrid`}
           rows={rowdata}
