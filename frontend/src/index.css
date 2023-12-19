@@ -1016,21 +1016,20 @@ body {
 }
 .Imagewithmessage-sender {
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   justify-items: flex-end;
-  align-items: center;
-  padding: 0;
-  /* border: 2px solid; */
-  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+  align-items: end;
+}
+.chatWindowProjectInfoForm {
+  height: calc(100vh - 215px);
+  overflow: auto;
 }
 .Imagewithmessage-reciver {
   display: flex;
-  /* flex-direction: column; */
-  justify-items: flex-start;
-  align-items: center;
+  flex-direction: column;
+  justify-items: self-start;
+  align-items: start;
   padding: 0;
-  /* border: 2px solid; */
-  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
 }
 .messageimg {
   max-width: 300px;
@@ -1047,7 +1046,9 @@ body {
   text-align: start;
 }
 .icon-of-image {
-  /* margin-bottom: 12px; */
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
   color: gray;
 }
 .NameofOposite {
@@ -1806,13 +1807,18 @@ span[data-tooltip2]:hover::before {
   right: -15px;
   border: 2px solid white;
 }
+@media only screen and (max-width: 400px) {
+  .input-text-edit-mob {
+    flex-direction: column-reverse !important;
+  }
+}
 .inputBox-chat {
   color: #0d0c0c !important;
   border: 1px solid #f2f0ef !important;
   background-color: #f2f0ef !important;
   font-size: 16px !important;
   padding: 4px !important;
-  width: 80% !important;
+  width: 100% !important;
   transition: all ease 0.5s !important;
   border-radius: 5px !important;
   outline: unset;

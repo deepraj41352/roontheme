@@ -643,9 +643,9 @@ function ChatWindowScreen() {
     document.body.removeChild(downloadLink);
   };
 
-  const handleforsetImage = (e) => {
+  const handleforsetImageclone = (img) => {
     setShowImage(true);
-    setImageUrl(e.target.src);
+    setImageUrl(img);
   };
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
@@ -862,7 +862,7 @@ function ChatWindowScreen() {
                         ref={scrollRef}
                         className="chat-receiverMsg d-flex flex-column"
                       >
-                        <div className="d-flex w-100">
+                        <div className="d-flex w-100 justify-content-end">
                           <div className="d-flex flex-column forWidth ">
                             <div className="text-start d-flex justify-content-end  px-2 timeago2">
                               {item.senderFirstName} {item.senderLastName}
@@ -920,14 +920,12 @@ function ChatWindowScreen() {
                                 ) : (
                                   <>
                                     <div className="Imagewithmessage-sender p-2">
-                                      <FaImage className="icon-of-image" />
-                                      <div className=" imagefor-icon">
-                                        <img
-                                          onClick={handleforsetImage}
-                                          src={item.image}
-                                          className="chat-receiverMsg-inner w-100 p-2 "
-                                        />{' '}
-                                      </div>
+                                      <FaImage
+                                        className="icon-of-image"
+                                        onClick={() =>
+                                          handleforsetImageclone(item.image)
+                                        }
+                                      />
                                       <p className=" messageimg">
                                         {item.ImagewithMessage}
                                       </p>
@@ -963,7 +961,6 @@ function ChatWindowScreen() {
                       >
                         <div className="d-flex w-100">
                           <div>
-                            {' '}
                             <img
                               className="chat-dp"
                               src={
@@ -1028,18 +1025,15 @@ function ChatWindowScreen() {
                               ) : (
                                 <>
                                   <div className="Imagewithmessage-reciver p-2">
-                                    <p className=" messageimg1">
+                                    <FaImage
+                                      className="icon-of-image"
+                                      onClick={() =>
+                                        handleforsetImageclone(item.image)
+                                      }
+                                    />
+                                    <p className="messageimg1">
                                       {item.ImagewithMessage}
                                     </p>
-
-                                    <FaImage className="icon-of-image" />
-                                    <div className=" imagefor-icon">
-                                      <img
-                                        onClick={handleforsetImage}
-                                        src={item.image}
-                                        className="chat-senderMsg-inner w-100 p-2 "
-                                      />{' '}
-                                    </div>
                                   </div>
                                 </>
                               )}
@@ -1055,25 +1049,32 @@ function ChatWindowScreen() {
                 )}
               </>
             ))}
+
             <Modal
-              className="modal-content1"
+              className="modal-content1 d-flex align-items-center"
               show={showImage}
               onHide={handleClose}
             >
               <MdCancel className="close-button" onClick={handleClose} />
 
-              <img className="w-100" src={imageUrl} />
-              <BsDownload
-                className="btn-send downloadBtn"
-                onClick={handleDownload}
-              />
+              <div className="mx-auto">
+                <img className="w-100" src={imageUrl} />
+                <BsDownload
+                  className="btn-send downloadBtn"
+                  onClick={handleDownload}
+                />
+              </div>
             </Modal>
           </CardBody>
           <CardFooter
             className={`d-flex justify-content-center align-items-center ${theme}chatFoot`}
           >
             <Form className="w-100">
-              <InputGroup className={showFontStyle && 'input-text-edit'}>
+              <InputGroup
+                className={`input-text-edit-mob ${
+                  showFontStyle && 'input-text-edit'
+                }`}
+              >
                 <input
                   disabled={isSubmiting}
                   type="text"
@@ -1178,17 +1179,10 @@ function ChatWindowScreen() {
         </Card>
         <Card className={`chatWindowProjectInfo ${theme}chatInfo`}>
           {projectData ? (
-            <Form className="px-3">
+            <Form className="px-3 chatWindowProjectInfoForm ">
               <Form.Group
                 className={`mb-3 projetStatusChat ${theme}chat-info-inner`}
               >
-                {/* <Form.Label className="fw-bold">Project Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="projectName"
-                  disabled
-                  value={projectData && projectData.projectName}
-                /> */}
                 <div className="NameofOposite">
                   {' '}
                   {chatOpositeMember ? chatOpositeMember.first_name : null}
