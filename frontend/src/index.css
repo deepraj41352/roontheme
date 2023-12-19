@@ -1489,15 +1489,15 @@ span[data-tooltip]:hover::before {
   }
 }
 
-@media only screen and (min-width: 1200px) and (max-width: 1450px) {
+@media only screen and (min-width: 1200px) and (max-width: 1300px) {
   .maxClassTable {
     max-width: 890px;
     margin: 0 auto;
   }
-  .maxAllTable {
+  /* .maxAllTable {
     max-width: 989px;
     margin: 0 auto;
-  }
+  } */
   /* .mainWidthtbl {
     max-width: 86% !important;
   }  */
@@ -1582,6 +1582,14 @@ span[data-tooltip]:hover::before {
 }
 
 @media only screen and (max-width: 780px) {
+  .dropMenu.dropdown-menu.show {
+    width: 100% !important;
+  }
+  .dropMenuCon {
+    display: flex !important;
+    justify-content: center !important;
+    color: RGB(14, 14, 61) !important;
+  }
   .newwidthall {
     max-width: 90%;
     margin: 0 auto;
@@ -1766,7 +1774,17 @@ span[data-tooltip2]:hover::before {
   color: #070719 !important;
 }
 /* chatbot css end */
-/* .mainWidthtbl {
+.mainWidthtbl {
   max-width: 95%;
   margin: 0 auto;
-} */
+}
+@media only screen and (min-width: 1300px) and (max-width: 1450px) {
+  .maxClassTable {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+}
+.dropdown-item.active {
+  color: #000 !important;
+  background-color: unset !important;
+}

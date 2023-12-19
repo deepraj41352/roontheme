@@ -313,7 +313,7 @@ export default function ProjectDataWidget() {
                     {/* </div> */}
                   </Tab>
                   <Tab
-                    className={`tableGrid actionCenter tableBg  ${theme}DataGrid`}
+                    className="tab-color"
                     eventKey="Completed Task"
                     title={
                       <span class="position-relative">Completed Task</span>

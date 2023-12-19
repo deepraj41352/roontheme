@@ -76,18 +76,6 @@ function ChatWindowScreen() {
   }, [id]);
 
   useEffect(() => {
-    socket.current.emit('addUser', userInfo._id, userInfo.role);
-    socket.current.on('getUsers', (users) => {});
-    console.log(userInfo._id, userInfo.role);
-  }, [userInfo, connetct]);
-
-  const handleTooltipClick = () => {
-    setShowTooltip(true);
-  };
-  const handleTooltipClickClose = () => {
-    setShowTooltip(false);
-  };
-  useEffect(() => {
     if (selectedfile && selectedfile.type) {
       const mediaType =
         selectedfile.type.includes('video') ||
@@ -99,9 +87,12 @@ function ChatWindowScreen() {
   }, [selectedfile]);
 
   const socket = useRef(io(SocketUrl));
-  // const socket = useRef(null);
-
   const scrollRef = useRef();
+
+  useEffect(() => {
+    socket.current.emit('addUser', userInfo._id, userInfo.role);
+    socket.current.on('getUsers', (users) => {});
+  }, [userInfo, connetct]);
 
   useEffect(() => {
     socket.current = io(SocketUrl);
@@ -301,8 +292,6 @@ function ChatWindowScreen() {
     };
     getConversation();
   }, []);
-
-  console.log('conversationID', conversationID);
 
   // This is for Task
   useEffect(() => {
@@ -658,7 +647,6 @@ function ChatWindowScreen() {
     setSidebarVisible(!sidebarVisible);
   };
 
-  console.log('projectData', projectData);
   return (
     <div className=" justify-content-center align-items-center">
       <div className="d-flex justify-content-center gap-3 ">
