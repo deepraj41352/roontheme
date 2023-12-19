@@ -17,6 +17,7 @@ export default function UserNav({ toggleSidebar }) {
   const theme = toggleState ? 'dark' : 'light';
   const [isToggled, setIsToggled] = useState(toggleState);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenhelp, setIsOpenhelp] = useState(false);
 
   const handleMouseOver = () => {
     setIsOpen(true);
@@ -35,6 +36,16 @@ export default function UserNav({ toggleSidebar }) {
     localStorage.removeItem('userInfo');
     window.location.href = '/';
   };
+
+  const toggleHelpSection = () => {
+    setIsOpenhelp((prevState) => ({
+      payload: !prevState.isOpenhelp,
+    }));
+  };
+
+  useEffect(() => {
+    ctxDispatch({ type: 'HELPTOGGLE', payload: isOpenhelp });
+  }, [isOpenhelp]);
 
   useEffect(() => {
     ctxDispatch({ type: 'TOGGLE_BTN', payload: isToggled });
@@ -71,6 +82,7 @@ export default function UserNav({ toggleSidebar }) {
                 <BiHelpCircle
                   className={`fs-4 admin-btn-logo ${theme}-navbar-Btn`}
                   title="Help?"
+                  onClick={toggleHelpSection}
                 />
               </div>
               <div className="py-2">

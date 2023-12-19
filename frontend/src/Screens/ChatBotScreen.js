@@ -13,15 +13,16 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { IoSendSharp } from 'react-icons/io5';
 import { ColorRing } from 'react-loader-spinner';
+import { RxCross1 } from 'react-icons/rx';
 
-function ChatBotScreen() {
+function ChatBotScreen({ onClose }) {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { toggleState, userInfo } = state;
+  const { toggleState, userInfo, helpToggle } = state;
   const theme = toggleState ? 'dark' : 'light';
-
+  const [isOpen, setIsOpen] = useState(true);
   function lastLoginDate(lastLogin) {
     const lastLoginTimestamp = lastLogin;
     const now = new Date();
@@ -40,6 +41,14 @@ function ChatBotScreen() {
     return formattedLastLogin;
   }
 
+  const onCloseHelp = async () => {
+    if (helpToggle == true) {
+      setIsOpen(false);
+    }
+  };
+  useEffect(() => {
+    ctxDispatch({ type: 'HELPTOGGLE', payload: isOpen });
+  }, [isOpen]);
   //API Call Code
   const FatchcategoryData = async () => {
     try {
@@ -78,6 +87,7 @@ function ChatBotScreen() {
       setLoading(false);
     }
   };
+
   const FatchAgentData = async () => {
     try {
       setLoading(true);
@@ -1350,7 +1360,7 @@ function ChatBotScreen() {
               <p>Task Status : {`${filteredData1.taskStatus}`} </p>
               <p>Created At : {`${filteredData1.createdAt}`} </p>
               <p>Project Name : {`${filteredData1.projectName}`} </p>
-              <p>Contractor Name : {`${filteredData1.userName}`} </p>
+              <p>Client Name : {`${filteredData1.userName}`} </p>
               <p>Agent Name : {`${filteredData1.agentName}`} </p>
               <Link to={`/chatWindowScreen/${filteredData1._id}`}>
                 {filteredData1.taskName} Link
@@ -1424,6 +1434,9 @@ function ChatBotScreen() {
               ) : (
                 ''
               )}
+            </div>
+            <div onClick={onCloseHelp}>
+              <RxCross1 />
             </div>
           </div>
         </CardHeader>
