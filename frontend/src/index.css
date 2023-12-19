@@ -718,7 +718,7 @@ body {
 
 /* start chat screen css */
 .chatWindow {
-  height: calc(100vh - 166px) !important;
+  height: calc(100vh - 213px) !important;
   width: 60%;
   margin: 0 0 10px 0 !important;
 }
@@ -731,7 +731,7 @@ body {
 }
 .chatAboveDiv {
   display: flex;
-  justify-content: flex-end;
+  justify-content: end;
 }
 .chatAboveDiv1 {
   display: flex;
@@ -825,7 +825,6 @@ body {
   margin: 0;
 }
 .richEditor {
-  max-width: 600px;
   overflow: hidden;
   word-wrap: break-word;
   color: black;
@@ -833,6 +832,9 @@ body {
 .richEditor .DraftEditor-root {
   overflow-y: scroll;
   max-height: 200px;
+}
+.input-text-edit {
+  flex-direction: column-reverse;
 }
 .forWidth {
   width: 92% !important;
@@ -1803,4 +1805,17 @@ span[data-tooltip2]:hover::before {
   align-items: center;
   right: -15px;
   border: 2px solid white;
+}
+.inputBox-chat {
+  color: #0d0c0c !important;
+  border: 1px solid #f2f0ef !important;
+  background-color: #f2f0ef !important;
+  font-size: 16px !important;
+  padding: 4px !important;
+  width: 80% !important;
+  transition: all ease 0.5s !important;
+  border-radius: 5px !important;
+  outline: unset;
+  max-width: 100%;
+  flex: 2;
 }

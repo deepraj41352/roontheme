@@ -867,9 +867,9 @@ function ChatWindowScreen() {
                             <div className="text-start d-flex justify-content-end  px-2 timeago2">
                               {item.senderFirstName} {item.senderLastName}
                             </div>
-                            <div className="chatAboveDiv">
+                            <div>
                               <p
-                                className={`chat-receiverMsg-inner ${theme}MsgThemeR p-2 px-3 mb-0`}
+                                className={`text-end chat-receiverMsg-inner ${theme}MsgThemeR p-2 px-3 mb-0`}
                                 dangerouslySetInnerHTML={{ __html: item.text }}
                               ></p>
                             </div>
@@ -977,7 +977,7 @@ function ChatWindowScreen() {
                             <div className="text-start px-2 timeago2">
                               {item.senderFirstName} {item.senderLastName}
                             </div>
-                            <div className="chatAboveDiv1">
+                            <div>
                               <p
                                 className={`chat-senderMsg-inner ${theme}MsgThemeS p-2 px-3 mb-0`}
                                 dangerouslySetInnerHTML={{ __html: item.text }}
@@ -1069,23 +1069,28 @@ function ChatWindowScreen() {
               />
             </Modal>
           </CardBody>
-          <CardFooter className={`d-flex align-items-center ${theme}chatFoot`}>
+          <CardFooter
+            className={`d-flex justify-content-center align-items-center ${theme}chatFoot`}
+          >
             <Form className="w-100">
-              <InputGroup>
-                <Form.Control
+              <InputGroup className={showFontStyle && 'input-text-edit'}>
+                <input
                   disabled={isSubmiting}
                   type="text"
-                  style={{ display: showFontStyle ? 'none' : 'block' }}
+                  style={{
+                    display: showFontStyle ? 'none' : 'block',
+                  }}
                   placeholder="Type your message here..."
                   aria-label="Search"
                   aria-describedby="basic-addon2"
                   onKeyPress={handleKeyPress}
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
+                  className="inputBox-chat"
                 />
                 <div
                   style={{ display: showFontStyle ? 'block' : 'none' }}
-                  className="richEditor"
+                  className="richEditor pr-2"
                 >
                   <MyStatefulEditor
                     markup=""
@@ -1093,103 +1098,82 @@ function ChatWindowScreen() {
                     setClearEditor={setClearEditor}
                     onChange={onChange}
                   />
-                  {/* <Editor
-          value={editorValue.content}
-          init={{
-            height: 200,
-            menubar: true
-          }}
-          onEditorChange={handleEditorChange}
-        /> */}
-                  {/* <ThemeProvider theme={myTheme}>
-    <MUIRichTextEditor
-      label="Type something here..."
-      onSave={handleEditorChange}
-      inlineToolbar={true}
-    />
-  </ThemeProvider>, */}
                 </div>
-                <Form.Group className="icon-for-upload">
-                  <Form.Label
-                    htmlFor="file-input"
-                    className="custom-file-upload"
-                  >
-                    <FiUpload />
-                  </Form.Label>
-                  <Form.Control
-                    style={{ display: 'none' }}
-                    id="file-input"
-                    type="file"
-                    disabled={isSubmiting}
-                    onChange={handleFileChange}
-                  />
-                </Form.Group>
-                <div className="App d-flex align-items-center ps-2">
-                  <BsFillMicFill
-                    onClick={startRecording}
-                    disabled={isRecording}
-                    style={{ display: isRecording ? 'none' : 'block' }}
-                  />
+                <div className="d-flex justify-content-end align-items-center gap-2 ms-3 p-2">
+                  <Form.Group>
+                    <Form.Label htmlFor="file-input" className="m-0">
+                      <FiUpload />
+                    </Form.Label>
+                    <Form.Control
+                      style={{ display: 'none' }}
+                      id="file-input"
+                      type="file"
+                      disabled={isSubmiting}
+                      onChange={handleFileChange}
+                    />
+                  </Form.Group>
+                  <div>
+                    <BsFillMicFill
+                      onClick={startRecording}
+                      disabled={isRecording}
+                      style={{ display: isRecording ? 'none' : 'block' }}
+                    />
 
-                  <BsFillMicMuteFill
-                    onClick={stopRecording}
-                    disabled={!isRecording}
-                    style={{ display: !isRecording ? 'none' : 'block' }}
-                  />
-                  <div
-                    onClick={stopRecording}
-                    disabled={!isRecording}
-                    style={{ display: !isRecording ? 'none' : 'block' }}
-                  >
-                    <Audio
-                      height="25"
-                      width="25"
-                      color={theme == 'dark' ? 'white' : '#07162c'}
-                      ariaLabel="audio-loading"
-                      wrapperStyle={{}}
-                      wrapperClass="wrapper-class"
-                      visible={true}
+                    <BsFillMicMuteFill
+                      onClick={stopRecording}
+                      disabled={!isRecording}
+                      style={{ display: !isRecording ? 'none' : 'block' }}
+                    />
+                    <div
+                      onClick={stopRecording}
+                      disabled={!isRecording}
+                      style={{ display: !isRecording ? 'none' : 'block' }}
+                    >
+                      <Audio
+                        height="25"
+                        width="25"
+                        color={theme == 'dark' ? 'white' : '#07162c'}
+                        ariaLabel="audio-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="wrapper-class"
+                        visible={true}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <RxFontStyle
+                      className="w-100 rxfontstryle"
+                      onClick={showFontStyleBox}
                     />
                   </div>
-                </div>
-
-                <div className="d-flex justify-content-center align-items-center ps-2 ">
-                  <RxFontStyle
-                    className="w-100 rxfontstryle"
-                    onClick={showFontStyleBox}
-                  />
+                  {isSubmiting ? (
+                    <ColorRing
+                      visible={true}
+                      height="40"
+                      width="40"
+                      ariaLabel="blocks-loading"
+                      wrapperStyle={{}}
+                      wrapperClass="blocks-wrapper"
+                      colors={
+                        toggleState
+                          ? ['white', 'white', 'white', 'white', 'white']
+                          : [
+                              'rgba(0, 0, 0, 1) 0%',
+                              'rgba(17, 17, 74, 1) 68%',
+                              'rgba(0, 0, 0, 1) 93%',
+                            ]
+                      }
+                    />
+                  ) : (
+                    <IoSendSharp
+                      disabled={true}
+                      className="ms-3"
+                      onClick={handleSendMessage}
+                    />
+                  )}
                 </div>
               </InputGroup>
             </Form>
-            {isSubmiting ? (
-              <ColorRing
-                visible={true}
-                height="40"
-                width="40"
-                ariaLabel="blocks-loading"
-                wrapperStyle={{}}
-                wrapperClass="blocks-wrapper"
-                colors={
-                  toggleState
-                    ? ['white', 'white', 'white', 'white', 'white']
-                    : [
-                        'rgba(0, 0, 0, 1) 0%',
-                        'rgba(17, 17, 74, 1) 68%',
-                        'rgba(0, 0, 0, 1) 93%',
-                      ]
-                }
-                // colors={[
-                //   'rgba(0, 0, 0, 1) 0%, rgba(17, 17, 74, 1) 68%, rgba(0, 0, 0, 1) 93%',
-                // ]}
-                // className={`${theme}-ringhcolor`}
-              />
-            ) : (
-              <IoSendSharp
-                disabled={true}
-                className="ms-3"
-                onClick={handleSendMessage}
-              />
-            )}
           </CardFooter>
         </Card>
         <Card className={`chatWindowProjectInfo ${theme}chatInfo`}>
