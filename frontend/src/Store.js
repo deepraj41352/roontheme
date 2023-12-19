@@ -5,7 +5,7 @@ export const Store = createContext();
 const initialValue = {
   validationMsg: null,
   sidebar: true,
-  helpToggle: false,
+  helpToggle: null,
   NotificationData: [],
   toggleState: localStorage.getItem('toggleState')
     ? JSON.parse(localStorage.getItem('toggleState'))

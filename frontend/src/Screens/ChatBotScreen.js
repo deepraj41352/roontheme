@@ -1436,7 +1436,7 @@ function ChatBotScreen({ onClose }) {
               )}
             </div>
             <div onClick={onCloseHelp}>
-              <RxCross1 />
+              <RxCross1 className={`${theme}backbtn`} />
             </div>
           </div>
         </CardHeader>

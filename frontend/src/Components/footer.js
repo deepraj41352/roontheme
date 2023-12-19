@@ -9,9 +9,7 @@ export default function Footer() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleHelpSection = () => {
-    setIsOpen((prevState) => ({
-      payload: !prevState.isOpen,
-    }));
+    setIsOpen(!isOpen);
   };
   useEffect(() => {
     ctxDispatch({ type: 'HELPTOGGLE', payload: isOpen });

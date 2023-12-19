@@ -86,16 +86,14 @@ function ChatWindowScreen() {
     }
   }, [selectedfile]);
 
-  const socket = useRef(io(SocketUrl));
   const scrollRef = useRef();
 
-  useEffect(() => {
-    socket.current.emit('addUser', userInfo._id, userInfo.role);
-    socket.current.on('getUsers', (users) => {});
-  }, [userInfo, connetct]);
+  const socket = useRef(null);
 
   useEffect(() => {
     socket.current = io(SocketUrl);
+    socket.current.emit('addUser', userInfo._id, userInfo.role);
+
     socket.current.on('audio', (data) => {
       const audioBlob = new Blob([data.audio], { type: 'audio/wav' });
       const audioUrl = URL.createObjectURL(audioBlob);
@@ -153,7 +151,13 @@ function ChatWindowScreen() {
         createdAt: Date.now(),
       });
     });
+    return () => {
+      if (socket.current) {
+        socket.current.disconnect();
+      }
+    };
   }, []);
+  // }, []);
 
   useEffect(() => {
     const getSendRole = async () => {

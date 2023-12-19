@@ -38,9 +38,7 @@ export default function UserNav({ toggleSidebar }) {
   };
 
   const toggleHelpSection = () => {
-    setIsOpenhelp((prevState) => ({
-      payload: !prevState.isOpenhelp,
-    }));
+    setIsOpenhelp(!isOpenhelp);
   };
 
   useEffect(() => {
@@ -94,7 +92,7 @@ export default function UserNav({ toggleSidebar }) {
                   title="Notifications"
                 />
                 {NotificationData.length > 0 && (
-                  <span className="position-absolute notification-badgeApp top-0 start-110 translate-middle badge rounded-pill bg-danger">
+                  <span className="notication-bdg">
                     {NotificationData.length}
                   </span>
                 )}

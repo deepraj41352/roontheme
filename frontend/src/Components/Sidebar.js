@@ -515,7 +515,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               <div className="position-relative">
                 Notification
                 {NotificationData.length > 0 && (
-                  <span className="position-absolute notification-badge top-0 start-110 translate-middle badge rounded-pill bg-danger">
+                  <span className="notication-bdg">
                     {NotificationData.length}
                   </span>
                 )}
