@@ -1,0 +1,8 @@
+{
+  "greeting": "Hello",
+  "bye": "Goodbye",
+  "chat": {
+    "welcome": "Welcome to the chat",
+    "send": "Send"
+  }
+}

@@ -12,6 +12,7 @@ import { ImCross } from 'react-icons/im';
 import axios from 'axios';
 import { BiTask } from 'react-icons/bi';
 import { VscColorMode } from 'react-icons/vsc';
+import { useTranslation } from 'react-i18next';
 import { BiHelpCircle } from 'react-icons/bi';
 
 function Sidebar({ sidebarVisible, setSidebarVisible }) {
@@ -21,6 +22,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
   const { toggleState } = state;
   const theme = toggleState ? 'dark' : 'light';
   const [newNotification, setnewNotification] = useState([]);
+  const { t } = useTranslation();
   // const socketUrl = process.env.REACT_APP_SOCKETURL;
   // const socket = io(socketUrl);
   // socket.emit('connectionForNotify', () => {

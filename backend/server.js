@@ -6,7 +6,6 @@ import userRouter from './routers/userRouter.js';
 import seedRouter from './routers/seed.js';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import projectRouter from './routers/projectRouter.js';
 import categoryRouter from './routers/categoryRouter.js';
 import NotificationRouter from './routers/NotificationRouter.js';
 import conversationRouter from './routers/conversationRouter.js';
@@ -70,7 +69,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/seed', seedRouter);
 app.use('/api/user', userRouter);
-app.use('/api/project', projectRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/conversation', conversationRouter);
 app.use('/api/message', MessageRouter);
@@ -159,14 +157,10 @@ const getUser = (userId) => {
 };
 
 io.on('connection', (socket) => {
-  // console.log('a user connected.');
   socket.on('message', (role) => {
-    console.log('OnMessage', role);
-
     io.emit('message', role);
   });
   socket.on('addUser', (userId, role) => {
-    console.log('Add user Triggered');
     addUser(userId, socket.id, role);
     io.emit('getUsers', users);
   });
@@ -234,8 +228,6 @@ io.on('connection', (socket) => {
         });
       }
     }
-
-    // io.emit('audio', audioData);
   });
 
   socket.on('audio', (data) => {
@@ -304,7 +296,6 @@ io.on('connection', (socket) => {
         });
       }
     }
-    // io.emit('audio', audioData);
   });
   socket.on('audioFile', (data) => {
     if (data.receiverdId.length == 2) {
@@ -337,10 +328,6 @@ io.on('connection', (socket) => {
           senderId: data.senderId,
           audio,
         });
-        // io.to(senderId.socketId).emit('audioFile', {
-        //   senderId: data.senderId,
-        //   audio,
-        // });
       }
     } else {
       const audio = data.audio;
@@ -375,28 +362,11 @@ io.on('connection', (socket) => {
         });
       }
     }
-    // io.emit('audio', audioData);
   });
 
   socket.on('image', async (data) => {
     const base64Image = data.image;
     const senderId = getUser(data.senderId);
-
-    // if (base64Image) {
-    // Remove the data:image/jpeg;base64 prefix and convert to a Buffer
-    // const imageBuffer = Buffer.from(
-    //   base64Image.replace(/^data:image\/\w+;base64,/, ''),
-    //   'base64'
-    // );
-
-    // console.log('_dirname',_dirname)
-    // const imageFileName = ${Date.now()}.jpeg;
-    // const filePath = process.env.NODE_ENV != 'development'?path.join(_dirname, frontend/public/${imageFileName}):path.join(_dirname, ../frontend/public/${imageFileName});
-
-    // console.log('imageFileName' , imageFileName )
-    // console.log('filePath ',filePath)
-    //  const imageUrl =  await uploadDoc(base64Image,'image');
-    //  console.log('imageUrl ',imageUrl)
 
     io.to(senderId.socketId).emit('image', {
       senderFirstName: data.senderFirstName,
@@ -406,23 +376,8 @@ io.on('connection', (socket) => {
       image: data.image,
       ImagewithMessage: data.ImagewithMessage,
     });
-    // fs.writeFile(filePath, imageBuffer, (err) => {
-    //   if (err) {
-    //     console.error(err);
-    //   } else {
-
-    //     io.to(senderId.socketId).emit('image', {
-    //       senderFirstName: data.senderFirstName,
-    //       senderLastName: data.senderLastName,
-    //       Sender_Profile: data.Sender_Profile,
-    //       senderId: data.senderId,
-    //       image: imageFileName,
-    //     });
-    //   }
-    // });
 
     if (data.receiverdId.length == 2) {
-      // const text = data.text;
       const agent = getUser(data.receiverdId[0]);
       const contractor = getUser(data.receiverdId[1]);
       if (agent) {
@@ -461,7 +416,6 @@ io.on('connection', (socket) => {
         });
       });
       if (user) {
-        // Broadcast the image URL to all clients
         io.to(user.socketId).emit('image', {
           senderFirstName: data.senderFirstName,
           senderLastName: data.senderLastName,
@@ -485,8 +439,6 @@ io.on('connection', (socket) => {
       receiverdId,
       text,
     }) => {
-      console.log('users', users);
-
       if (receiverdId.length == 2) {
         const agent = getUser(receiverdId[0]);
         const contractor = getUser(receiverdId[1]);
@@ -495,7 +447,6 @@ io.on('connection', (socket) => {
             senderFirstName,
             senderLastName,
             Sender_Profile,
-
             senderId,
             text,
           });
@@ -505,7 +456,6 @@ io.on('connection', (socket) => {
             senderFirstName,
             senderLastName,
             Sender_Profile,
-
             senderId,
             text,
           });

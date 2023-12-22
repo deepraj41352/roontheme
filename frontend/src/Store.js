@@ -7,6 +7,9 @@ const initialValue = {
   sidebar: true,
   helpToggle: null,
   NotificationData: [],
+  languageName: localStorage.getItem('languageName')
+    ? JSON.parse(localStorage.getItem('languageName'))
+    : 'en',
   toggleState: localStorage.getItem('toggleState')
     ? JSON.parse(localStorage.getItem('toggleState'))
     : null,
@@ -64,6 +67,8 @@ const reducer = (state, action) => {
       return { ...state, Notificationtoggle: action.payload };
     case 'HELPTOGGLE':
       return { ...state, helpToggle: action.payload };
+    case 'LANGUAGE_BTN':
+      return { ...state, languageName: action.payload };
     default:
       return state;
   }

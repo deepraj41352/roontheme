@@ -1,9 +1,6 @@
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
-
-dotenv.config();
 import dotenv from 'dotenv';
-import Project from './Models/projectModel.js';
 import emailTemplate from './emailTemplate.js';
 
 dotenv.config();
@@ -72,8 +69,7 @@ export const isAdminOrSelf = async (req, res, next) => {
   const userId = req.params.id; // User ID in the route parameter
   try {
     // Assuming you have a method to retrieve the project owner's ID
-    const project = await Project.findById(req.params.id);
-    const projectOwnerId = project ? project.projectOwner : null;
+
     if (
       currentUser.role === 'superadmin' ||
       currentUser.role === 'admin' ||

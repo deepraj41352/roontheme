@@ -9,6 +9,7 @@ import { IoPersonOutline } from 'react-icons/io5';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { VscColorMode } from 'react-icons/vsc';
 import truncateText from '../../TruncateText';
+import LanguageSwitcher from '../LanguageSwitcher';
 import { BiHelpCircle } from 'react-icons/bi';
 
 export default function UserNav({ toggleSidebar }) {
@@ -76,6 +77,9 @@ export default function UserNav({ toggleSidebar }) {
               style={{ maxHeight: '100px' }}
               navbarScroll
             >
+              <div className="py-2">
+                <LanguageSwitcher />
+              </div>
               <div className="py-2">
                 <BiHelpCircle
                   className={`fs-4 admin-btn-logo ${theme}-navbar-Btn`}

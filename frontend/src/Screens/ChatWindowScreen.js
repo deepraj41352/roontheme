@@ -62,7 +62,7 @@ function ChatWindowScreen() {
   const [imageUrl, setImageUrl] = useState(null);
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [MessageWithImage, setMessageWithImage] = useState('');
-
+  const [senderInfo, SetSenderInfo] = useState({});
   const [showImage, setShowImage] = useState(false);
   const [connetct, setConnetct] = useState(false);
   const [mediaType, setMediaType] = useState('image');
@@ -357,6 +357,25 @@ function ChatWindowScreen() {
     };
     getChatMemberName();
   }, [conversationID]);
+
+  useEffect(() => {
+    const getChatMemberName = async () => {
+      try {
+        const senderIds = chatMessages.map((item) => item.sender);
+        const { data } = await axios.get(`/api/user`);
+        const filteredUsers = data.filter((user) =>
+          senderIds.includes(user._id)
+        );
+
+        console.log('Filtered Users', filteredUsers);
+
+        SetSenderInfo(filteredUsers);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getChatMemberName();
+  }, [chatMessages]);
 
   const showFontStyleBox = () => {
     setShowFontStyle(!showFontStyle);
@@ -680,90 +699,12 @@ function ChatWindowScreen() {
           </CardHeader>
           {sidebarVisible ? (
             <div className="Chatside">
-              {/* <Card className="chatWindowProjectInfo1">
-                {projectData ? (
-                  <Form className="px-3">
-                    <Form.Group className="mb-3 projetStatusChat">
-                      <Form.Label className="fw-bold">Project Name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="projectName"
-                        disabled
-                        value={projectData && projectData.projectName}
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3 " controlId="formBasicPassword">
-                      <Form.Label className="mb-1 fw-bold">
-                        Task Status
-                      </Form.Label>
-                      <Form.Select
-                        value={projectStatus}
-                        onChange={handleStatusUpdate}
-                      >
-                        <option value="active">Active</option>
-                        <option value="completed">Completed </option>
-                        <option value="qued">Qued </option>
-                      </Form.Select>
-                    </Form.Group>
-                    <Modal show={showModal} onHide={handleClose}>
-                      <Modal.Header closeButton>
-                        <Modal.Title>File Selected</Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body>
-                        Your file has been selected.
-                        <h4> {fileForModel?.name}</h4>
-                        {}
-                        <Form.Control
-                          disabled={isSubmiting}
-                          type="text"
-                          style={{ display: showFontStyle ? 'none' : 'block' }}
-                          placeholder="Type your message here..."
-                          aria-label="Search"
-                          aria-describedby="basic-addon2"
-                          onKeyPress={handleKeyPress}
-                          value={MessageWithImage}
-                          onChange={(e) => setMessageWithImage(e.target.value)}
-                        />
-                      </Modal.Body>
-                      <Modal.Footer>
-                        <Button
-                          className="btn-send"
-                          onClick={handleSendMessage}
-                        >
-                          send
-                        </Button>
-                      </Modal.Footer>
-                    </Modal>
-                  </Form>
-                ) : (
-                  <div className="d-flex mt-3 justify-content-center">
-                    <ThreeDots
-                      height="50"
-                      width="50"
-                      radius="9"
-                      className="ThreeDot  justify-content-center"
-                      color="#0e0e3d"
-                      ariaLabel="three-dots-loading"
-                      wrapperStyle={{}}
-                      wrapperClassName=""
-                      visible={true}
-                    />
-                  </div>
-                )}
-              </Card> */}
               <Card className={`chatWindowProjectInfo2 ${theme}chatInfo`}>
                 {projectData ? (
                   <Form className="px-3">
                     <Form.Group
                       className={`mb-3 projetStatusChat ${theme}chat-info-inner`}
                     >
-                      {/* <Form.Label className="fw-bold">Project Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="projectName"
-                  disabled
-                  value={projectData && projectData.projectName}
-                /> */}
                       <div className="NameofOposite">
                         {' '}
                         {chatOpositeMember
@@ -785,7 +726,6 @@ function ChatWindowScreen() {
                     <Form.Group
                       className={`mb-3 projetStatusChat ${theme}chat-info-inner`}
                     >
-                      {/* <Form.Label className="fw-bold">Project Name</Form.Label> */}
                       <div>
                         Project Name -{' '}
                         {truncateText(projectData?.projectName, 30)}
@@ -794,29 +734,9 @@ function ChatWindowScreen() {
                     <Form.Group
                       className={`mb-3 projetStatusChat ${theme}chat-info-inner`}
                     >
-                      {/* {!showTooltip && (
-                  <>
-                    <div className="tooltipShow" onClick={handleTooltipClick}>
-                      Task Description -{' '}
-                      {truncateText(projectData?.taskDescription, 30)}
-                    </div>
-                  </>
-                )}
-                {showTooltip && (
-                  <>
-                    <div className="d-flex justify-content-end">
-                      <button
-                        className="tooltiphide"
-                        onClick={handleTooltipClickClose}
-                      >
-                        Hide
-                      </button>
-                    </div> */}
                       <div className="taskDescription">
                         Task Description - {projectData?.taskDescription}
                       </div>
-                      {/* </>
-                )} */}
                     </Form.Group>
                     <Form.Group className="mb-3 " controlId="formBasicPassword">
                       <Form.Label className="mb-1 fw-bold">
@@ -877,15 +797,26 @@ function ChatWindowScreen() {
                               {format(item.createdAt)}
                             </div>
                           </div>
+
                           <div>
-                            <img
-                              className="chat-dp"
-                              src={
-                                item.Sender_Profile
-                                  ? item.Sender_Profile
-                                  : './avatar.png'
+                            {senderInfo.map((user) => {
+                              if (user._id === item.sender) {
+                                return (
+                                  <img
+                                    key={user._id}
+                                    className="chat-dp"
+                                    src={
+                                      user.profile_picture
+                                        ? user.profile_picture
+                                        : './avatar.png'
+                                    }
+                                    alt="Profile"
+                                  />
+                                );
+                              } else {
+                                return null;
                               }
-                            ></img>
+                            })}
                           </div>
                         </div>
                       </div>
@@ -939,15 +870,24 @@ function ChatWindowScreen() {
                               {format(item.createdAt)}
                             </div>
                           </div>
-
-                          <img
-                            className="chat-dp"
-                            src={
-                              item.Sender_Profile
-                                ? item.Sender_Profile
-                                : './avatar.png'
+                          {senderInfo.map((user) => {
+                            if (user._id === item.sender) {
+                              return (
+                                <img
+                                  key={user._id}
+                                  className="chat-dp"
+                                  src={
+                                    user.profile_picture
+                                      ? user.profile_picture
+                                      : './avatar.png'
+                                  }
+                                  alt="Profile"
+                                />
+                              );
+                            } else {
+                              return null;
                             }
-                          ></img>
+                          })}
                         </div>
                       </>
                     )}
@@ -961,18 +901,28 @@ function ChatWindowScreen() {
                       >
                         <div className="d-flex w-100">
                           <div>
-                            <img
-                              className="chat-dp"
-                              src={
-                                item.Sender_Profile
-                                  ? item.Sender_Profile
-                                  : './avatar.png'
+                            {senderInfo.map((user) => {
+                              if (user._id === item.sender) {
+                                return (
+                                  <img
+                                    key={user._id}
+                                    className="chat-dp"
+                                    src={
+                                      user.profile_picture
+                                        ? user.profile_picture
+                                        : './avatar.png'
+                                    }
+                                    alt="Profile"
+                                  />
+                                );
+                              } else {
+                                return null;
                               }
-                            ></img>
+                            })}
                           </div>
                           <div className="d-flex flex-column  forWidth  ">
                             <div className="text-start px-2 timeago2">
-                              {item.senderFirstName} {item.senderLastName}
+                              {item.senderFirstName} {item.senderLastName}{' '}
                             </div>
                             <div>
                               <p
@@ -991,14 +941,25 @@ function ChatWindowScreen() {
                         ref={scrollRef}
                         className="chat-senderMsg d-flex flex-row "
                       >
-                        <img
-                          className="chat-dp"
-                          src={
-                            item.Sender_Profile
-                              ? item.Sender_Profile
-                              : './avatar.png'
+                        <b>{item.senderId}</b>
+                        {senderInfo.map((user) => {
+                          if (user._id === item.sender) {
+                            return (
+                              <img
+                                key={user._id}
+                                className="chat-dp"
+                                src={
+                                  user.profile_picture
+                                    ? user.profile_picture
+                                    : './avatar.png'
+                                }
+                                alt="Profile"
+                              />
+                            );
+                          } else {
+                            return null;
                           }
-                        ></img>
+                        })}
                         <div className="w-100">
                           <div className="d-flex flex-row">
                             <div className="text-start px-2 timeago2">
@@ -1199,30 +1160,11 @@ function ChatWindowScreen() {
               <Form.Group
                 className={`mb-3 projetStatusChat ${theme}chat-info-inner`}
               >
-                {/* <Form.Label className="fw-bold">Project Name</Form.Label> */}
                 <div>Project Name - {projectData?.projectName} </div>
               </Form.Group>
               <Form.Group
                 className={`mb-3 projetStatusChat ${theme}chat-info-inner`}
               >
-                {/* {!showTooltip && (
-                  <>
-                    <div className="tooltipShow" onClick={handleTooltipClick}>
-                      Task Description -{' '}
-                      {truncateText(projectData?.taskDescription, 30)}
-                    </div>
-                  </>
-                )}
-                {showTooltip && (
-                  <>
-                    <div className="d-flex justify-content-end">
-                      <button
-                        className="tooltiphide"
-                        onClick={handleTooltipClickClose}
-                      >
-                        Hide
-                      </button>
-                    </div> */}
                 <div className="taskDescription">
                   Task Description - {projectData?.taskDescription}
                 </div>

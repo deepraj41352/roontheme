@@ -11,11 +11,25 @@ import UserRouting from './Components/Routing/UserRouting';
 import HomeNav from './Components/Navbar/HomeNav';
 import HomeRouting from './Components/Routing/HomeRouting';
 import UserNav from './Components/Navbar/UserNav';
+import { I18nextProvider } from 'react-i18next';
+import i18n from 'i18next';
+import enTranslation from './Language/en.json';
+import nlTranslation from './Language/nl.json';
 
 function App() {
-  const [sidebarVisible, setSidebarVisible] = useState(false);
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { toggleState, userInfo } = state;
+  const { toggleState, userInfo, languageName } = state;
+  i18n.init({
+    interpolation: { escapeValue: false },
+    lng: languageName,
+    resources: {
+      en: { translation: enTranslation },
+      nl: { translation: nlTranslation },
+    },
+  });
+
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+
   const theme = toggleState ? 'dark' : 'light';
 
   const toggleSidebar = () => {
@@ -27,39 +41,41 @@ function App() {
   };
 
   return (
-    <div className={userInfo ? `App ${theme}` : `App`}>
-      <ToastContainer position="bottom-center" autoClose={600} limit={1} />
-      <div>
-        <Container fluid className="px-0">
-          <div className="d-flex">
-            {userInfo ? (
-              <Sidebar
-                sidebarVisible={sidebarVisible}
-                setSidebarVisible={setSidebarVisible}
-              />
-            ) : null}
-            <div className="px-0 w-100">
+    <I18nextProvider i18n={i18n}>
+      <div className={userInfo ? `App ${theme}` : `App`}>
+        <ToastContainer position="bottom-center" autoClose={600} limit={1} />
+        <div>
+          <Container fluid className="px-0">
+            <div className="d-flex">
               {userInfo ? (
-                <UserNav toggleSidebar={toggleSidebar} />
-              ) : (
-                <HomeNav />
-              )}
-              <main className={userInfo ? `windowCal` : `windowCal1`}>
-                <div className={userInfo ? `py-5 px-4` : `m-0 mx-3`}>
-                  <Routes>
-                    <Route
-                      path="/*"
-                      element={userInfo ? <UserRouting /> : <HomeRouting />}
-                    />
-                  </Routes>
-                </div>
-              </main>
-              <Footer />
+                <Sidebar
+                  sidebarVisible={sidebarVisible}
+                  setSidebarVisible={setSidebarVisible}
+                />
+              ) : null}
+              <div className="px-0 w-100">
+                {userInfo ? (
+                  <UserNav toggleSidebar={toggleSidebar} />
+                ) : (
+                  <HomeNav />
+                )}
+                <main className={userInfo ? `windowCal` : `windowCal1`}>
+                  <div className={userInfo ? `py-5 px-4` : `m-0 mx-3`}>
+                    <Routes>
+                      <Route
+                        path="/*"
+                        element={userInfo ? <UserRouting /> : <HomeRouting />}
+                      />
+                    </Routes>
+                  </div>
+                </main>
+                <Footer />
+              </div>
             </div>
-          </div>
-        </Container>
+          </Container>
+        </div>
       </div>
-    </div>
+    </I18nextProvider>
   );
 }
 
