@@ -30,7 +30,7 @@ export const sendEmailNotify = async (options) => {
 export const baseUrl = () =>
   process.env.NODE_ENV == 'devlopment'
     ? 'http://localhost:3000'
-    : 'https://roonberg.onrender.com';
+    : 'https://roontheme.onrender.com';
 
 export const generateToken = (user) => {
   return jwt.sign(
