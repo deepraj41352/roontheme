@@ -1,19 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
-import { Store } from '../Store';
-import axios from 'axios';
-import { ThreeDots } from 'react-loader-spinner';
-import Accordion from 'react-bootstrap/Accordion';
-import ThreeLoader from '../Util/threeLoader';
+import React, { useContext, useEffect, useState } from "react";
+import { io } from "socket.io-client";
+import { Store } from "../Store";
+import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
+import Accordion from "react-bootstrap/Accordion";
+import ThreeLoader from "../Util/threeLoader";
+import { useTranslation } from "react-i18next";
 
 export default function NotificationScreen() {
   const [notificationMessage, setNotificationMessage] = useState([]);
-  const [notificationMark, setNotificationMark] = useState('');
+  const [notificationMark, setNotificationMark] = useState("");
   const [loading, setloading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { toggleState, userInfo, Notificationtoggle } = state;
-  const theme = toggleState ? 'dark' : 'light';
+  const theme = toggleState ? "dark" : "light";
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
   const maxPageNumbers = 5;
@@ -36,24 +37,25 @@ export default function NotificationScreen() {
     }
   };
 
+  const { t } = useTranslation();
   useEffect(() => {
     const fetchNotificationData = async () => {
       try {
         setloading(true);
-        ctxDispatch({ type: 'NOTIFICATION-NULL' });
+        ctxDispatch({ type: "NOTIFICATION-NULL" });
 
         const response = await axios.get(`/api/notification/${userInfo._id}`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         const NotifyData = response.data;
         setNotificationMessage(NotifyData);
-        ctxDispatch({ type: 'NOTIFICATION-NULL' });
+        ctxDispatch({ type: "NOTIFICATION-NULL" });
         NotifyData.map((item) => {
-          if (item.status == 'unseen')
-            ctxDispatch({ type: 'NOTIFICATION', payload: { item } });
+          if (item.status == "unseen")
+            ctxDispatch({ type: "NOTIFICATION", payload: { item } });
         });
       } catch (error) {
-        setError('An Error Occurred');
+        setError("An Error Occurred");
       } finally {
         setloading(false);
       }
@@ -67,14 +69,14 @@ export default function NotificationScreen() {
     try {
       const data = await axios.put(
         `/api/notification/updateStatus/${e.target.value}`,
-        { status: 'unseen' },
+        { status: "unseen" },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
       setNotificationMark(data);
     } catch (err) {
-      setError('An Error Occurred');
+      setError(t("An Error Ocurred"));
     } finally {
       setloading(false);
     }
@@ -93,13 +95,13 @@ export default function NotificationScreen() {
               <div className="container mt-5">
                 <div className="row">
                   <div className="col p-0">
-                    <h2 className="mb-3">Notifications</h2>
+                    <h2 className="mb-3">{t("notification")}</h2>
                     {currentNotifications.length === 0}
                     <ul className="list-group custom-list">
                       {currentNotifications.map((item, index) => (
                         <Accordion
                           className={` ${
-                            item.status === 'seen'
+                            item.status === "seen"
                               ? `acco1-seen-${theme} pb-1`
                               : `acco1-unseen-${theme} pb-1`
                           }`}
@@ -109,11 +111,11 @@ export default function NotificationScreen() {
                             className={`acco2${theme}`}
                           >
                             <Accordion.Header className={`aaac-${theme}`}>
-                              {item.message.split(' ').slice(0, 3).join(' ')}
+                              {item.message.split(" ").slice(0, 3).join(" ")}
                             </Accordion.Header>
                             <Accordion.Body
                               className={`list-group-item custom-list-item ${
-                                item.status === 'seen'
+                                item.status === "seen"
                                   ? `list-group-item-seen-${theme}`
                                   : `list-group-item-unseen-${theme}`
                               }`}
@@ -130,12 +132,12 @@ export default function NotificationScreen() {
                                   className={`btn-sm MarkAsRead-${theme}`}
                                   style={{
                                     display:
-                                      item.status == 'seen' ? 'none' : 'block',
+                                      item.status == "seen" ? "none" : "block",
                                   }}
                                   value={item._id}
                                   onClick={handleUpdateStatus}
                                 >
-                                  Mark as read
+                                  {t("markAsRead")}
                                 </button>
                               </div>
                             </Accordion.Body>
@@ -148,14 +150,14 @@ export default function NotificationScreen() {
                         <ul className="pagination justify-content-center">
                           <li
                             className={`page-item ${
-                              currentPage === 1 ? 'disabled' : ''
+                              currentPage === 1 ? "disabled" : ""
                             }`}
                           >
                             <button
                               className="page-link"
                               onClick={() => handlePageChange(currentPage - 1)}
                             >
-                              Previous
+                              {t("previous")}
                             </button>
                           </li>
                           {pageNumbers
@@ -167,7 +169,7 @@ export default function NotificationScreen() {
                               <li
                                 key={number}
                                 className={`page-item ${
-                                  currentPage === number ? 'active' : ''
+                                  currentPage === number ? "active" : ""
                                 }`}
                               >
                                 <button
@@ -180,14 +182,14 @@ export default function NotificationScreen() {
                             ))}
                           <li
                             className={`page-item ${
-                              currentPage === totalPages ? 'disabled' : ''
+                              currentPage === totalPages ? "disabled" : ""
                             }`}
                           >
                             <button
                               className="page-link"
                               onClick={() => handlePageChange(currentPage + 1)}
                             >
-                              Next
+                              {t("next")}
                             </button>
                           </li>
                         </ul>

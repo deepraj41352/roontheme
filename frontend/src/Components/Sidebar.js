@@ -201,7 +201,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                 className={activeTab === 'admin' ? 'activeBack liCon' : 'liCon'}
               >
                 <MdOutlineGroups2 className="me-3 fs-5" />
-                <div className="mt-1">Admin</div>
+                <div className="mt-1">{t('admin')}</div>
               </li>
             </Link>
           </motion.li>
@@ -234,7 +234,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                   }
                 >
                   <HiUserGroup className="me-3 fs-5" />
-                  <div className="mt-1">Agent</div>
+                  <div className="mt-1">{t('agent')}</div>
                 </li>
               </Link>
             </motion.li>
@@ -263,7 +263,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                   }
                 >
                   <MdGroup className="me-3 fs-5" />
-                  <div className="mt-1">Client</div>
+                  <div className="mt-1">{t('client')}</div>
                 </li>
               </Link>
             </motion.li>
@@ -292,7 +292,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                   }
                 >
                   <FaListUl className="me-3 fs-5" />
-                  <div className="mt-1">Categories</div>
+                  <div className="mt-1">{t('categories')}</div>
                 </li>
               </Link>
             </motion.li>
@@ -350,7 +350,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                   }
                 >
                   <BiTask className="me-3 fs-5" />
-                  <div className="mt-1">Task</div>
+                  <div className="mt-1">{t('task')}</div>
                 </li>
               </Link>
             </motion.li>
@@ -417,7 +417,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                   }
                 >
                   <BiTask className="me-3 fs-5" />
-                  <div className="mt-1">Task</div>
+                  <div className="mt-1">{t('task')}</div>
                 </li>
               </Link>
             </motion.li>
@@ -515,7 +515,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
             >
               <IoMdNotifications className="me-3 fs-5 " />
               <div className="position-relative">
-                Notification
+                {t('notification')}
                 {NotificationData.length > 0 && (
                   <span className="notication-bdg">
                     {NotificationData.length}
@@ -556,7 +556,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                 }
                 alt="userimg"
               />
-              Profile
+              {t('myProfile')}
             </li>
           </Link>
         </motion.li>
@@ -610,7 +610,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               }
             >
               <BiHelpCircle className="me-3 fs-5" />
-              <div className="mt-1">Help?</div>
+              <div className="mt-1">{t('help')}?</div>
             </li>
           </Link>
         </motion.li>
@@ -633,7 +633,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
           >
             <li>
               <MdLogout className="me-3 fs-5" />
-              Logout
+              {t('logout')}
             </li>
           </Link>
         </motion.li>

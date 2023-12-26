@@ -9,6 +9,7 @@ import reportWebVitals from './reportWebVitals';
 import StoreProvider from '../src/Store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import 'react-quill/dist/quill.snow.css';
 // const root = ReactDOM.createRoot(document.getElementById('root'));
 const root = createRoot(document.getElementById('root'));
 

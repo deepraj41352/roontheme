@@ -11,9 +11,12 @@ import AvatarImage from '../../Components/Avatar';
 import axios from 'axios';
 import DataTable from '../../Components/DataTable';
 import ThreeLoader from '../../Util/threeLoader';
+import { useTranslation } from 'react-i18next';
 
 export default function ProjectDataWidget() {
   const { state } = useContext(Store);
+  const { t } = useTranslation();
+
   const {
     toggleState,
     userInfo,
@@ -55,7 +58,7 @@ export default function ProjectDataWidget() {
 
     {
       field: 'taskName',
-      headerName: 'Task Name',
+      headerName: t('task'),
       minWidth: 150,
       flex: 1,
       renderCell: (params) => (
@@ -65,14 +68,16 @@ export default function ProjectDataWidget() {
         >
           <div className="alignLeft">
             <div>{params.row.taskName}</div>
-            <div>Task ID {params.row._id}</div>
+            <div>
+              {t('task')} ID {params.row._id}
+            </div>
           </div>
         </Link>
       ),
     },
     {
       field: 'userName',
-      headerName: 'Contractor Name',
+      headerName: t('client'),
       minWidth: 150,
       flex: 1,
       renderCell: (params) => (
@@ -82,14 +87,14 @@ export default function ProjectDataWidget() {
         >
           <div className="alignLeft">
             <div>{params.row.userName}</div>
-            <div>Raised By</div>
+            <div> {t('raisedBy')}</div>
           </div>
         </Link>
       ),
     },
     {
       field: 'agentName',
-      headerName: 'Agent Name',
+      headerName: t('agent'),
       minWidth: 150,
       flex: 1,
       renderCell: (params) => (
@@ -99,14 +104,14 @@ export default function ProjectDataWidget() {
         >
           <div className="alignLeft">
             <div>{params.row.agentName}</div>
-            <div>Assigned By</div>
+            <div>{t('assignedBy')}</div>
           </div>
         </Link>
       ),
     },
     {
       field: 'taskStatus',
-      headerName: 'Status',
+      headerName: t('status'),
       minWidth: 250,
       flex: 1,
       renderCell: (params) => {
@@ -121,13 +126,13 @@ export default function ProjectDataWidget() {
             >
               <IoSettings className="clockIcon" />
               {params.row.taskStatus === 'waiting'
-                ? 'Waiting On You'
+                ? t('Waiting on you')
                 : params.row.taskStatus === 'active'
-                ? 'In Progress'
+                ? t('InProgress')
                 : params.row.taskStatus === 'completed'
-                ? 'Completed'
+                ? t('completed')
                 : params.row.taskStatus === 'pending'
-                ? 'Ready To Completed'
+                ? t('Ready To Completed')
                 : ''}
             </div>
           </Grid>
@@ -188,7 +193,7 @@ export default function ProjectDataWidget() {
         const datas = response.data;
         setCategoryData(datas);
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Ocurred'));
       } finally {
         setLoading(false);
       }
@@ -214,7 +219,7 @@ export default function ProjectDataWidget() {
         }
         setProjectData(ContractorProject);
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Ocurred'));
       } finally {
         setLoading(false);
       }
@@ -263,20 +268,26 @@ export default function ProjectDataWidget() {
                       className="dropMenuCon"
                       onClick={() => handleTabSelect('Active Task')}
                     >
-                      <span class="position-relative">Active Task</span>
+                      <span class="position-relative">
+                        {t('active')} {t('task')}
+                      </span>
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="dropMenuCon"
                       onClick={() => handleTabSelect('Parked Task')}
                     >
-                      <span class="position-relative">Parked Task</span>
+                      <span class="position-relative">
+                        {t('parked')} {t('task')}
+                      </span>
                     </Dropdown.Item>
                     <Dropdown.Item
                       active
                       className="dropMenuCon"
                       onClick={() => handleTabSelect('Completed Task')}
                     >
-                      <span class="position-relative">Completed Task</span>
+                      <span class="position-relative">
+                        {t('completed')} {t('task')}
+                      </span>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
@@ -289,45 +300,50 @@ export default function ProjectDataWidget() {
                   <Tab
                     className="tab-color"
                     eventKey="Active Task"
-                    title={<span class="position-relative">Active Task</span>}
+                    title={
+                      <span class="position-relative">
+                        {t('active')} {t('task')}
+                      </span>
+                    }
                   >
                     <DataTable
                       rowdata={ActiveData}
                       columns={columns}
-                      label={'Task Is Not Avalible'}
+                      label={`${t('task')} ${t('Is Not Available')}`}
                       extracss={'tableGrid actionCenter'}
                     />
                   </Tab>
                   <Tab
                     className="tab-color"
                     eventKey="Parked Task"
-                    title={<span class="position-relative">Parked Task</span>}
+                    title={
+                      <span class="position-relative">
+                        {t('parked')} {t('task')}
+                      </span>
+                    }
                   >
-                    {/* <div className={!sidebar ? 'w-100' : 'maxClassTable'}> */}
                     <DataTable
                       rowdata={PendingData}
                       columns={columns}
-                      label={'Task Is Not Avalible'}
+                      label={`${t('task')} ${t('Is Not Available')}`}
                       extracss={'tableGrid actionCenter'}
                     />
-                    {/* </div> */}
                   </Tab>
                   <Tab
                     className="tab-color"
                     eventKey="Completed Task"
                     title={
-                      <span class="position-relative">Completed Task</span>
+                      <span class="position-relative">
+                        {t('completed')} {t('task')}
+                      </span>
                     }
                   >
-                    {/* <div className={!sidebar ? 'w-100' : 'maxClassTable'}> */}
                     <DataTable
                       rowdata={CompleteData}
                       columns={columns}
-                      label={'Task Is Not Avalible'}
+                      label={`${t('task')} ${t('Is Not Available')}`}
                       extracss={'tableGrid actionCenter'}
                     />
-
-                    {/* </div> */}
                   </Tab>
                 </Tabs>
               </div>

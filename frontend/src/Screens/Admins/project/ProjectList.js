@@ -3,8 +3,10 @@ import axios from 'axios';
 import { Store } from '../../../Store';
 import ThreeLoader from '../../../Util/threeLoader';
 import DataTable from '../../../Components/DataTable';
+import { useTranslation } from 'react-i18next';
 
 export default function ProjectList() {
+  const { t } = useTranslation();
   const [ContractorData, setContractorData] = useState([]);
   const [projectData, setProjectData] = useState([]);
   const [loading, setLoding] = useState(false);
@@ -22,7 +24,7 @@ export default function ProjectList() {
     },
     {
       field: 'NumberTasks',
-      headerName: 'Number of Tasks',
+      headerName: t('Number of tasks'),
       minWidth: 100,
       flex: 1,
       renderCell: (params) => {
@@ -36,7 +38,7 @@ export default function ProjectList() {
     },
     {
       field: 'userId',
-      headerName: 'Client',
+      headerName: t('client'),
       minWidth: 100,
       flex: 1,
       renderCell: (params) => {
@@ -48,7 +50,7 @@ export default function ProjectList() {
     },
     {
       field: 'createdAt',
-      headerName: 'Project Create Date',
+      headerName: t('project create date'),
       flex: 1,
       minWidth: 220,
       renderCell: (params) => {
@@ -58,9 +60,13 @@ export default function ProjectList() {
         return (
           <div className="text-start">
             <div>
-              <span>Date: {date}</span>
+              <span>
+                {t('date')}: {date}
+              </span>
               <br />
-              <span>Time: {time}</span>
+              <span>
+                {t('time')}: {time}
+              </span>
             </div>
           </div>
         );
@@ -82,7 +88,7 @@ export default function ProjectList() {
         const { data } = await axios.post(`/api/user/`, { role: 'contractor' });
         setContractorData(data);
       } catch (error) {
-        setError('An Error Ocurred');
+        setError(t('An Error Occurred'));
       } finally {
         setLoding(false);
       }
@@ -97,7 +103,7 @@ export default function ProjectList() {
         const { data } = await axios.get(`/api/task/tasks`);
         SetTaskData(data);
       } catch (error) {
-        setError('An Error Ocurred');
+        setError(t('An Error Occurred'));
       } finally {
         setLoding(false);
       }
@@ -115,7 +121,7 @@ export default function ProjectList() {
         });
         setProjectData(data);
       } catch (error) {
-        setError('An Error Ocurred');
+        setError(t('An Error Occurred'));
       } finally {
         setLoding(false);
       }
@@ -134,7 +140,7 @@ export default function ProjectList() {
           <DataTable
             rowdata={projectData}
             columns={columns}
-            label={'Project Is Not Avalible'}
+            label={`Project ${t('Is Not Available')}`}
           />
         </>
       )}

@@ -16,8 +16,11 @@ import { Store } from '../../../Store';
 import ThreeLoader from '../../../Util/threeLoader';
 import { IoSettings } from 'react-icons/io5';
 import DataTable from '../../../Components/DataTable';
+import { useTranslation } from 'react-i18next';
 
 export default function AgentTasksList() {
+  const { t } = useTranslation();
+
   const [isSubmiting, setIsSubmiting] = useState(false);
   const { state } = useContext(Store);
   const [formData, setFormData] = useState({
@@ -33,13 +36,15 @@ export default function AgentTasksList() {
   const minutesAgo = Math.floor((now - lastLoginDate) / (1000 * 60));
   const hours = Math.floor(minutesAgo / 60);
   const remainingMinutes = minutesAgo % 60;
-  const formattedLastLogin = `Last Login: ${
-    hours > 0 ? `${hours} ${hours === 1 ? 'Hour' : 'Hours'}` : ''
+  const formattedLastLogin = ` ${t('last login')}: ${
+    hours > 0 ? `${hours} ${hours === 1 ? t('hour') : t('hours')}` : ''
   }${hours > 0 && remainingMinutes > 0 ? ', ' : ''}${
     remainingMinutes > 0
-      ? `${remainingMinutes} ${remainingMinutes === 1 ? 'Minute' : 'Minutes'}`
-      : '0 Minute'
-  } ago`;
+      ? `${remainingMinutes} ${
+          remainingMinutes === 1 ? t('minute') : t('minutes')
+        }`
+      : `0 ${t('minute')}`
+  } ${t('ago')}`;
 
   const columns = [
     {
@@ -72,7 +77,7 @@ export default function AgentTasksList() {
     },
     {
       field: 'taskName',
-      headerName: 'Task',
+      headerName: t('task'),
       minWidth: 100,
       flex: 1,
       renderCell: (params) => (
@@ -82,14 +87,16 @@ export default function AgentTasksList() {
         >
           <div className={`text-start ${theme}-textRow`}>
             <div>{params.row.taskName}</div>
-            <div>Task ID {params.row._id}</div>
+            <div>
+              {t('task')} ID {params.row._id}
+            </div>
           </div>
         </Link>
       ),
     },
     {
       field: 'userName',
-      headerName: 'Client',
+      headerName: t('client'),
       minWidth: 100,
       flex: 1,
       renderCell: (params) => (
@@ -99,14 +106,14 @@ export default function AgentTasksList() {
         >
           <div className={`text-start ${theme}-textRow`}>
             <div>{params.row.userName}</div>
-            <div>Raised By</div>
+            <div> {t('raisedBy')}</div>
           </div>
         </Link>
       ),
     },
     {
       field: 'agentName',
-      headerName: 'Agent',
+      headerName: t('agent'),
       minWidth: 100,
       flex: 1,
       renderCell: (params) => (
@@ -116,14 +123,14 @@ export default function AgentTasksList() {
         >
           <div className={`text-start ${theme}-textRow`}>
             <div>{params.row.agentName}</div>
-            <div>Assigned By</div>
+            <div>{t('assignedBy')}</div>
           </div>
         </Link>
       ),
     },
     {
       field: 'taskStatus',
-      headerName: 'Status',
+      headerName: t('status'),
       minWidth: 225,
       flex: 1,
       renderCell: (params) => {
@@ -138,13 +145,13 @@ export default function AgentTasksList() {
             >
               <IoSettings className="clockIcon" />
               {params.row.taskStatus === 'waiting'
-                ? 'Waiting On You'
+                ? t('Waiting on you')
                 : params.row.taskStatus === 'active'
-                ? 'In Progress'
+                ? t('InProgress')
                 : params.row.taskStatus === 'completed'
-                ? 'Completed'
+                ? t('completed')
                 : params.row.taskStatus === 'pending'
-                ? 'Ready To Completed'
+                ? t('Ready To Completed')
                 : ''}
             </div>
           </Grid>
@@ -173,22 +180,6 @@ export default function AgentTasksList() {
     setSelectedProjectsId(id);
   };
 
-  // useEffect(() => {
-  //   const GetProject = async () => {
-  //     try {
-  //       const { data } = await axios.get(`/api/task/${selectedRowId}`);
-  //       setProjectStatus(data.taskStatus);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-  //   GetProject();
-  // }, [selectedRowId]);
-
-  const handleCloseRow = () => {
-    setShowModal(false);
-    setShowModalDel(false);
-  };
   const ModelOpen = () => {
     setShowModal(true);
   };
@@ -206,7 +197,7 @@ export default function AgentTasksList() {
         });
         SetData(taskData);
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Ocurred'));
       } finally {
         setLoading(false);
       }
@@ -227,7 +218,7 @@ export default function AgentTasksList() {
         });
         setProjectData(projectData);
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Ocurred'));
       } finally {
         setLoading(false);
       }
@@ -348,7 +339,7 @@ export default function AgentTasksList() {
                     className="dropMenuCon"
                     onClick={() => handleProjectsSelect('', 'All Project')}
                   >
-                    All Project
+                    {t('all')} Project
                   </Dropdown.Item>
                   {ProjectData.map((project, key) => (
                     <Dropdown.Item
@@ -377,20 +368,26 @@ export default function AgentTasksList() {
                     className="dropMenuCon"
                     onClick={() => handleTabSelect('Active Task')}
                   >
-                    <span class="position-relative">Active Task</span>
+                    <span class="position-relative">
+                      {t('active')} {t('task')}
+                    </span>
                   </Dropdown.Item>
                   <Dropdown.Item
                     className="dropMenuCon"
                     onClick={() => handleTabSelect('Parked Task')}
                   >
-                    <span class="position-relative">Parked Task</span>
+                    <span class="position-relative">
+                      {t('parked')} {t('task')}
+                    </span>
                   </Dropdown.Item>
                   <Dropdown.Item
                     active
                     className="dropMenuCon"
                     onClick={() => handleTabSelect('Completed Task')}
                   >
-                    <span class="position-relative">Completed Task</span>
+                    <span class="position-relative">
+                      {t('completed')} {t('task')}
+                    </span>
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
@@ -404,7 +401,11 @@ export default function AgentTasksList() {
                 <Tab
                   className="tab-color"
                   eventKey="Active Task"
-                  title={<span class="position-relative">Active Task</span>}
+                  title={
+                    <span class="position-relative">
+                      {t('active')} {t('task')}
+                    </span>
+                  }
                 >
                   {selectedRowId && renderButtons()}
                   {lastLogin()}
@@ -412,14 +413,18 @@ export default function AgentTasksList() {
                   <DataTable
                     rowdata={ActiveData}
                     columns={columns}
-                    label={'Task Is Not Avalible'}
+                    label={`${t('task')} ${t('Is Not Available')}`}
                     extracss={'tableGrid actionCenter'}
                   />
                 </Tab>
                 <Tab
                   className="tab-color"
                   eventKey="Parked Task"
-                  title={<span class="position-relative">Parked Task</span>}
+                  title={
+                    <span class="position-relative">
+                      {t('parked')} {t('task')}
+                    </span>
+                  }
                 >
                   {selectedRowId && renderButtons()}
 
@@ -427,14 +432,18 @@ export default function AgentTasksList() {
                   <DataTable
                     rowdata={PendingData}
                     columns={columns}
-                    label={'Task Is Not Avalible'}
+                    label={`${t('task')} ${t('Is Not Available')}`}
                     extracss={'tableGrid actionCenter'}
                   />
                 </Tab>
                 <Tab
                   className="tab-color"
                   eventKey="Completed Task"
-                  title={<span class="position-relative">Completed Task</span>}
+                  title={
+                    <span class="position-relative">
+                      {t('completed')} {t('task')}
+                    </span>
+                  }
                 >
                   {selectedRowId && renderButtons()}
 
@@ -442,7 +451,7 @@ export default function AgentTasksList() {
                   <DataTable
                     rowdata={CompleteData}
                     columns={columns}
-                    label={'Task Is Not Avalible'}
+                    label={`${t('task')} ${t('Is Not Available')}`}
                     extracss={'tableGrid actionCenter'}
                   />
                 </Tab>

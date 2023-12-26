@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 import {
   CCard,
   CRow,
@@ -6,14 +6,15 @@ import {
   CCardHeader,
   CCardBody,
   CWidgetStatsA,
-} from '@coreui/react';
-import { CChartBar } from '@coreui/react-chartjs';
+} from "@coreui/react";
+import { CChartBar } from "@coreui/react-chartjs";
 
-import axios from 'axios';
-import { Store } from '../../Store';
-import { CChartDoughnut } from '@coreui/react-chartjs';
-import ProjectDataWidget from './ProjectDataWidget';
-import ThreeLoader from '../../Util/threeLoader';
+import axios from "axios";
+import { Store } from "../../Store";
+import { CChartDoughnut } from "@coreui/react-chartjs";
+import ProjectDataWidget from "./ProjectDataWidget";
+import ThreeLoader from "../../Util/threeLoader";
+import { useTranslation } from "react-i18next";
 
 const WidgetsDropdown = React.memo(() => {
   const { state } = useContext(Store);
@@ -23,34 +24,35 @@ const WidgetsDropdown = React.memo(() => {
   const [quedProject, setQuedProject] = useState([]);
   const [completedProject, setCompletedProject] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fatchUserData = async () => {
       try {
         setLoading(true);
-        const { data: taskDatas } = await axios.get('/api/task/tasks', {
+        const { data: taskDatas } = await axios.get("/api/task/tasks", {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         let taskData;
 
-        if (userInfo.role === 'superadmin' || userInfo.role === 'admin') {
+        if (userInfo.role === "superadmin" || userInfo.role === "admin") {
           taskData = taskDatas;
-        } else if (userInfo.role === 'contractor') {
+        } else if (userInfo.role === "contractor") {
           taskData = taskDatas.filter((item) => {
             return item.userId === userInfo._id;
           });
-        } else if (userInfo.role === 'agent') {
+        } else if (userInfo.role === "agent") {
           taskData = taskDatas.filter((item) => {
             return item.agentId === userInfo._id;
           });
         }
         const activeProject = taskData.filter(
-          (el) => el.taskStatus == 'waiting' || el.taskStatus == 'active'
+          (el) => el.taskStatus == "waiting" || el.taskStatus == "active"
         );
-        const quedProject = taskData.filter((el) => el.taskStatus == 'pending');
+        const quedProject = taskData.filter((el) => el.taskStatus == "pending");
         const completedProject = taskData.filter(
-          (el) => el.taskStatus == 'completed'
+          (el) => el.taskStatus == "completed"
         );
         setActiveProject(activeProject);
         setQuedProject(quedProject);
@@ -58,7 +60,7 @@ const WidgetsDropdown = React.memo(() => {
         setProjectData(taskData);
         setLoading(false);
       } catch (error) {
-        setError('An Error Occurred');
+        setError(`${t("An Error Ocurred")}`);
         setLoading(false);
       }
     };
@@ -71,8 +73,8 @@ const WidgetsDropdown = React.memo(() => {
 
   const dataChartDoughnut = {
     labels: isEmpty
-      ? ['Task Is Not Available']
-      : ['Active', 'Qued', 'Completed'],
+      ? [`${t("task")} ${t("Is Not Available")}`]
+      : [`${t("active")}`, "Qued", `${t("completed")}`],
     datasets: [
       {
         data: [
@@ -80,8 +82,8 @@ const WidgetsDropdown = React.memo(() => {
           quedProject.length,
           completedProject.length,
         ],
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-        hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+        hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
       },
     ],
   };
@@ -103,35 +105,35 @@ const WidgetsDropdown = React.memo(() => {
                   value={
                     <>{projectData.length <= 0 ? `0` : projectData.length}</>
                   }
-                  title="Total Tasks"
+                  title={`${t("total")} ${t("tasks")}`}
                   chart={
                     <CChartBar
                       className="mt-3 mx-3"
-                      style={{ height: '70px' }}
+                      style={{ height: "70px" }}
                       data={{
                         labels: [
-                          'January',
-                          'February',
-                          'March',
-                          'April',
-                          'May',
-                          'June',
-                          'July',
-                          'August',
-                          'September',
-                          'October',
-                          'November',
-                          'December',
-                          'January',
-                          'February',
-                          'March',
-                          'April',
+                          "January",
+                          "February",
+                          "March",
+                          "April",
+                          "May",
+                          "June",
+                          "July",
+                          "August",
+                          "September",
+                          "October",
+                          "November",
+                          "December",
+                          "January",
+                          "February",
+                          "March",
+                          "April",
                         ],
                         datasets: [
                           {
-                            label: 'My First dataset',
-                            backgroundColor: 'rgba(255,255,255,.2)',
-                            borderColor: 'rgba(255,255,255,.55)',
+                            label: "My First dataset",
+                            backgroundColor: "rgba(255,255,255,.2)",
+                            borderColor: "rgba(255,255,255,.55)",
                             data: [
                               78, 81, 80, 45, 34, 12, 40, 85, 65, 23, 12, 98,
                               34, 84, 67, 82,
@@ -177,7 +179,7 @@ const WidgetsDropdown = React.memo(() => {
                 <CCol className="p-0">
                   <CCard className="mh-100 mb-4 h-100 ">
                     <CCardHeader className="alignLeft">
-                      <b>Tasks</b>
+                      <b>{t("tasks")}</b>
                     </CCardHeader>
                     <CCardBody>
                       <ProjectDataWidget projectData={projectData} />
@@ -189,7 +191,7 @@ const WidgetsDropdown = React.memo(() => {
             <CCol sm={4} lg={4} className="pb-3">
               <CCard className="mh-100 mb-4 h-100">
                 <CCardHeader className="alignLeft">
-                  <b>Tasks</b>
+                  <b>{t("tasks")}</b>
                 </CCardHeader>
                 <CChartDoughnut data={dataChartDoughnut} />
               </CCard>

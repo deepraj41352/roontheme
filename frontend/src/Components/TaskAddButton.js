@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { ImCross } from 'react-icons/im';
 import Modal from '@mui/material/Modal';
-import { Alert, Card, Form } from 'react-bootstrap';
+import { Alert, Card, Col, Form, Row } from 'react-bootstrap';
 import { Store } from '../Store';
 import { MdAddCircleOutline } from 'react-icons/md';
 import { Button } from '@mui/material';
@@ -23,6 +23,8 @@ import { toast } from 'react-toastify';
 import { FiPlus } from 'react-icons/fi';
 import truncateText from '../TruncateText';
 import FormSubmitLoader from '../Util/formSubmitLoader';
+import ReactQuill from 'react-quill';
+import { useTranslation } from 'react-i18next';
 
 export default function TaskAddButton() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -46,6 +48,12 @@ export default function TaskAddButton() {
   const [filterCategory, setFilterCategory] = useState([]);
   const [agentData, setAgentData] = useState([]);
   const [toggleNot, setToggleNot] = useState(false);
+  const { t } = useTranslation();
+
+  const handleDescription = (html) => {
+    setTaskDesc(html);
+    console.log(html);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -57,7 +65,7 @@ export default function TaskAddButton() {
         const datas = response.data;
         setCategoryData(datas);
       } catch (error) {
-        toast.error('An Error Occurred');
+        toast.error(t('An Error Ocurred'));
       } finally {
         setLoading(false);
       }
@@ -82,7 +90,7 @@ export default function TaskAddButton() {
           setProjectData(data);
         }
       } catch (error) {
-        toast.error('An Error Occurred');
+        toast.error(t('An Error Ocurred'));
       } finally {
         setLoading(false);
       }
@@ -96,7 +104,7 @@ export default function TaskAddButton() {
         const { data } = await axios.post(`/api/user/`, { role: 'contractor' });
         setContractorData(data);
       } catch (error) {
-        toast.error('An Error Occurred');
+        toast.error(t('An Error Ocurred'));
       }
     };
     FatchContractorData();
@@ -108,7 +116,7 @@ export default function TaskAddButton() {
         const { data } = await axios.post(`/api/user/`, { role: 'agent' });
         setAgentData(data);
       } catch (error) {
-        toast.error('An Error Occurred');
+        toast.error(t('An Error Ocurred'));
       }
     };
     FatchContractorData();
@@ -133,7 +141,7 @@ export default function TaskAddButton() {
       );
       if (data.status === 201) {
         setSuccess(!success);
-        toast.success(data.data.message);
+        toast.success(`${t('task')} ${t('created successfully')}`);
         setDynamicfield(false);
         setIsSubmiting(false);
         setIsModelOpen(false);
@@ -149,15 +157,9 @@ export default function TaskAddButton() {
         setDynamicfield(false);
         toast.error(data.data.message);
         setIsModelOpen(false);
-        setProjectName('');
-        setTaskName('');
-        setTaskDesc('');
-        setCategory('');
-        setContractorName('');
-        setSelectProjectName('');
       }
     } catch (error) {
-      toast.error('Failed To Create Task');
+      toast.error(`${t('failedCreate')} ${t('task')}`);
       setIsModelOpen(false);
       setDynamicfield(false);
     } finally {
@@ -183,7 +185,7 @@ export default function TaskAddButton() {
       );
       if (data.status === 201) {
         setSuccess(!success);
-        toast.success(data.data.message);
+        toast.success(`${t('task')} ${t('created successfully')}`);
         setDynamicfield(false);
         setIsSubmiting(false);
         setIsModelOpen(false);
@@ -203,7 +205,7 @@ export default function TaskAddButton() {
         setIsModelOpen(false);
       }
     } catch (error) {
-      toast.error('Failed To Create Task');
+      toast.error(`${t('failedCreate')} ${t('task')}`);
       setIsModelOpen(false);
       setDynamicfield(false);
     } finally {
@@ -279,7 +281,8 @@ export default function TaskAddButton() {
         (contractor) => contractor._id === findProject.userId
       );
       if (contractor) {
-        setSelectedContractor(contractor);
+        const constractorId = contractor[0]._id;
+        setSelectedContractor(constractorId);
       }
     }
   };
@@ -306,26 +309,11 @@ export default function TaskAddButton() {
           <FormSubmitLoader />
         </Backdrop>
       )}
+
       <Modal
         open={isModelOpen}
         onClose={handleCloseRow}
         className="overlayLoading modaleWidthButton p-0"
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '90%',
-          maxWidth: 700,
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-          borderRadius: 1,
-          '@media (max-width: 600px)': {
-            maxWidth: '90%',
-            margin: '0 auto',
-          },
-        }}
       >
         <Box
           className="modelBg modelContainer"
@@ -337,26 +325,19 @@ export default function TaskAddButton() {
             width: 400,
             bgcolor: 'background.paper',
             boxShadow: 24,
-            p: 4,
+            p: 2,
             borderRadius: 1,
           }}
         >
           <Form
-            className="scrollInAdminproject p-3 "
+            className="scrollInAdminproject p-2"
             onSubmit={handelBothSubmit}
           >
-            <ImCross
-              color="black"
-              className="formcrossbtn"
-              onClick={handleCloseRow}
-            />
-            <h4 className="d-flex justify-content-center">Add Task</h4>
-
             <div className="cateContainer mb-3">
-              <p className="cateItem">Categories</p>
+              <p className="cateItem"> {t('categories')}</p>
               <div className="d-flex flex-wrap cateborder">
                 {filterCategory.length === 0 ? (
-                  <div className="p-2">No categories assigned yet</div>
+                  <div className="p-2">{t('noCategoriesAssigned')}</div>
                 ) : (
                   filterCategory.map((category) => (
                     <div key={category._id} className="cateItems">
@@ -398,11 +379,10 @@ export default function TaskAddButton() {
                 )}
               </div>
             </div>
-
             <FormControl
               className={dynamicfield ? 'disable mb-3 w-100' : 'mb-3 w-100'}
             >
-              <InputLabel>Select Project </InputLabel>
+              <InputLabel> {t('select')} Project</InputLabel>
               <Select
                 value={SelectProjectName}
                 onChange={(e) => selectedProjectContractor(e)}
@@ -421,7 +401,7 @@ export default function TaskAddButton() {
                     handleAddNewProject();
                   }}
                 >
-                  <MdAddCircleOutline /> Add New Project
+                  <MdAddCircleOutline /> {t('addNew')} Project
                 </MenuItem>
                 {ProjectData &&
                   ProjectData.map((items) => (
@@ -435,86 +415,97 @@ export default function TaskAddButton() {
                   ))}
               </Select>
             </FormControl>
+            {userInfo.role == 'contractor' ? (
+              dynamicfield ? (
+                <div className="d-flex align-items-center gap-1">
+                  <TextField
+                    required
+                    className="mb-1"
+                    value={projectName}
+                    onChange={(e) => setProjectName(e.target.value)}
+                    label={`Project ${t('name')}`}
+                    fullWidth
+                  />
+                </div>
+              ) : null
+            ) : (
+              <Row>
+                <Col md={6} className="TaskBtnFieldLeft">
+                  {dynamicfield ? (
+                    <div className="d-flex align-items-center gap-1">
+                      <TextField
+                        required
+                        className="mb-1"
+                        value={projectName}
+                        onChange={(e) => setProjectName(e.target.value)}
+                        label="Project Name"
+                        fullWidth
+                      />
+                    </div>
+                  ) : null}
+                </Col>
 
-            {dynamicfield ? (
-              <div className="d-flex align-items-center gap-1">
-                <TextField
-                  required
-                  className="mb-3"
-                  value={projectName}
-                  onChange={(e) => setProjectName(e.target.value)}
-                  label="Project Name"
-                  fullWidth
-                />
-              </div>
-            ) : null}
+                <Col md={6} className="TaskBtnFieldRight">
+                  {dynamicfield &&
+                    (userInfo.role == 'superadmin' ||
+                      userInfo.role == 'admin') && (
+                      <FormControl className={'mb-3 w-100'}>
+                        <InputLabel>
+                          {' '}
+                          {t('select')} {t('client')}
+                        </InputLabel>
+                        <Select
+                          value={contractorName}
+                          onChange={(e) => setContractorName(e.target.value)}
+                          required
+                          MenuProps={{
+                            PaperProps: {
+                              style: {
+                                maxHeight: 150,
+                                top: 0,
+                              },
+                            },
+                          }}
+                        >
+                          <MenuItem value="addNew">
+                            <Link to={`/contractor/create`} className="addCont">
+                              <MdAddCircleOutline /> {t('addNew')} {t('client')}
+                            </Link>
+                          </MenuItem>
+                          {contractorData.map((item) => (
+                            <MenuItem key={item._id} value={item._id}>
+                              {item.first_name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    )}
+                </Col>
+              </Row>
+            )}
 
             <TextField
               required
               className="mb-3"
               value={taskName}
               onChange={validation}
-              label="Task Name"
+              label={` ${t('task')} ${t('name')}`}
               fullWidth
               type="text"
             />
             {ShowErrorMessage && (
               <Alert variant="danger" className="error nameValidationErrorBox">
-                The first letter of the task should be an alphabet
+                {t('firstLetterAlphabet')}
               </Alert>
             )}
-
-            <TextField
-              required
-              className="mb-3"
-              value={taskDesc}
-              onChange={(e) => setTaskDesc(e.target.value)}
-              label="Description"
-              fullWidth
-            />
-
-            {(userInfo.role == 'superadmin' || userInfo.role == 'admin') && (
-              <FormControl className={'mb-3 w-100'}>
-                <InputLabel>Select Client</InputLabel>
-                {SelectProjectName && selectedContractor ? (
-                  <Select
-                    value={selectedContractor[0]._id}
-                    onChange={(e) => setContractorName(e.target.value)}
-                    disabled
-                  >
-                    <MenuItem value={selectedContractor[0]._id}>
-                      {selectedContractor[0].first_name}
-                    </MenuItem>
-                  </Select>
-                ) : (
-                  <Select
-                    value={contractorName}
-                    onChange={(e) => setContractorName(e.target.value)}
-                    required
-                    MenuProps={{
-                      PaperProps: {
-                        style: {
-                          maxHeight: 150,
-                          top: 0,
-                        },
-                      },
-                    }}
-                  >
-                    <MenuItem value="addNew">
-                      <Link to={`/contractor/create`} className="addCont">
-                        <MdAddCircleOutline /> Add New Client
-                      </Link>
-                    </MenuItem>
-                    {contractorData.map((item) => (
-                      <MenuItem key={item._id} value={item._id}>
-                        {item.first_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                )}
-              </FormControl>
-            )}
-
+            <div>
+              <ReactQuill
+                theme="snow"
+                value={taskDesc}
+                onChange={handleDescription}
+                placeholder={t('Write task description')}
+              />
+            </div>
             <Button
               variant="contained"
               color="primary"
@@ -522,7 +513,7 @@ export default function TaskAddButton() {
               className="mt-2 formbtn updatingBtn globalbtnColor"
               disabled={ShowErrorMessage}
             >
-              {isSubmiting ? 'SUBMITTING' : 'SUBMIT '}
+              {isSubmiting ? t('submitting') : t('submit')}
             </Button>
           </Form>
         </Box>

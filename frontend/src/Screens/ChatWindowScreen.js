@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   Card,
   CardBody,
@@ -6,38 +6,40 @@ import {
   CardHeader,
   Form,
   InputGroup,
-} from 'react-bootstrap';
-import { IoSendSharp } from 'react-icons/io5';
-import { RxFontStyle } from 'react-icons/rx';
-import MyStatefulEditor from '../Components/rte_test';
-import { Store } from '../Store';
-import { io } from 'socket.io-client';
-import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { format } from 'timeago.js';
+} from "react-bootstrap";
+import { IoSendSharp } from "react-icons/io5";
+import { RxFontStyle } from "react-icons/rx";
+import MyStatefulEditor from "../Components/rte_test";
+import { Store } from "../Store";
+import { io } from "socket.io-client";
+import axios from "axios";
+import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { format } from "timeago.js";
 import {
   BsDownload,
   BsFillMicFill,
   BsFillMicMuteFill,
   BsThreeDotsVertical,
-} from 'react-icons/bs';
-import { FiUpload } from 'react-icons/fi';
-import Modal from 'react-bootstrap/Modal';
-import { Audio, ColorRing, ThreeDots } from 'react-loader-spinner';
-import Button from 'react-bootstrap/Button';
-import { Editor } from '@tinymce/tinymce-react';
+} from "react-icons/bs";
+import { FiUpload } from "react-icons/fi";
+import Modal from "react-bootstrap/Modal";
+import { Audio, ColorRing, ThreeDots } from "react-loader-spinner";
+import Button from "react-bootstrap/Button";
+import { Editor } from "@tinymce/tinymce-react";
 // import { EditorValue } from "react-rte";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { MdCancel } from 'react-icons/md';
-import { FaArrowLeft, FaImage } from 'react-icons/fa';
-import truncateText from '../TruncateText';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { MdCancel } from "react-icons/md";
+import { FaArrowLeft, FaImage } from "react-icons/fa";
+import truncateText from "../TruncateText";
+import { useTranslation } from "react-i18next";
 
 function ChatWindowScreen() {
   const { id } = useParams();
+  const { t } = useTranslation();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { toggleState, userInfo } = state;
-  const theme = toggleState ? 'dark' : 'light';
+  const theme = toggleState ? "dark" : "light";
   const [showFontStyle, setShowFontStyle] = useState(false);
   const [conversation, setConversation] = useState([]);
   const [chatMessages, setChatMessages] = useState([]);
@@ -61,11 +63,11 @@ function ChatWindowScreen() {
   const [showModal, setShowModal] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  const [MessageWithImage, setMessageWithImage] = useState('');
+  const [MessageWithImage, setMessageWithImage] = useState("");
   const [senderInfo, SetSenderInfo] = useState({});
   const [showImage, setShowImage] = useState(false);
   const [connetct, setConnetct] = useState(false);
-  const [mediaType, setMediaType] = useState('image');
+  const [mediaType, setMediaType] = useState("image");
   const audioChunks = useRef([]);
   const audioRef = useRef();
   const SocketUrl = process.env.REACT_APP_SOCKETURL;
@@ -78,10 +80,10 @@ function ChatWindowScreen() {
   useEffect(() => {
     if (selectedfile && selectedfile.type) {
       const mediaType =
-        selectedfile.type.includes('video') ||
-        selectedfile.type.includes('audio')
-          ? 'video'
-          : 'image';
+        selectedfile.type.includes("video") ||
+        selectedfile.type.includes("audio")
+          ? "video"
+          : "image";
       setMediaType(mediaType);
     }
   }, [selectedfile]);
@@ -92,10 +94,10 @@ function ChatWindowScreen() {
 
   useEffect(() => {
     socket.current = io(SocketUrl);
-    socket.current.emit('addUser', userInfo._id, userInfo.role);
+    socket.current.emit("addUser", userInfo._id, userInfo.role);
 
-    socket.current.on('audio', (data) => {
-      const audioBlob = new Blob([data.audio], { type: 'audio/wav' });
+    socket.current.on("audio", (data) => {
+      const audioBlob = new Blob([data.audio], { type: "audio/wav" });
       const audioUrl = URL.createObjectURL(audioBlob);
       setArrivalMessage({
         senderFirstName: data.senderFirstName,
@@ -107,7 +109,7 @@ function ChatWindowScreen() {
       });
       setAudioStream(data.audio);
     });
-    socket.current.on('audioFile', (data) => {
+    socket.current.on("audioFile", (data) => {
       setArrivalMessage({
         senderFirstName: data.senderFirstName,
         senderLastName: data.senderLastName,
@@ -118,7 +120,7 @@ function ChatWindowScreen() {
       });
       setAudioStream(data.audio);
     });
-    socket.current.on('video', (data) => {
+    socket.current.on("video", (data) => {
       setArrivalMessage({
         senderFirstName: data.senderFirstName,
         senderLastName: data.senderLastName,
@@ -130,7 +132,7 @@ function ChatWindowScreen() {
       setAudioStream(data.video);
     });
 
-    socket.current.on('image', (data) => {
+    socket.current.on("image", (data) => {
       setArrivalMessage({
         senderFirstName: data.senderFirstName,
         senderLastName: data.senderLastName,
@@ -141,7 +143,7 @@ function ChatWindowScreen() {
         createdAt: Date.now(),
       });
     });
-    socket.current.on('getMessage', (data) => {
+    socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         senderFirstName: data.senderFirstName,
         senderLastName: data.senderLastName,
@@ -163,9 +165,9 @@ function ChatWindowScreen() {
     const getSendRole = async () => {
       try {
         const { data } = await axios.get(
-          '/api/user/role/' + arrivalMessage.sender
+          "/api/user/role/" + arrivalMessage.sender
         );
-        if (data.role === 'admin' || data.role === 'superadmin') {
+        if (data.role === "admin" || data.role === "superadmin") {
           arrivalMessage &&
             setChatMessages((prev) => [...prev, arrivalMessage]);
         } else {
@@ -199,9 +201,9 @@ function ChatWindowScreen() {
         );
         recorder.onstop = async () => {
           const audioBlob = new Blob(audioChunks.current, {
-            type: 'audio/wav',
+            type: "audio/wav",
           });
-          if (userInfo.role === 'admin' || userInfo.role === 'superadmin') {
+          if (userInfo.role === "admin" || userInfo.role === "superadmin") {
             const messageData = {
               senderFirstName: userInfo.first_name,
               senderLastName: userInfo.last_name,
@@ -210,7 +212,7 @@ function ChatWindowScreen() {
               receiverdId: conversationID.members,
               audio: audioBlob,
             };
-            socket.current.emit('audio', messageData);
+            socket.current.emit("audio", messageData);
             audioChunks.current.length = 0;
           } else {
             const messageData = {
@@ -221,22 +223,22 @@ function ChatWindowScreen() {
               receiverdId: receiverdId,
               audio: audioBlob,
             };
-            socket.current.emit('audio', messageData);
+            socket.current.emit("audio", messageData);
             audioChunks.current.length = 0;
           }
 
           const formDatas = new FormData();
-          formDatas.append('media', audioBlob);
-          formDatas.append('mediaType', 'video');
-          formDatas.append('conversationId', conversationID._id);
+          formDatas.append("media", audioBlob);
+          formDatas.append("mediaType", "video");
+          formDatas.append("conversationId", conversationID._id);
           // formDatas.append('conversationId', id);
-          formDatas.append('sender', userInfo._id);
-          formDatas.append('senderFirstName', userInfo.first_name);
-          formDatas.append('senderLastName', userInfo.last_name);
-          formDatas.append('Sender_Profile', userInfo.profile_picture);
+          formDatas.append("sender", userInfo._id);
+          formDatas.append("senderFirstName", userInfo.first_name);
+          formDatas.append("senderLastName", userInfo.last_name);
+          formDatas.append("Sender_Profile", userInfo.profile_picture);
 
           try {
-            const { data } = await axios.post('/api/message/audio', formDatas);
+            const { data } = await axios.post("/api/message/audio", formDatas);
           } catch (err) {
             console.log(err.response?.data?.message);
           }
@@ -246,7 +248,7 @@ function ChatWindowScreen() {
         setIsRecording(true);
       })
       .catch((error) => {
-        console.error('Error accessing the microphone:', error);
+        console.error("Error accessing the microphone:", error);
         setIsRecording(false); // Ensure that the button is disabled in case of an error
       });
   };
@@ -334,7 +336,10 @@ function ChatWindowScreen() {
         }
       );
       if (data.status === 200) {
-        toast.success('Task Status updated Successfully !');
+        toast.success("Task Status updated Successfully !");
+        toast.success(
+          `${t("task")} ${t("status")} ${t("update successfully")}`
+        );
       }
       setProjectStatus(data.projectStatus);
     } catch (err) {
@@ -346,7 +351,7 @@ function ChatWindowScreen() {
     const receiverdId = conversationID?.members.find(
       (member) => member !== userInfo._id
     );
-    console.log('receiverdId', receiverdId);
+    console.log("receiverdId", receiverdId);
     const getChatMemberName = async () => {
       try {
         const { data } = await axios.get(`/api/user/${receiverdId}`);
@@ -367,7 +372,7 @@ function ChatWindowScreen() {
           senderIds.includes(user._id)
         );
 
-        console.log('Filtered Users', filteredUsers);
+        console.log("Filtered Users", filteredUsers);
 
         SetSenderInfo(filteredUsers);
       } catch (err) {
@@ -379,14 +384,14 @@ function ChatWindowScreen() {
 
   const showFontStyleBox = () => {
     setShowFontStyle(!showFontStyle);
-    setNewMessage('');
+    setNewMessage("");
   };
 
   // const [messages, setMessages] = useState([]);
   const [clearEditor, setClearEditor] = useState(false);
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState("");
   const handleSendMessage = async () => {
-    setMessageWithImage('');
+    setMessageWithImage("");
     setClearEditor(true);
     setShowModal(false);
     const messageObject = {
@@ -396,9 +401,9 @@ function ChatWindowScreen() {
       Sender_Profile: userInfo.profile_picture,
       sender: userInfo._id,
     };
-    if (newMessage.trim() !== '') {
+    if (newMessage.trim() !== "") {
       setChatMessages([...chatMessages, messageObject]);
-      setNewMessage('');
+      setNewMessage("");
     }
 
     submitHandler();
@@ -420,11 +425,11 @@ function ChatWindowScreen() {
       SetFileForModel(file);
       setShowModal(true);
       e.target.value = null;
-      if (file.type.includes('image')) {
+      if (file.type.includes("image")) {
         setSelectedfile(file);
-      } else if (file.type.includes('audio')) {
+      } else if (file.type.includes("audio")) {
         setSelectedFileAudio(file);
-      } else if (file.type.includes('video')) {
+      } else if (file.type.includes("video")) {
         setSelectedFileVideo(file);
       }
 
@@ -433,18 +438,18 @@ function ChatWindowScreen() {
         const base64Data = event.target.result;
 
         //setSelectedImage(base64Data);
-        if (file.type.includes('image')) {
+        if (file.type.includes("image")) {
           setSelectedImage(base64Data);
-        } else if (file.type.includes('audio')) {
+        } else if (file.type.includes("audio")) {
           setSelectedAudio(base64Data);
-        } else if (file.type.includes('video')) {
+        } else if (file.type.includes("video")) {
           setSelectedVideo(base64Data);
         }
       };
 
       reader.readAsDataURL(file);
     } else if (file) {
-      alert('Selected image file size exceeds the 40 MB limit.');
+      alert(t("imageSizeExceedsLimit"));
     }
   };
 
@@ -454,20 +459,20 @@ function ChatWindowScreen() {
     );
     if (selectedImage) {
       const formDatas = new FormData();
-      formDatas.append('media', selectedfile);
-      formDatas.append('mediaType', mediaType);
+      formDatas.append("media", selectedfile);
+      formDatas.append("mediaType", mediaType);
       // formDatas.append('conversationId', id);
-      formDatas.append('conversationId', conversationID._id);
+      formDatas.append("conversationId", conversationID._id);
 
-      formDatas.append('sender', userInfo._id);
-      formDatas.append('ImagewithMessage', MessageWithImage);
-      formDatas.append('senderFirstName', userInfo.first_name);
-      formDatas.append('senderLastName', userInfo.last_name);
-      formDatas.append('Sender_Profile', userInfo.profile_picture);
+      formDatas.append("sender", userInfo._id);
+      formDatas.append("ImagewithMessage", MessageWithImage);
+      formDatas.append("senderFirstName", userInfo.first_name);
+      formDatas.append("senderLastName", userInfo.last_name);
+      formDatas.append("Sender_Profile", userInfo.profile_picture);
       try {
         setIsSubmiting(true);
-        const { data } = await axios.post('/api/message/', formDatas);
-        if (userInfo.role === 'admin' || userInfo.role === 'superadmin') {
+        const { data } = await axios.post("/api/message/", formDatas);
+        if (userInfo.role === "admin" || userInfo.role === "superadmin") {
           const messageData = {
             senderFirstName: userInfo.first_name,
             senderLastName: userInfo.last_name,
@@ -477,7 +482,7 @@ function ChatWindowScreen() {
             image: data.image,
             ImagewithMessage: data.ImagewithMessage,
           };
-          socket.current.emit('image', messageData);
+          socket.current.emit("image", messageData);
         } else {
           const messageData = {
             senderFirstName: userInfo.first_name,
@@ -488,7 +493,7 @@ function ChatWindowScreen() {
             image: data.image,
             ImagewithMessage: data.ImagewithMessage,
           };
-          socket.current.emit('image', messageData);
+          socket.current.emit("image", messageData);
         }
         setIsSubmiting(false);
       } catch (err) {
@@ -498,7 +503,7 @@ function ChatWindowScreen() {
       }
       setSelectedImage(null);
     } else if (selectedAudio && selectedAudio != null) {
-      if (userInfo.role === 'admin' || userInfo.role === 'superadmin') {
+      if (userInfo.role === "admin" || userInfo.role === "superadmin") {
         const messageData = {
           senderFirstName: userInfo.first_name,
           senderLastName: userInfo.last_name,
@@ -507,7 +512,7 @@ function ChatWindowScreen() {
           receiverdId: conversationID.members,
           audio: selectedAudio,
         };
-        socket.current.emit('audioFile', messageData);
+        socket.current.emit("audioFile", messageData);
       } else {
         const messageData = {
           senderFirstName: userInfo.first_name,
@@ -517,40 +522,40 @@ function ChatWindowScreen() {
           receiverdId: receiverdId,
           audio: selectedAudio,
         };
-        socket.current.emit('audioFile', messageData);
+        socket.current.emit("audioFile", messageData);
       }
       const formDatas = new FormData();
-      formDatas.append('media', selectedFileAudio);
-      formDatas.append('mediaType', 'video');
+      formDatas.append("media", selectedFileAudio);
+      formDatas.append("mediaType", "video");
       // formDatas.append('conversationId', id);
-      formDatas.append('conversationId', conversationID._id);
-      formDatas.append('sender', userInfo._id);
-      formDatas.append('text', newMessage);
-      formDatas.append('senderFirstName', userInfo.first_name);
-      formDatas.append('senderLastName', userInfo.last_name);
-      formDatas.append('Sender_Profile', userInfo.profile_picture);
+      formDatas.append("conversationId", conversationID._id);
+      formDatas.append("sender", userInfo._id);
+      formDatas.append("text", newMessage);
+      formDatas.append("senderFirstName", userInfo.first_name);
+      formDatas.append("senderLastName", userInfo.last_name);
+      formDatas.append("Sender_Profile", userInfo.profile_picture);
       try {
-        const { data } = await axios.post('/api/message/audio', formDatas);
+        const { data } = await axios.post("/api/message/audio", formDatas);
         setSelectedAudio(null);
       } catch (err) {
         console.log(err.response?.data?.message);
       }
     } else if (selectedVideo && selectedVideo != null) {
       const formDatas = new FormData();
-      formDatas.append('media', selectedFileVideo);
-      formDatas.append('mediaType', 'video');
+      formDatas.append("media", selectedFileVideo);
+      formDatas.append("mediaType", "video");
       // formDatas.append('conversationId', id);
-      formDatas.append('conversationId', conversationID._id);
-      formDatas.append('sender', userInfo._id);
-      formDatas.append('text', newMessage);
-      formDatas.append('senderFirstName', userInfo.first_name);
-      formDatas.append('senderLastName', userInfo.last_name);
-      formDatas.append('Sender_Profile', userInfo.profile_picture);
+      formDatas.append("conversationId", conversationID._id);
+      formDatas.append("sender", userInfo._id);
+      formDatas.append("text", newMessage);
+      formDatas.append("senderFirstName", userInfo.first_name);
+      formDatas.append("senderLastName", userInfo.last_name);
+      formDatas.append("Sender_Profile", userInfo.profile_picture);
 
       try {
         setIsSubmiting(true);
-        const { data } = await axios.post('/api/message/video', formDatas);
-        if (userInfo.role === 'admin' || userInfo.role === 'superadmin') {
+        const { data } = await axios.post("/api/message/video", formDatas);
+        if (userInfo.role === "admin" || userInfo.role === "superadmin") {
           const messageData = {
             senderFirstName: userInfo.first_name,
             senderLastName: userInfo.last_name,
@@ -559,7 +564,7 @@ function ChatWindowScreen() {
             receiverdId: conversationID.members,
             video: data.video,
           };
-          socket.current.emit('video', messageData);
+          socket.current.emit("video", messageData);
         } else {
           const messageData = {
             senderFirstName: userInfo.first_name,
@@ -569,7 +574,7 @@ function ChatWindowScreen() {
             receiverdId: receiverdId,
             video: data.video,
           };
-          socket.current.emit('video', messageData);
+          socket.current.emit("video", messageData);
         }
         setIsSubmiting(false);
       } catch (err) {
@@ -578,9 +583,9 @@ function ChatWindowScreen() {
       }
 
       setSelectedVideo(null);
-    } else if (newMessage !== '') {
-      if (userInfo.role === 'admin' || userInfo.role === 'superadmin') {
-        socket.current.emit('sendMessage', {
+    } else if (newMessage !== "") {
+      if (userInfo.role === "admin" || userInfo.role === "superadmin") {
+        socket.current.emit("sendMessage", {
           senderFirstName: userInfo.first_name,
           senderLastName: userInfo.last_name,
           Sender_Profile: userInfo.profile_picture,
@@ -589,7 +594,7 @@ function ChatWindowScreen() {
           text: newMessage,
         });
       } else {
-        socket.current.emit('sendMessage', {
+        socket.current.emit("sendMessage", {
           senderFirstName: userInfo.first_name,
           senderLastName: userInfo.last_name,
           Sender_Profile: userInfo.profile_picture,
@@ -598,9 +603,9 @@ function ChatWindowScreen() {
           text: newMessage,
         });
       }
-      setEditorValue({ content: '' });
+      setEditorValue({ content: "" });
       try {
-        const { data } = await axios.post('/api/message/', {
+        const { data } = await axios.post("/api/message/", {
           senderFirstName: userInfo.first_name,
           senderLastName: userInfo.last_name,
           Sender_Profile: userInfo.profile_picture,
@@ -616,7 +621,7 @@ function ChatWindowScreen() {
   };
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatMessages, newMessage]);
 
   const handleClose = () => {
@@ -634,7 +639,7 @@ function ChatWindowScreen() {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
       handleSendMessage();
     }
@@ -643,7 +648,7 @@ function ChatWindowScreen() {
   //   // Set up your custom MUI theme here
   // });
 
-  const [editorValue, setEditorValue] = useState({ content: '' });
+  const [editorValue, setEditorValue] = useState({ content: "" });
   const handleEditorChange = (data) => {
     // setEditorValue({content});
     setNewMessage(data);
@@ -651,10 +656,10 @@ function ChatWindowScreen() {
 
   const handleDownload = () => {
     // Create an invisible anchor element
-    const downloadLink = document.createElement('a');
+    const downloadLink = document.createElement("a");
     downloadLink.href = imageUrl;
-    downloadLink.target = '_blank';
-    downloadLink.download = 'downloaded-image.png'; // Specify the desired file name
+    downloadLink.target = "_blank";
+    downloadLink.download = "downloaded-image.png"; // Specify the desired file name
 
     // Simulate a click on the anchor element to trigger the download
     document.body.appendChild(downloadLink);
@@ -675,11 +680,11 @@ function ChatWindowScreen() {
       <div className="d-flex justify-content-center gap-3 ">
         <Card className="chatWindow">
           <CardHeader className={`d-flex ${theme}chatHead`}>
-            {userInfo.role === 'admin' || userInfo.role === 'superadmin' ? (
+            {userInfo.role === "admin" || userInfo.role === "superadmin" ? (
               <Link to={`/admin/task-screen`}>
                 <FaArrowLeft className={`me-3 fs-5 ${theme}backbtn `} />
               </Link>
-            ) : userInfo.role === 'contractor' ? (
+            ) : userInfo.role === "contractor" ? (
               <Link to={`/client/task-screen`}>
                 <FaArrowLeft className={`me-3 fs-5 ${theme}backbtn `} />
               </Link>
@@ -690,7 +695,8 @@ function ChatWindowScreen() {
             )}
             {projectData && (
               <div className={`TasknameNav me-3  ${theme}backbtn`}>
-                Task Name -{truncateText(projectData?.taskName, 30)}
+                {`${t("task")} ${t("name")}`} -
+                {truncateText(projectData?.taskName, 30)}
               </div>
             )}
             <div className={`${theme}-threeDots`} onClick={toggleSidebar}>
@@ -706,19 +712,19 @@ function ChatWindowScreen() {
                       className={`mb-3 projetStatusChat ${theme}chat-info-inner`}
                     >
                       <div className="NameofOposite">
-                        {' '}
+                        {" "}
                         {chatOpositeMember
                           ? chatOpositeMember.first_name
                           : null}
                       </div>
                       <div className="NameofOposite1">
-                        {' '}
+                        {" "}
                         {chatOpositeMember
                           ? `(${chatOpositeMember.role})`
                           : null}
                       </div>
                       <div className="NameofOposite1">
-                        {' '}
+                        {" "}
                         {chatOpositeMember ? chatOpositeMember.email : null}
                       </div>
                     </Form.Group>
@@ -727,7 +733,7 @@ function ChatWindowScreen() {
                       className={`mb-3 projetStatusChat ${theme}chat-info-inner`}
                     >
                       <div>
-                        Project Name -{' '}
+                        Project {`${t("name")}`} -{" "}
                         {truncateText(projectData?.projectName, 30)}
                       </div>
                     </Form.Group>
@@ -735,20 +741,21 @@ function ChatWindowScreen() {
                       className={`mb-3 projetStatusChat ${theme}chat-info-inner`}
                     >
                       <div className="taskDescription">
-                        Task Description - {projectData?.taskDescription}
+                        {`${t("task")} ${t("description")}`} -{" "}
+                        {projectData?.taskDescription}
                       </div>
                     </Form.Group>
                     <Form.Group className="mb-3 " controlId="formBasicPassword">
                       <Form.Label className="mb-1 fw-bold">
-                        Task Status
+                        {`${t("task")} ${t("status")}`}
                       </Form.Label>
                       <Form.Select
                         value={projectStatus}
                         onChange={handleStatusUpdate}
                       >
-                        <option value="active">Running</option>
-                        <option value="completed">Completed</option>
-                        <option value="pending">Pending</option>
+                        <option value="active">{t("running")}</option>
+                        <option value="completed">{t("completed")}</option>
+                        <option value="pending">{t("pending")}</option>
                       </Form.Select>
                     </Form.Group>
                   </Form>
@@ -759,7 +766,7 @@ function ChatWindowScreen() {
                       width="50"
                       radius="9"
                       className="ThreeDot  justify-content-center"
-                      color={theme == 'dark' ? 'white' : '#0e0e3d'}
+                      color={theme == "dark" ? "white" : "#0e0e3d"}
                       ariaLabel="three-dots-loading"
                       wrapperStyle={{}}
                       wrapperClassName=""
@@ -770,7 +777,7 @@ function ChatWindowScreen() {
               </Card>
             </div>
           ) : (
-            ''
+            ""
           )}
           <CardBody className={`chatWindowBody ${theme}chatBody pb-0`}>
             {chatMessages.map((item) => (
@@ -808,7 +815,7 @@ function ChatWindowScreen() {
                                     src={
                                       user.profile_picture
                                         ? user.profile_picture
-                                        : './avatar.png'
+                                        : "./avatar.png"
                                     }
                                     alt="Profile"
                                   />
@@ -879,7 +886,7 @@ function ChatWindowScreen() {
                                   src={
                                     user.profile_picture
                                       ? user.profile_picture
-                                      : './avatar.png'
+                                      : "./avatar.png"
                                   }
                                   alt="Profile"
                                 />
@@ -910,7 +917,7 @@ function ChatWindowScreen() {
                                     src={
                                       user.profile_picture
                                         ? user.profile_picture
-                                        : './avatar.png'
+                                        : "./avatar.png"
                                     }
                                     alt="Profile"
                                   />
@@ -922,7 +929,7 @@ function ChatWindowScreen() {
                           </div>
                           <div className="d-flex flex-column  forWidth  ">
                             <div className="text-start px-2 timeago2">
-                              {item.senderFirstName} {item.senderLastName}{' '}
+                              {item.senderFirstName} {item.senderLastName}{" "}
                             </div>
                             <div>
                               <p
@@ -951,7 +958,7 @@ function ChatWindowScreen() {
                                 src={
                                   user.profile_picture
                                     ? user.profile_picture
-                                    : './avatar.png'
+                                    : "./avatar.png"
                                 }
                                 alt="Profile"
                               />
@@ -1033,16 +1040,16 @@ function ChatWindowScreen() {
             <Form className="w-100">
               <InputGroup
                 className={`input-text-edit-mob ${
-                  showFontStyle && 'input-text-edit'
+                  showFontStyle && "input-text-edit"
                 }`}
               >
                 <input
                   disabled={isSubmiting}
                   type="text"
                   style={{
-                    display: showFontStyle ? 'none' : 'block',
+                    display: showFontStyle ? "none" : "block",
                   }}
-                  placeholder="Type your message here..."
+                  placeholder={t("messagePlaceholder")}
                   aria-label="Search"
                   aria-describedby="basic-addon2"
                   onKeyPress={handleKeyPress}
@@ -1051,7 +1058,7 @@ function ChatWindowScreen() {
                   className="inputBox-chat"
                 />
                 <div
-                  style={{ display: showFontStyle ? 'block' : 'none' }}
+                  style={{ display: showFontStyle ? "block" : "none" }}
                   className="richEditor pr-2"
                 >
                   <MyStatefulEditor
@@ -1067,7 +1074,7 @@ function ChatWindowScreen() {
                       <FiUpload />
                     </Form.Label>
                     <Form.Control
-                      style={{ display: 'none' }}
+                      style={{ display: "none" }}
                       id="file-input"
                       type="file"
                       disabled={isSubmiting}
@@ -1078,23 +1085,23 @@ function ChatWindowScreen() {
                     <BsFillMicFill
                       onClick={startRecording}
                       disabled={isRecording}
-                      style={{ display: isRecording ? 'none' : 'block' }}
+                      style={{ display: isRecording ? "none" : "block" }}
                     />
 
                     <BsFillMicMuteFill
                       onClick={stopRecording}
                       disabled={!isRecording}
-                      style={{ display: !isRecording ? 'none' : 'block' }}
+                      style={{ display: !isRecording ? "none" : "block" }}
                     />
                     <div
                       onClick={stopRecording}
                       disabled={!isRecording}
-                      style={{ display: !isRecording ? 'none' : 'block' }}
+                      style={{ display: !isRecording ? "none" : "block" }}
                     >
                       <Audio
                         height="25"
                         width="25"
-                        color={theme == 'dark' ? 'white' : '#07162c'}
+                        color={theme == "dark" ? "white" : "#07162c"}
                         ariaLabel="audio-loading"
                         wrapperStyle={{}}
                         wrapperClass="wrapper-class"
@@ -1118,11 +1125,11 @@ function ChatWindowScreen() {
                       wrapperClass="blocks-wrapper"
                       colors={
                         toggleState
-                          ? ['white', 'white', 'white', 'white', 'white']
+                          ? ["white", "white", "white", "white", "white"]
                           : [
-                              'rgba(0, 0, 0, 1) 0%',
-                              'rgba(17, 17, 74, 1) 68%',
-                              'rgba(0, 0, 0, 1) 93%',
+                              "rgba(0, 0, 0, 1) 0%",
+                              "rgba(17, 17, 74, 1) 68%",
+                              "rgba(0, 0, 0, 1) 93%",
                             ]
                       }
                     />
@@ -1145,41 +1152,47 @@ function ChatWindowScreen() {
                 className={`mb-3 projetStatusChat ${theme}chat-info-inner`}
               >
                 <div className="NameofOposite">
-                  {' '}
+                  {" "}
                   {chatOpositeMember ? chatOpositeMember.first_name : null}
                 </div>
                 <div className="NameofOposite1">
-                  {' '}
+                  {" "}
                   {chatOpositeMember ? `(${chatOpositeMember.role})` : null}
                 </div>
                 <div className="NameofOposite1">
-                  {' '}
+                  {" "}
                   {chatOpositeMember ? chatOpositeMember.email : null}
                 </div>
               </Form.Group>
               <Form.Group
                 className={`mb-3 projetStatusChat ${theme}chat-info-inner`}
               >
-                <div>Project Name - {projectData?.projectName} </div>
+                <div>
+                  Project {`${t("name")}`} - {projectData?.projectName}{" "}
+                </div>
               </Form.Group>
               <Form.Group
                 className={`mb-3 projetStatusChat ${theme}chat-info-inner`}
               >
                 <div className="taskDescription">
-                  Task Description - {projectData?.taskDescription}
+                  {`${t("task")} ${t("description")}`} -{" "}
+                  {projectData?.taskDescription}
                 </div>
                 {/* </>
                 )} */}
               </Form.Group>
               <Form.Group className="mb-3 " controlId="formBasicPassword">
-                <Form.Label className="mb-1 fw-bold">Task Status</Form.Label>
+                <Form.Label className="mb-1 fw-bold">
+                  {" "}
+                  {`${t("task")} ${t("status")}`}
+                </Form.Label>
                 <Form.Select
                   value={projectStatus}
                   onChange={handleStatusUpdate}
                 >
-                  <option value="active">Running</option>
-                  <option value="completed">Completed</option>
-                  <option value="pending">Pending</option>
+                  <option value="active">{t("running")}</option>
+                  <option value="completed">{t("completed")}</option>
+                  <option value="pending">{t("pending")}</option>
                 </Form.Select>
               </Form.Group>
             </Form>
@@ -1190,7 +1203,7 @@ function ChatWindowScreen() {
                 width="50"
                 radius="9"
                 className="ThreeDot  justify-content-center"
-                color={theme == 'dark' ? 'white' : '#0e0e3d'}
+                color={theme == "dark" ? "white" : "#0e0e3d"}
                 ariaLabel="three-dots-loading"
                 wrapperStyle={{}}
                 wrapperClassName=""
@@ -1202,17 +1215,17 @@ function ChatWindowScreen() {
       </div>
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>File Selected</Modal.Title>
+          <Modal.Title>{t("fileSelected")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Your file has been selected.
+          {t("fileSelectedMessage")}
           <h4> {fileForModel?.name}</h4>
-          {fileForModel?.type.includes('image') && (
+          {fileForModel?.type.includes("image") && (
             <Form.Control
               disabled={isSubmiting}
               type="text"
-              style={{ display: showFontStyle ? 'none' : 'block' }}
-              placeholder="Type your message here..."
+              style={{ display: showFontStyle ? "none" : "block" }}
+              placeholder={t("messagePlaceholder")}
               aria-label="Search"
               aria-describedby="basic-addon2"
               onKeyPress={handleKeyPress}
@@ -1223,7 +1236,7 @@ function ChatWindowScreen() {
         </Modal.Body>
         <Modal.Footer>
           <Button className="btn-send" onClick={handleSendMessage}>
-            send
+            {t("send")}
           </Button>
         </Modal.Footer>
       </Modal>

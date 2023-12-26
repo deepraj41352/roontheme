@@ -1,23 +1,25 @@
-import React, { useContext, useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import { Button, Card, Col, Container, Row } from 'react-bootstrap';
-import Validations from '../Components/Validations';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Store } from '../Store';
-import { FaEye, FaRegEyeSlash } from 'react-icons/fa';
+import React, { useContext, useEffect, useState } from "react";
+import Form from "react-bootstrap/Form";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import Validations from "../Components/Validations";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { Store } from "../Store";
+import { FaEye, FaRegEyeSlash } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 export default function ResetPasswordScreen() {
   const navigate = useNavigate();
   const { token } = useParams();
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isSubmiting, setIsSubmiting] = useState(false);
   const { state } = useContext(Store);
   const { userInfo, validationMsg } = state;
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
+  const { t } = useTranslation();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -28,32 +30,32 @@ export default function ResetPasswordScreen() {
     setIsSubmiting(true);
 
     if (validationMsg) {
-      toast.error('Please set valid password');
+      toast.error(t("setValidPassword"));
       setIsSubmiting(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      toast.error('password do not match');
+      toast.error(t("passwordsDoNotMatch"));
       setIsSubmiting(false);
       return;
     }
     try {
-      const { data } = await axios.post('/api/user/reset-password', {
+      const { data } = await axios.post("/api/user/reset-password", {
         password,
         token,
       });
       toast.success(data.message);
-      navigate('/');
+      navigate("/");
     } catch (err) {
-      setError('An Error Occurred');
+      setError(t("An Error Ocurred"));
     } finally {
       setIsSubmiting(false);
     }
   };
   useEffect(() => {
     if (userInfo) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   }, [userInfo, navigate]);
 
@@ -66,7 +68,9 @@ export default function ResetPasswordScreen() {
           <div className="Sign-up-container-inner2 foramaxWidth py-3">
             <Row>
               <Col>
-                <h4 className="mb-3 heading4">Reset Password</h4>
+                <h4 className="mb-3 heading4">{`${t("reset")} ${t(
+                  "password"
+                )}`}</h4>
               </Col>
             </Row>
             <Row>
@@ -78,7 +82,7 @@ export default function ResetPasswordScreen() {
                   >
                     <div className="mb-2">
                       <Form.Label className="textLeft text-left startLabel">
-                        Password
+                        {t("password")}
                       </Form.Label>
                       <div className="Password-input-eye mb-2">
                         <div className=" rounded-2">
@@ -86,7 +90,7 @@ export default function ResetPasswordScreen() {
                             id="password"
                             value={password}
                             className="pswd-input"
-                            type={showPassword ? 'text' : 'password'}
+                            type={showPassword ? "text" : "password"}
                             onChange={(e) => {
                               setPassword(e.target.value);
                             }}
@@ -109,7 +113,7 @@ export default function ResetPasswordScreen() {
                     </div>
                     <div className="mb-2">
                       <Form.Label className="textLeft text-left startLabel">
-                        Confirm Password
+                        {`${t("confirm")} ${t("password")}`}
                       </Form.Label>
                       <div className="Password-input-eye mb-2">
                         <div className=" rounded-2">
@@ -118,7 +122,7 @@ export default function ResetPasswordScreen() {
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             className="pswd-input"
-                            type={showPassword ? 'text' : 'password'}
+                            type={showPassword ? "text" : "password"}
                             required
                           />
                         </div>
@@ -135,7 +139,7 @@ export default function ResetPasswordScreen() {
                       className="globalbtnColor px-2 py-1"
                       disabled={isSubmiting}
                     >
-                      {isSubmiting ? 'SUBMITING' : 'SUBMIT'}
+                      {isSubmiting ? `${t("submitting")}` : `${t("submit")}`}
                     </Button>
                   </Form>
                 </Card>

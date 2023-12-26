@@ -8,8 +8,10 @@ import AvatarImage from '../../../Components/Avatar';
 import { confirmAlert } from 'react-confirm-alert';
 import ThreeLoader from '../../../Util/threeLoader';
 import DataTable from '../../../Components/DataTable';
+import { useTranslation } from 'react-i18next';
 
 export default function CategoryList() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [updateData, setUpdateData] = useState(true);
   const [categoryData, setCategoryData] = useState([]);
@@ -40,12 +42,12 @@ export default function CategoryList() {
                 : items.categoryDescription,
             categoryImage: items.categoryImage,
             categoryStatus:
-              items.categoryStatus == true ? 'Active' : 'Inactive',
+              items.categoryStatus == true ? t('active') : t('inactive'),
           };
         });
         setCategoryData(rowData);
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Occurred'));
       } finally {
         setLoading(false);
       }
@@ -55,17 +57,17 @@ export default function CategoryList() {
 
   const confirmDelete = (Id) => {
     confirmAlert({
-      title: 'Confirm to delete',
-      message: 'Are you sure to delete this?',
+      title: t('confirm to delete'),
+      message: t('deleteConfirmationMessage'),
       buttons: [
         {
           className: 'globalbtnColor',
-          label: 'Yes',
+          label: t('Yes'),
           onClick: () => deleteHandle(Id),
         },
         {
           className: 'globalbtnColor',
-          label: 'No',
+          label: t('No'),
         },
       ],
     });
@@ -79,13 +81,13 @@ export default function CategoryList() {
       });
 
       if (response.status === 200) {
-        toast.success('Category Deleted Successfully!');
+        toast.success(`${t('categories')} ${t('delete successfully')}`);
         setUpdateData(!updateData);
       } else {
-        toast.error('Failed To Delete Category.');
+        toast.error(`${t('failedDelete')} ${t('categories')}`);
       }
     } catch (error) {
-      toast.error('An Error Occurred While Deleting Category.');
+      toast.error(t('An Error Occurred'));
     } finally {
       setLoading(false);
     }
@@ -124,14 +126,14 @@ export default function CategoryList() {
 
     {
       field: 'categoryName',
-      headerName: 'Category',
+      headerName: t('categories'),
       minWidth: 100,
       flex: 1,
       className: 'boldHeader',
     },
     {
       field: 'categoryDescription',
-      headerName: 'Description',
+      headerName: t('description'),
       minWidth: 150,
       flex: 1,
       headerClassName: 'bold-header',
@@ -145,11 +147,11 @@ export default function CategoryList() {
     },
     {
       field: 'categoryStatus',
-      headerName: 'Status',
+      headerName: t('status'),
       minWidth: 100,
       flex: 0.5,
       renderCell: (params) => {
-        const isInactive = params.row.categoryStatus === 'Inactive';
+        const isInactive = params.row.categoryStatus === t('inactive');
         const cellClassName = isInactive ? 'inactive-cell' : 'active-cell';
 
         return (
@@ -161,7 +163,7 @@ export default function CategoryList() {
     },
     {
       field: 'action',
-      headerName: 'Action',
+      headerName: t('action'),
       minWidth: 250,
       flex: 1,
       renderCell: (params) => {
@@ -172,14 +174,14 @@ export default function CategoryList() {
               className="mx-2 edit-btn"
               onClick={() => handleEdit(params.row._id)}
             >
-              Edit
+              {t('edit')}
             </button>
             <button
               variant="outlined"
               className="mx-2 delete-btn global-font"
               onClick={() => confirmDelete(params.row._id)}
             >
-              Delete
+              {t('delete')}
             </button>
           </Grid>
         );
@@ -197,19 +199,19 @@ export default function CategoryList() {
           <ul className="nav-style1">
             <li>
               <Link to="/category-screen">
-                <a className="active">Categories</a>
+                <a className="active">{t('categories')}</a>
               </Link>
             </li>
             <li>
               <Link to="/category/create-screen">
-                <a>Create</a>
+                <a>{t('create')}</a>
               </Link>
             </li>
           </ul>
           <DataTable
             rowdata={categoryData}
             columns={columns}
-            label={'Category Data Is Not Avalible'}
+            label={t('categories') + t('Is Not Available')}
           />
         </>
       )}

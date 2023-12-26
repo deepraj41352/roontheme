@@ -1,24 +1,26 @@
-import React, { useContext, useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import { Button, Card, Col, Container, Row } from 'react-bootstrap';
-import Validations from '../Components/Validations';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import { Store } from '../Store';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from "react";
+import Form from "react-bootstrap/Form";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import Validations from "../Components/Validations";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { Store } from "../Store";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function ForgetPassword() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { userInfo, validationMsg } = state;
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isSubmiting, setIsSubmiting] = useState(false);
   const [submited, setSubmited] = useState(false);
+  const { t } = useTranslation();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmiting(true);
     try {
-      const { data } = await axios.post('/api/user/forget-password', { email });
+      const { data } = await axios.post("/api/user/forget-password", { email });
       toast.success(data.message);
       setSubmited(true);
     } catch (err) {
@@ -29,7 +31,7 @@ export default function ForgetPassword() {
   };
   useEffect(() => {
     if (userInfo) {
-      navigate('/adminDashboard');
+      navigate("/adminDashboard");
     }
   }, [userInfo, navigate]);
   return !submited ? (
@@ -37,7 +39,9 @@ export default function ForgetPassword() {
       <div className="Sign-up-container-inner2 foramaxWidth py-3">
         <Row>
           <Col>
-            <h4 className="mb-3 heading4">Forget Password</h4>
+            <h4 className="mb-3 heading4">{`${t("forget")} ${t(
+              "password"
+            )} ?`}</h4>
           </Col>
         </Row>
         <Row>
@@ -48,7 +52,7 @@ export default function ForgetPassword() {
                 className="formWidth d-flex flex-column"
               >
                 <Form.Label className="textLeft text-left">
-                  Email Address
+                  {`E-mail ${t("address")}`}
                 </Form.Label>
 
                 <Form.Control
@@ -63,7 +67,7 @@ export default function ForgetPassword() {
                   className="globalbtnColor px-5 py-1"
                   disabled={isSubmiting || validationMsg !== null}
                 >
-                  {isSubmiting ? 'SUBMITTING' : 'SUBMIT '}
+                  {isSubmiting ? `${t("submitting")}` : `${t("submit")}`}
                 </Button>
               </Form>
             </Card>
@@ -78,7 +82,7 @@ export default function ForgetPassword() {
           <Col>
             <Card className="p-4 formColor">
               <h6 className="mb-4 heading4">
-                We have sent a link to your registered email. Please check!
+                {t("linkSentToRegisteredEmail")}
               </h6>
 
               <Button
@@ -86,7 +90,7 @@ export default function ForgetPassword() {
                 className="globalbtnColor px-5 py-1"
                 disabled={isSubmiting}
               >
-                {isSubmiting ? 'RESENDING' : 'RESEND'}
+                {isSubmiting ? t("resending") : t("resend")}
               </Button>
             </Card>
           </Col>

@@ -1,13 +1,14 @@
-import React, { useContext, useState } from 'react';
-import { Button, Card } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Store } from '../Store';
-import { CardHeader } from '@mui/material';
-import { CCardBody, CCardFooter } from '@coreui/react';
-import { useEffect } from 'react';
-import ThreeLoader from '../Util/threeLoader';
+import React, { useContext, useState } from "react";
+import { Button, Card } from "react-bootstrap";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { Store } from "../Store";
+import { CardHeader } from "@mui/material";
+import { CCardBody, CCardFooter } from "@coreui/react";
+import { useEffect } from "react";
+import ThreeLoader from "../Util/threeLoader";
+import { useTranslation } from "react-i18next";
 
 export default function ConfirmRegistration() {
   const navigate = useNavigate();
@@ -15,10 +16,10 @@ export default function ConfirmRegistration() {
   const { state } = useContext(Store);
   const { userInfo } = state;
   const [isSubmiting, setIsSubmiting] = useState(false);
-  const [confirmationMessage, setConfirmationMessage] = useState('');
+  const [confirmationMessage, setConfirmationMessage] = useState("");
   const [status, setStatus] = useState();
   const [isLoading, setIsLoading] = useState(true);
-
+  const { t } = useTranslation();
   useEffect(() => {
     const confirmUser = async () => {
       try {
@@ -26,7 +27,7 @@ export default function ConfirmRegistration() {
         setStatus(response.status);
       } catch (error) {
         setStatus(error.response.status);
-        setConfirmationMessage('You are already confirmed.');
+        setConfirmationMessage(`${t("youAreAlreadyConfirmed")}`);
       } finally {
         setIsLoading(false);
       }
@@ -42,7 +43,7 @@ export default function ConfirmRegistration() {
         token,
       });
       toast.success(data.message);
-      navigate('/');
+      navigate("/");
     } catch (err) {
       toast.error(err.response?.data?.message);
     } finally {
@@ -51,11 +52,11 @@ export default function ConfirmRegistration() {
   };
 
   const handleCancel = () => {
-    navigate('/registration');
+    navigate("/registration");
   };
   useEffect(() => {
     if (userInfo) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   }, [userInfo, navigate]);
 
@@ -72,9 +73,9 @@ export default function ConfirmRegistration() {
               </CCardBody>
             ) : (
               <>
-                <CardHeader>Confirm Action</CardHeader>
+                <CardHeader>{`${t("confirm")} ${t("action")}`}</CardHeader>
                 <CCardBody>
-                  <p>Are you sure you want to register?</p>
+                  <p>{`${t("areYouSureToRegister")}`}</p>
                 </CCardBody>
                 <CCardFooter>
                   <Button
@@ -82,7 +83,7 @@ export default function ConfirmRegistration() {
                     onClick={handleCancel}
                     className="m-1 globalbtnColor"
                   >
-                    Cancel
+                    {`${t("cancel")}`}
                   </Button>
                   <Button
                     className="m-1 globalbtnColor"
@@ -91,7 +92,7 @@ export default function ConfirmRegistration() {
                     disabled={isSubmiting}
                     onClick={handleConfirm}
                   >
-                    Confirm
+                    {`${t("confirm")}`}
                   </Button>
                 </CCardFooter>
               </>

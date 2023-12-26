@@ -1,14 +1,16 @@
 import React, { useContext, useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { Store } from '../Store';
+import { useTranslation } from 'react-i18next';
 
 export default function Validations({ type, value }) {
   const { dispatch: ctxDispatch } = useContext(Store);
+  const { t } = useTranslation();
   let validationMessage = null;
   if (type === 'email' && value) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(value)) {
-      validationMessage = 'Invalid email address';
+      validationMessage = t('emailerrormsg');
     }
   }
 
@@ -16,14 +18,13 @@ export default function Validations({ type, value }) {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(value)) {
-      validationMessage =
-        'At least 8 characters,  one uppercase letter, one lowercase letter, one digit , one special character  ';
+      validationMessage = t('passerrormsg');
     }
   }
   if (type === 'text' && value) {
     const mobileRegex = /^\d{10}$/;
     if (!mobileRegex.test(value)) {
-      validationMessage = 'Please enter a valid 10-digit mobile number';
+      validationMessage = t('mobailerrormsg');
     }
   }
   useEffect(() => {

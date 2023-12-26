@@ -7,8 +7,10 @@ import ThreeLoader from '../../../Util/threeLoader';
 import { Store } from '../../../Store';
 import { confirmAlert } from 'react-confirm-alert';
 import DataTable from '../../../Components/DataTable';
+import { useTranslation } from 'react-i18next';
 
 export default function ContractorList() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [ContractorData, setContractorData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -34,12 +36,12 @@ export default function ContractorList() {
             _id: items._id,
             first_name: items.first_name,
             email: items.email,
-            userStatus: items.userStatus == true ? 'Active' : 'Inactive',
+            userStatus: items.userStatus == true ? t('active') : t('inactive'),
           };
         });
         setContractorData(rowData);
       } catch (error) {
-        setError('An Error Ocurred');
+        setError(t('An Error Occurred'));
       } finally {
         setLoading(false);
       }
@@ -50,17 +52,17 @@ export default function ContractorList() {
 
   const confirmDelete = (Id) => {
     confirmAlert({
-      title: 'Confirm to delete',
-      message: 'Are you sure to delete this?',
+      title: t('confirm to delete'),
+      message: t('deleteConfirmationMessage'),
       buttons: [
         {
           className: 'globalbtnColor',
-          label: 'Yes',
+          label: t('Yes'),
           onClick: () => deleteHandle(Id),
         },
         {
           className: 'globalbtnColor',
-          label: 'No',
+          label: t('No'),
         },
       ],
     });
@@ -74,13 +76,13 @@ export default function ContractorList() {
       });
 
       if (response.status === 200) {
-        toast.success('Client Deleted Successfully!');
+        toast.success(`${t('client')} ${t('delete successfully')}`);
         setUpdateData(!updateData);
       } else {
-        toast.error('Failed To Delete Client.');
+        toast.error(`${t('failedDelete')} ${t('client')}`);
       }
     } catch (error) {
-      toast.error('An Error Occurred While Deleting Client.');
+      toast.error(t('An Error Occurred'));
     } finally {
       setLoading(false);
     }
@@ -89,24 +91,24 @@ export default function ContractorList() {
   const columns = [
     {
       field: 'first_name',
-      headerName: 'Name',
+      headerName: t('firstname'),
       minWidth: 100,
       flex: 1,
     },
     {
       field: 'email',
-      headerName: 'Email',
+      headerName: 'E-mail',
       minWidth: 200,
       flex: 1,
     },
     { field: '_id', headerName: 'ID', width: 220 },
     {
       field: 'userStatus',
-      headerName: 'Status',
+      headerName: t('status'),
       minWidth: 150,
       flex: 1,
       renderCell: (params) => {
-        const isInactive = params.row.userStatus === 'Inactive';
+        const isInactive = params.row.userStatus === t('inactive');
         const cellClassName = isInactive ? 'inactive-cell' : 'active-cell';
 
         return (
@@ -118,7 +120,7 @@ export default function ContractorList() {
     },
     {
       field: 'action',
-      headerName: 'Action',
+      headerName: t('action'),
       minWidth: 250,
       flex: 1,
       renderCell: (params) => {
@@ -129,14 +131,14 @@ export default function ContractorList() {
               className="mx-2 edit-btn"
               onClick={() => handleEdit(params.row._id)}
             >
-              Edit
+              {t('edit')}
             </button>
             <button
               variant="outlined"
               className="mx-2 delete-btn global-font"
               onClick={() => confirmDelete(params.row._id)}
             >
-              Delete
+              {t('delete')}
             </button>
           </Grid>
         );
@@ -154,19 +156,19 @@ export default function ContractorList() {
           <ul className="nav-style1">
             <li>
               <Link to="/client-screen">
-                <a className="active">Client</a>
+                <a className="active"> {t('client')}</a>
               </Link>
             </li>
             <li>
               <Link to="/client/create-screen">
-                <a>Create</a>
+                <a> {t('create')}</a>
               </Link>
             </li>
           </ul>
           <DataTable
             rowdata={ContractorData}
             columns={columns}
-            label={'Client Data Is Not Avalible'}
+            label={t('client') + t('Is Not Available')}
           />
         </>
       )}

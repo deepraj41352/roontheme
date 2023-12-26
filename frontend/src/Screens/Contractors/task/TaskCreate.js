@@ -10,8 +10,10 @@ import AvatarImage from '../../../Components/Avatar';
 import truncateText from '../../../TruncateText';
 import { MdAddCircleOutline } from 'react-icons/md';
 import ThreeLoader from '../../../Util/threeLoader';
+import { useTranslation } from 'react-i18next';
 
 export default function ContractorTasksCreate() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
@@ -49,7 +51,7 @@ export default function ContractorTasksCreate() {
           setProjectData(data);
         }
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Occurred'));
       } finally {
         setLoading(false);
       }
@@ -67,7 +69,7 @@ export default function ContractorTasksCreate() {
         const datas = response.data;
         setCategoryData(datas);
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Occurred'));
       } finally {
         setLoading(false);
       }
@@ -81,7 +83,7 @@ export default function ContractorTasksCreate() {
         const { data } = await axios.post(`/api/user/`, { role: 'agent' });
         setAgentData(data);
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Occurred'));
       }
     };
     FatchContractorData();
@@ -158,7 +160,7 @@ export default function ContractorTasksCreate() {
         setTaskDesc('');
         setCategory('');
         setSelectProjectName('');
-        toast.success(data.data.message);
+        toast.success(`${t('task')} ${t('created successfully')}`);
         navigate('/client/task-screen');
         setDynamicfield(false);
         ctxDispatch({ type: 'NOTIFICATION_TOGGLE', payload: !toggleNot });
@@ -168,7 +170,7 @@ export default function ContractorTasksCreate() {
         toast.error(data.data.message);
       }
     } catch (error) {
-      toast.error('Failed To Create Task');
+      toast.error(`${t('failedCreate')} ${t('task')}`);
     } finally {
       setsubmiting(false);
     }
@@ -184,170 +186,177 @@ export default function ContractorTasksCreate() {
         <>
           <ul className="nav-style1">
             <li>
-              <Link to="/client/task-screen">
-                <a>Tasks</a>
+              <Link to="/admin/task-screen">
+                <a>{t('tasks')}</a>
               </Link>
             </li>
             <li>
-              <Link to="/client/task/create-screen">
-                <a className="active">Create</a>
+              <Link to="/task/create-screen">
+                <a className="active">{t('create')}</a>
               </Link>
             </li>
           </ul>
           {submiting && <FormSubmitLoader />}
-
-          <form onSubmit={handleSubmit}>
-            <div className="row">
-              <div className="col-md-12">
-                <div className="form-group">
-                  <label className="form-label fw-semibold">Categories</label>
-                  <div className="cateContainerCreate">
-                    {filterCategory.length === 0 ? (
-                      <div className="p-2">No categories assigned yet</div>
-                    ) : (
-                      filterCategory.map((category) => (
-                        <div key={category._id} className="cateItems">
-                          <Form.Check
-                            className="d-flex align-items-center gap-2"
-                            type="radio"
-                            required
-                            id={`category-${category._id}`}
-                            name="category"
-                            value={category.categoryName}
-                            label={
-                              <div className="d-flex align-items-center">
-                                <div className="">
-                                  {category.categoryImage ? (
-                                    <Avatar src={category.categoryImage} />
-                                  ) : (
-                                    <AvatarImage
-                                      name={category.categoryName}
-                                      bgColor={generateColorFromAscii(
-                                        category.categoryName[0].toLowerCase()
-                                      )}
-                                    />
-                                  )}
-                                </div>
-                                <div className="d-flex">
-                                  <span
-                                    className="ms-2 spanForCate"
-                                    data-tooltip={category.categoryName}
-                                  >
-                                    {truncateText(category.categoryName, 7)}
-                                  </span>
-                                </div>
-                              </div>
-                            }
-                            onChange={(e) => setCategory(e.target.value)}
-                          />
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-md-12">
-                <div className="form-group">
-                  <label className="form-label fw-semibold">
-                    Select Project
-                  </label>
-                  <Select
-                    className="form-control"
-                    value={SelectProjectName}
-                    onChange={(e) => setSelectProjectName(e.target.value)}
-                  >
-                    <MenuItem
-                      disabled={dynamicfield}
-                      onClick={() => {
-                        addDynamic();
-                      }}
-                      className="active-option"
-                    >
-                      <MdAddCircleOutline /> Add New Project
-                    </MenuItem>
-                    {ProjectData &&
-                      ProjectData.map((items) => (
-                        <MenuItem
-                          key={items._id}
-                          value={items.projectName}
-                          onClick={() => removeDymanic()}
-                        >
-                          {items.projectName}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </div>
-              </div>
-
-              {dynamicfield ? (
+          <div className="formWidth">
+            <form onSubmit={handleSubmit}>
+              <div className="row">
                 <div className="col-md-12">
                   <div className="form-group">
                     <label className="form-label fw-semibold">
-                      Project Name
+                      {t('categories')}
+                    </label>
+                    <div className="cateContainerCreate">
+                      {filterCategory.length === 0 ? (
+                        <div className="p-2">{t('noCategoriesAssigned')}</div>
+                      ) : (
+                        filterCategory.map((category) => (
+                          <div key={category._id} className="cateItems">
+                            <Form.Check
+                              className="d-flex align-items-center gap-2"
+                              type="radio"
+                              required
+                              id={`category-${category._id}`}
+                              name="category"
+                              value={category.categoryName}
+                              label={
+                                <div className="d-flex align-items-center">
+                                  <div className="">
+                                    {category.categoryImage ? (
+                                      <Avatar src={category.categoryImage} />
+                                    ) : (
+                                      <AvatarImage
+                                        name={category.categoryName}
+                                        bgColor={generateColorFromAscii(
+                                          category.categoryName[0].toLowerCase()
+                                        )}
+                                      />
+                                    )}
+                                  </div>
+                                  <div className="d-flex">
+                                    <span
+                                      className="ms-2 spanForCate"
+                                      data-tooltip={category.categoryName}
+                                    >
+                                      {truncateText(category.categoryName, 7)}
+                                    </span>
+                                  </div>
+                                </div>
+                              }
+                              onChange={(e) => setCategory(e.target.value)}
+                            />
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-12">
+                  <div className="form-group">
+                    <label className="form-label fw-semibold">
+                      {t('select')} Project
+                    </label>
+                    <Select
+                      className="form-control"
+                      value={SelectProjectName}
+                      onChange={(e) => setSelectProjectName(e.target.value)}
+                    >
+                      <MenuItem
+                        disabled={dynamicfield}
+                        onClick={() => {
+                          addDynamic();
+                        }}
+                        className="active-option"
+                      >
+                        <MdAddCircleOutline /> {t('addNew')} Project
+                      </MenuItem>
+                      {ProjectData &&
+                        ProjectData.map((items) => (
+                          <MenuItem
+                            key={items._id}
+                            value={items.projectName}
+                            onClick={() => removeDymanic()}
+                          >
+                            {items.projectName}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  </div>
+                </div>
+
+                {dynamicfield ? (
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label className="form-label fw-semibold">
+                        Project {t('name')}
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="name"
+                        value={projectName}
+                        onChange={(e) => setProjectName(e.target.value)}
+                        required={true}
+                      />
+                    </div>
+                  </div>
+                ) : null}
+
+                <div className="col-md-12">
+                  <div className="form-group">
+                    <label className="form-label fw-semibold">
+                      {t('task')} {t('name')}
                     </label>
                     <input
                       type="text"
                       className="form-control"
                       name="name"
-                      value={projectName}
-                      onChange={(e) => setProjectName(e.target.value)}
+                      value={taskName}
+                      onChange={validation}
                       required={true}
                     />
                   </div>
                 </div>
-              ) : null}
-
-              <div className="col-md-12">
-                <div className="form-group">
-                  <label className="form-label fw-semibold">Task Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="name"
-                    value={taskName}
-                    onChange={validation}
-                    required={true}
-                  />
+                <div className="col-md-12">
+                  <div className="form-group">
+                    {ShowErrorMessage && (
+                      <Alert
+                        severity="warning"
+                        className="error nameValidationErrorBox"
+                      >
+                        {t('firstLetterAlphabet')}
+                      </Alert>
+                    )}
+                  </div>
+                </div>
+                <div className="col-md-12">
+                  <div className="form-group">
+                    <label className="form-label fw-semibold">
+                      {t('description')}
+                    </label>
+                    <textarea
+                      className="form-control"
+                      name="description"
+                      value={taskDesc}
+                      onChange={(e) => setTaskDesc(e.target.value)}
+                      rows="6"
+                    />
+                  </div>
+                </div>
+                <div className="col-12">
+                  <Button
+                    className="mt-2 formbtn globalbtnColor model-btn "
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={submiting}
+                  >
+                    {submiting ? t('submitting') : t('submit')}
+                  </Button>
                 </div>
               </div>
-              <div className="col-md-12">
-                <div className="form-group">
-                  {ShowErrorMessage && (
-                    <Alert
-                      severity="warning"
-                      className="error nameValidationErrorBox"
-                    >
-                      The first letter of the task should be an alphabet
-                    </Alert>
-                  )}
-                </div>
-              </div>
-              <div className="col-md-12">
-                <div className="form-group">
-                  <label className="form-label fw-semibold">Description</label>
-                  <textarea
-                    className="form-control"
-                    name="description"
-                    value={taskDesc}
-                    onChange={(e) => setTaskDesc(e.target.value)}
-                    rows="6"
-                  />
-                </div>
-              </div>
-              <div className="col-12">
-                <Button
-                  className="mt-2 formbtn globalbtnColor model-btn "
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  disabled={submiting}
-                >
-                  {submiting ? 'SUBMITTING' : 'SUBMIT '}
-                </Button>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </>
       )}
     </>

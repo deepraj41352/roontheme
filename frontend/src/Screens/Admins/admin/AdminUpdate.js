@@ -7,10 +7,11 @@ import FormSubmitLoader from '../../../Util/formSubmitLoader';
 import { toast } from 'react-toastify';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import ThreeLoader from '../../../Util/threeLoader';
+import { useTranslation } from 'react-i18next';
 
 export default function AdminUpdate() {
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   const { id } = useParams();
   const { state } = useContext(Store);
   const { userInfo } = state;
@@ -41,7 +42,7 @@ export default function AdminUpdate() {
           role: 'admin',
         });
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Occurred'));
       } finally {
         setIsLoading(false);
       }
@@ -55,20 +56,17 @@ export default function AdminUpdate() {
     if (name === 'image_url') {
       const image_url = files[0].size / 1024 / 1024;
       if (image_url > 2) {
-        toast.error(
-          'The photo size greater than 2 MB. Make sure less than 2 MB.',
-          {
-            style: {
-              border: '1px solid #ff0033',
-              padding: '16px',
-              color: '#ff0033',
-            },
-            iconTheme: {
-              primary: '#ff0033',
-              secondary: '#FFFAEE',
-            },
-          }
-        );
+        toast.error(t('ProfileErrorMsg'), {
+          style: {
+            border: '1px solid #ff0033',
+            padding: '16px',
+            color: '#ff0033',
+          },
+          iconTheme: {
+            primary: '#ff0033',
+            secondary: '#FFFAEE',
+          },
+        });
         e.target.value = null;
         return;
       }
@@ -99,11 +97,11 @@ export default function AdminUpdate() {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       if (response.status === 200) {
-        toast.success('Admin Updated Successfully !');
+        toast.success(`${t('admin')} ${t('update successfully')}`);
         navigate('/admin-screen');
       }
     } catch (error) {
-      toast.error('Failed To Update Admin');
+      toast.error(`${t('failedUpdate')} ${t('admin')}`);
     } finally {
       setsubmiting(false);
     }
@@ -122,133 +120,144 @@ export default function AdminUpdate() {
           <ul className="nav-style1">
             <li>
               <Link to="/admin-screen">
-                <a>Admin</a>
+                <a>{t('admin')}</a>
               </Link>
             </li>
             <li>
               <Link to="/admin/create-screen">
-                <a>Create</a>
+                <a>{t('create')}</a>
               </Link>
             </li>
             <li>
               <Link to="/admin/:id">
-                <a className="active">Update</a>
+                <a className="active">{t('update')}</a>
               </Link>
             </li>
           </ul>
 
           {submiting && <FormSubmitLoader />}
+          <div className="formWidth">
+            <form onSubmit={handleSubmit}>
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="form-group">
+                    <label className="form-label fw-semibold">
+                      {t('image')}
+                    </label>
+                    <input
+                      type="file"
+                      className="form-control file-control"
+                      id="clientImage"
+                      name="image_url"
+                      onChange={handleChange}
+                    />
+                    <div className="form-text">
+                      {t('Upload image size')} 300x300!
+                    </div>
 
-          <form onSubmit={handleSubmit}>
-            <div className="row">
-              <div className="col-md-12">
-                <div className="form-group">
-                  <label className="form-label fw-semibold">Image</label>
-                  <input
-                    type="file"
-                    className="form-control file-control"
-                    id="clientImage"
-                    name="image_url"
-                    onChange={handleChange}
-                  />
-                  <div className="form-text">Upload image size 300x300!</div>
-
-                  <div className="mt-2">
-                    {imagePreview ? (
-                      <img
-                        src={imagePreview}
-                        alt="image"
-                        className="img-thumbnail creatForm me-2"
-                      />
-                    ) : (
-                      <img
-                        src={user.image_url}
-                        alt="image"
-                        className="img-thumbnail creatForm me-2"
-                      />
-                    )}
+                    <div className="mt-2">
+                      {imagePreview ? (
+                        <img
+                          src={imagePreview}
+                          alt="image"
+                          className="img-thumbnail creatForm me-2"
+                        />
+                      ) : (
+                        <img
+                          src={user.image_url}
+                          alt="image"
+                          className="img-thumbnail creatForm me-2"
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="col-md-12">
-                <div className="form-group">
-                  <label className="form-label fw-semibold">First Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="firstName"
-                    value={user.firstName}
-                    onChange={handleChange}
-                    required={true}
-                  />
+                <div className="col-md-12">
+                  <div className="form-group">
+                    <label className="form-label fw-semibold">
+                      {t('firstname')}
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="firstName"
+                      value={user.firstName}
+                      onChange={handleChange}
+                      required={true}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="col-md-12">
-                <div className="form-group">
-                  <label className="form-label fw-semibold">Last Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="lastName"
-                    value={user.lastName}
-                    onChange={handleChange}
-                  />
+                <div className="col-md-12">
+                  <div className="form-group">
+                    <label className="form-label fw-semibold">
+                      {t('lastname')}
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="lastName"
+                      value={user.lastName}
+                      onChange={handleChange}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="col-md-12">
-                <div className="form-group">
-                  <label className="form-label fw-semibold">Email</label>
-                  <input
-                    type="text"
-                    className="form-control cursor"
-                    name="email"
-                    value={user.email}
-                    onChange={handleChange}
-                    required={true}
-                    disabled={true}
-                  />
+                <div className="col-md-12">
+                  <div className="form-group">
+                    <label className="form-label fw-semibold">E-mail</label>
+                    <input
+                      type="text"
+                      className="form-control cursor"
+                      name="email"
+                      value={user.email}
+                      onChange={handleChange}
+                      required={true}
+                      disabled={true}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="col-md-12">
-                <div className="form-group">
-                  <label className="form-label fw-semibold">Status</label>
-                  <Select
-                    className={`form-control ${user.status ? 'active' : ''}`}
-                    value={user.status}
-                    onChange={handleChange}
-                    inputProps={{
-                      name: 'status',
-                      id: 'status',
-                    }}
-                    required
+                <div className="col-md-12">
+                  <div className="form-group">
+                    <label className="form-label fw-semibold">
+                      {t('status')}
+                    </label>
+                    <Select
+                      className={`form-control ${user.status ? 'active' : ''}`}
+                      value={user.status}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: 'status',
+                        id: 'status',
+                      }}
+                      required
+                    >
+                      <MenuItem value={true} className="active-option">
+                        {t('active')}
+                      </MenuItem>
+                      <MenuItem value={false} className="active-option">
+                        {t('inactive')}
+                      </MenuItem>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="col-12">
+                  <Button
+                    className="mt-2 formbtn globalbtnColor model-btn "
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={submiting}
                   >
-                    <MenuItem value={true} className="active-option">
-                      Active
-                    </MenuItem>
-                    <MenuItem value={false} className="active-option">
-                      Inactive
-                    </MenuItem>
-                  </Select>
+                    {submiting ? t('submitting') : t('submit')}
+                  </Button>
                 </div>
               </div>
-
-              <div className="col-12">
-                <Button
-                  className="mt-2 formbtn globalbtnColor model-btn "
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  disabled={submiting}
-                >
-                  {submiting ? 'SUBMITTING' : 'SUBMIT '}
-                </Button>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </>
       )}
     </>

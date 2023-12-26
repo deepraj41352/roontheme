@@ -399,7 +399,7 @@ body {
   max-width: 700px !important;
 }
 .scrollInAdminproject {
-  max-height: 450px;
+  max-height: 566px;
   overflow-y: auto;
 }
 .formcrossbtn {
@@ -1442,7 +1442,7 @@ span[data-tooltip]:hover::before {
   padding: 3px 8px;
   border-radius: 5px;
   width: 100%;
-  max-width: 80px;
+  max-width: 90px;
   border: 1px solid;
 }
 .edit-btn {
@@ -1451,7 +1451,7 @@ span[data-tooltip]:hover::before {
   border-radius: 5px;
   width: 100%;
   color: #fff;
-  max-width: 80px;
+  max-width: 90px;
   border: 1px solid;
 }
 .global-font {
@@ -1778,7 +1778,7 @@ span[data-tooltip2]:hover::before {
 }
 /* chatbot css end */
 .mainWidthtbl {
-  max-width: 95%;
+  max-width: 900px;
   margin: 0 auto;
 }
 @media only screen and (min-width: 1300px) and (max-width: 1450px) {
@@ -1824,4 +1824,48 @@ span[data-tooltip2]:hover::before {
   outline: unset;
   max-width: 100%;
   flex: 2;
+}
+@media screen and (max-width: 909px) {
+  .modelContainer {
+    width: 100% !important;
+    max-width: 85% !important;
+  }
+  .formcrossbtn {
+    display: none;
+  }
+}
+.AllTableContiner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.formWidth {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.TaskBtnFieldLeft {
+  padding-left: 0px !important;
+}
+.TaskBtnFieldRight {
+  padding-right: 0px !important;
+}
+
+@media screen and (max-width: 1280px) {
+  .scrollInAdminproject {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .TaskBtnFieldLeft,
+  .TaskBtnFieldRight {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
+
+  .TaskBtnFieldLeft {
+    margin-bottom: 10px !important;
+  }
 }

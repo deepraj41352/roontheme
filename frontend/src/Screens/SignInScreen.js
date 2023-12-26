@@ -1,21 +1,23 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { Container, Row, Col, Card } from 'react-bootstrap/';
-import { Link, useNavigate } from 'react-router-dom';
-import Validations from '../Components/Validations';
-import { FaEye, FaRegEyeSlash } from 'react-icons/fa';
-import { useContext, useState, useEffect } from 'react';
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import { Container, Row, Col, Card } from "react-bootstrap/";
+import { Link, useNavigate } from "react-router-dom";
+import Validations from "../Components/Validations";
+import { FaEye, FaRegEyeSlash } from "react-icons/fa";
+import { useContext, useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 //import { io } from 'socket.io-client';
-import { Store } from '../Store';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import { Store } from "../Store";
+import axios from "axios";
+import { toast } from "react-toastify";
 function SignUpForm() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmiting, setIsSubmiting] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const { t } = useTranslation();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -24,15 +26,15 @@ function SignUpForm() {
   const { userInfo } = state;
   useEffect(() => {
     if (userInfo) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   }, [userInfo, navigate]);
   useEffect(() => {
-    const rememberedUser = localStorage.getItem('rememberedUser');
+    const rememberedUser = localStorage.getItem("rememberedUser");
     if (rememberedUser) {
       const { email, password } = JSON.parse(rememberedUser);
-      document.getElementById('username').value = email;
-      document.getElementById('password').value = password;
+      document.getElementById("username").value = email;
+      document.getElementById("password").value = password;
       setEmail(email);
       setPassword(password);
     }
@@ -44,27 +46,27 @@ function SignUpForm() {
 
     if (rememberMe) {
       localStorage.setItem(
-        'rememberedUser',
+        "rememberedUser",
         JSON.stringify({ email, password })
       );
     }
 
     try {
-      const { data } = await axios.post('/api/user/signin', {
+      const { data } = await axios.post("/api/user/signin", {
         email,
         password,
       });
       if (!data.profile_picture) {
-        data.profile_picture = './avatar.png';
+        data.profile_picture = "./avatar.png";
       }
-      ctxDispatch({ type: 'USER_SIGNIN', payload: data });
-      localStorage.setItem('userInfo', JSON.stringify(data));
+      ctxDispatch({ type: "USER_SIGNIN", payload: data });
+      localStorage.setItem("userInfo", JSON.stringify(data));
 
-      toast.success('Login successful');
+      toast.success(t("login successfully"));
       // const socket = io('ws://localhost:8900');
       // socket.on('connectionForNotify', (data) => {});
 
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
       toast.error(err.response?.data?.message, { autoClose: 2000 });
     } finally {
@@ -81,7 +83,7 @@ function SignUpForm() {
               <Form onSubmit={submitHandler} className="p-4 formWidth ">
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label className="mb-1 input-box startLabel">
-                    Email address
+                    {`E-mail ${t("address")}`}
                   </Form.Label>
                   <Form.Control
                     id="username"
@@ -95,14 +97,16 @@ function SignUpForm() {
                 </Form.Group>
                 <Validations type="email" value={email} />
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label className="mb-1 startLabel">Password</Form.Label>
+                  <Form.Label className="mb-1 startLabel">
+                    {t("password")}
+                  </Form.Label>
                   <div className="Password-input-eye">
                     <div className=" rounded-2">
                       <Form.Control
                         id="password"
                         value={password}
                         className="pswd-input"
-                        type={showPassword ? 'text' : 'password'}
+                        type={showPassword ? "text" : "password"}
                         onChange={(e) => {
                           setPassword(e.target.value);
                         }}
@@ -126,7 +130,7 @@ function SignUpForm() {
                   <Form.Check
                     className="mt-3 startLabel"
                     type="checkbox"
-                    label="Remember me"
+                    label={t("remember me")}
                     onChange={(e) => {
                       setRememberMe(e.target.checked);
                     }}
@@ -138,11 +142,11 @@ function SignUpForm() {
                   type="submit"
                   disabled={isSubmiting}
                 >
-                  {isSubmiting ? 'SUBMITTING' : 'SUBMIT '}
+                  {isSubmiting ? `${t("submitting")}` : `${t("submit")}`}
                 </Button>
                 <Form.Group className="my-3">
                   <Link to="/ForgetPassword" className="forgotPass">
-                    Forgot Password?
+                    {`${t("forget")} ${t("password")} ?`}
                   </Link>
                 </Form.Group>
               </Form>

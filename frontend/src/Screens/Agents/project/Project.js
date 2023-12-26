@@ -3,8 +3,10 @@ import axios from 'axios';
 import ThreeLoader from '../../../Util/threeLoader';
 import { Store } from '../../../Store';
 import DataTable from '../../../Components/DataTable';
+import { useTranslation } from 'react-i18next';
 
 export default function AgentsProjectList() {
+  const { t } = useTranslation();
   const [ContractorData, setContractorData] = useState([]);
   const [projectData, setProjectData] = useState([]);
   const [loading, setLoding] = useState(false);
@@ -22,7 +24,7 @@ export default function AgentsProjectList() {
     },
     {
       field: 'NumberTasks',
-      headerName: 'Number of Tasks',
+      headerName: t('Number of tasks'),
       minWidth: 150,
       flex: 1,
       renderCell: (params) => {
@@ -35,7 +37,7 @@ export default function AgentsProjectList() {
     },
     {
       field: 'userId',
-      headerName: 'Client',
+      headerName: t('client'),
       minWidth: 150,
       flex: 1,
       renderCell: (params) => {
@@ -48,7 +50,7 @@ export default function AgentsProjectList() {
     },
     {
       field: 'createdAt',
-      headerName: 'Project Create Date',
+      headerName: t('project create date'),
       minWidth: 220,
       flex: 1,
       renderCell: (params) => {
@@ -59,9 +61,13 @@ export default function AgentsProjectList() {
         return (
           <div className="text-start">
             <div>
-              <span>Date: {date}</span>
+              <span>
+                {t('date')}: {date}
+              </span>
               <br />
-              <span>Time: {time}</span>
+              <span>
+                {t('time')}: {time}
+              </span>
             </div>
           </div>
         );
@@ -82,7 +88,7 @@ export default function AgentsProjectList() {
         const { data } = await axios.post(`/api/user/`, { role: 'contractor' });
         setContractorData(data);
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Occurred'));
       } finally {
         setLoding(false);
       }
@@ -100,7 +106,7 @@ export default function AgentsProjectList() {
         });
         SetTaskData(tasks);
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Occurred'));
       } finally {
         setLoding(false);
       }
@@ -120,7 +126,7 @@ export default function AgentsProjectList() {
         });
         setProjectData(projectData);
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Occurred'));
       } finally {
         setLoding(false);
       }
@@ -139,7 +145,7 @@ export default function AgentsProjectList() {
           <DataTable
             rowdata={projectData}
             columns={columns}
-            label={'Project Is Not Avalible'}
+            label={`Project ${t('Is Not Available')}`}
           />
         </>
       )}

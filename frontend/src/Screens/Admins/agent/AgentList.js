@@ -7,8 +7,10 @@ import { confirmAlert } from 'react-confirm-alert';
 import { Store } from '../../../Store';
 import ThreeLoader from '../../../Util/threeLoader';
 import DataTable from '../../../Components/DataTable';
+import { useTranslation } from 'react-i18next';
 
 export default function AgentList() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [agentData, setAgentData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
@@ -31,7 +33,7 @@ export default function AgentList() {
         });
         setCategoryData(data);
       } catch (error) {
-        setError('An Error Occured');
+        setError(t('An Error Occurred'));
       }
     };
     FatchCategory();
@@ -44,7 +46,7 @@ export default function AgentList() {
         const { data } = await axios.post(`/api/user/`, { role: 'agent' });
         setAgentData(data);
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Occurred'));
       } finally {
         setLoading(false);
       }
@@ -54,17 +56,17 @@ export default function AgentList() {
 
   const confirmDelete = (Id) => {
     confirmAlert({
-      title: 'Confirm to delete',
-      message: 'Are you sure to delete this?',
+      title: t('confirm to delete'),
+      message: t('deleteConfirmationMessage'),
       buttons: [
         {
           className: 'globalbtnColor',
-          label: 'Yes',
+          label: t('Yes'),
           onClick: () => deleteHandle(Id),
         },
         {
           className: 'globalbtnColor',
-          label: 'No',
+          label: t('No'),
         },
       ],
     });
@@ -78,13 +80,13 @@ export default function AgentList() {
       });
 
       if (response.status === 200) {
-        toast.success('Agent Deleted Successfully!');
+        toast.success(`${t('agent')} ${t('delete successfully')}`);
         setUpdateData(!updateData);
       } else {
-        toast.error('Failed To Delete Agent.');
+        toast.error(`${t('failedDelete')} ${t('agent')}`);
       }
     } catch (error) {
-      toast.error('An Error Occurred While Deleting Agent.');
+      toast.error(t('An Error Occurred'));
     } finally {
       setLoading(false);
     }
@@ -93,19 +95,19 @@ export default function AgentList() {
   const columns = [
     {
       field: 'first_name',
-      headerName: 'Name',
+      headerName: t('firstname'),
       minWidth: 100,
       flex: 1,
     },
     {
       field: 'email',
-      headerName: 'Email',
+      headerName: 'E-mail',
       minWidth: 200,
       flex: 1,
     },
     {
       field: 'agentCategory',
-      headerName: 'Category',
+      headerName: t('categories'),
       minWidth: 110,
       flex: 1,
       renderCell: (params) => {
@@ -125,13 +127,13 @@ export default function AgentList() {
     { field: '_id', headerName: 'ID', minWidth: 200 },
     {
       field: 'userStatus',
-      headerName: 'Status',
+      headerName: t('status'),
       minWidth: 100,
       flex: 0.5,
       renderCell: (params) => {
         const userStatusData =
-          params.row.userStatus == true ? 'Active' : 'Inactive';
-        const isInactive = userStatusData === 'Inactive';
+          params.row.userStatus == true ? t('active') : t('inactive');
+        const isInactive = userStatusData === t('inactive');
         const cellClassName = isInactive ? 'inactive-cell' : 'active-cell';
         return (
           <div className={`status-cell ${cellClassName}`}>{userStatusData}</div>
@@ -140,7 +142,7 @@ export default function AgentList() {
     },
     {
       field: 'action',
-      headerName: 'Action',
+      headerName: t('action'),
       minWidth: 280,
       flex: 1,
       renderCell: (params) => {
@@ -151,14 +153,14 @@ export default function AgentList() {
               className="mx-2 edit-btn"
               onClick={() => handleEdit(params.row._id)}
             >
-              Edit
+              {t('edit')}
             </button>
             <button
               variant="outlined"
               className="mx-2 delete-btn global-font"
               onClick={() => confirmDelete(params.row._id)}
             >
-              Delete
+              {t('delete')}
             </button>
           </Grid>
         );
@@ -180,12 +182,12 @@ export default function AgentList() {
           <ul className="nav-style1">
             <li>
               <Link to="/agent-screen">
-                <a className="active">Agent</a>
+                <a className="active">{t('agent')}</a>
               </Link>
             </li>
             <li>
               <Link to="/agent/create-screen">
-                <a>Create</a>
+                <a>{t('create')}</a>
               </Link>
             </li>
           </ul>
@@ -193,7 +195,7 @@ export default function AgentList() {
             <DataTable
               rowdata={agentData}
               columns={columns}
-              label={'Agent Data Is Not Avalible'}
+              label={t('agent') + t('Is Not Available')}
               customRowRenderer={customRowRenderer}
             />
           </div>

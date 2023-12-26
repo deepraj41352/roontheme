@@ -15,8 +15,10 @@ import { Store } from '../../../Store';
 import ThreeLoader from '../../../Util/threeLoader';
 import { IoSettings } from 'react-icons/io5';
 import DataTable from '../../../Components/DataTable';
+import { useTranslation } from 'react-i18next';
 
 export default function TasksList() {
+  const { t } = useTranslation();
   const [isSubmiting, setIsSubmiting] = useState(false);
   const { state } = useContext(Store);
   const { toggleState, userInfo, projectDatatrue } = state;
@@ -38,13 +40,15 @@ export default function TasksList() {
   const minutesAgo = Math.floor((now - lastLoginDate) / (1000 * 60));
   const hours = Math.floor(minutesAgo / 60);
   const remainingMinutes = minutesAgo % 60;
-  const formattedLastLogin = `Last Login: ${
-    hours > 0 ? `${hours} ${hours === 1 ? 'Hour' : 'Hours'}` : ''
+  const formattedLastLogin = ` ${t('last login')}: ${
+    hours > 0 ? `${hours} ${hours === 1 ? t('hour') : t('hours')}` : ''
   }${hours > 0 && remainingMinutes > 0 ? ', ' : ''}${
     remainingMinutes > 0
-      ? `${remainingMinutes} ${remainingMinutes === 1 ? 'Minute' : 'Minutes'}`
-      : '0 Minute'
-  } ago`;
+      ? `${remainingMinutes} ${
+          remainingMinutes === 1 ? t('minute') : t('minutes')
+        }`
+      : `0 ${t('minute')}`
+  } ${t('ago')}`;
 
   const columns = [
     {
@@ -77,7 +81,7 @@ export default function TasksList() {
     },
     {
       field: 'checkbox',
-      headerName: 'Select',
+      headerName: t('select'),
       minWidth: 100,
       flex: 1,
       renderCell: (params) => (
@@ -93,7 +97,7 @@ export default function TasksList() {
     },
     {
       field: 'taskName',
-      headerName: 'Task',
+      headerName: t('task'),
       width: 300,
       renderCell: (params) => (
         <Link
@@ -102,14 +106,16 @@ export default function TasksList() {
         >
           <div className={`text-start ${theme}-textRow`}>
             <div>{params.row.taskName}</div>
-            <div>Task ID {params.row._id}</div>
+            <div>
+              {t('task')} ID {params.row._id}
+            </div>
           </div>
         </Link>
       ),
     },
     {
       field: 'userName',
-      headerName: 'Client',
+      headerName: t('client'),
       minWidth: 100,
       flex: 1,
       renderCell: (params) => (
@@ -119,14 +125,14 @@ export default function TasksList() {
         >
           <div className={`text-start ${theme}-textRow`}>
             <div>{params.row.userName}</div>
-            <div>Raised By</div>
+            <div> {t('raisedBy')}</div>
           </div>
         </Link>
       ),
     },
     {
       field: 'agentName',
-      headerName: 'Agent',
+      headerName: t('agent'),
       minWidth: 100,
       flex: 1,
       renderCell: (params) => (
@@ -136,14 +142,14 @@ export default function TasksList() {
         >
           <div className={`text-start ${theme}-textRow`}>
             <div>{params.row.agentName}</div>
-            <div>Assigned By</div>
+            <div>{t('assignedBy')}</div>
           </div>
         </Link>
       ),
     },
     {
       field: 'taskStatus',
-      headerName: 'Status',
+      headerName: t('status'),
       flex: 1.5,
       minWidth: 225,
       renderCell: (params) => {
@@ -158,13 +164,13 @@ export default function TasksList() {
             >
               <IoSettings className="clockIcon" />
               {params.row.taskStatus === 'waiting'
-                ? 'Waiting On You'
+                ? t('Waiting on you')
                 : params.row.taskStatus === 'active'
-                ? 'In Progress'
+                ? t('InProgress')
                 : params.row.taskStatus === 'completed'
-                ? 'Completed'
+                ? t('completed')
                 : params.row.taskStatus === 'pending'
-                ? 'Ready To Completed'
+                ? t('Ready To Completed')
                 : ''}
             </div>
           </Grid>
@@ -175,7 +181,7 @@ export default function TasksList() {
 
   const [ProjectData, setProjectData] = useState([]);
   const [selectedTab, setSelectedTab] = useState('Active Task');
-  const [selectedProjects, setSelectedProjects] = useState('All Project');
+  const [selectedProjects, setSelectedProjects] = useState('All Projects');
   const [selectedProjectsId, setSelectedProjectsId] = useState();
   const [success, setSuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -192,20 +198,6 @@ export default function TasksList() {
     setSelectedProjects(Projects);
     setSelectedProjectsId(id);
   };
-
-  // useEffect(() => {
-  //   const GetProject = async () => {
-  //     try {
-  //       if (selectedRowId !== null) {
-  //         const { data } = await axios.get(`/api/task/${selectedRowId}`);
-  //         setProjectStatus(data.taskStatus);
-  //       }
-  //     } catch (err) {
-  //       setError('An Error Occurred');
-  //     }
-  //   };
-  //   GetProject();
-  // }, [selectedRowId]);
 
   const handleCloseRow = () => {
     setShowModal(false);
@@ -225,7 +217,7 @@ export default function TasksList() {
         const { data } = await axios.get(`/api/task/tasks`);
         SetData(data);
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Ocurred'));
       } finally {
         setLoading(false);
       }
@@ -243,7 +235,7 @@ export default function TasksList() {
         });
         setProjectData(data);
       } catch (error) {
-        setError('An Error Occurred');
+        setError(t('An Error Ocurred'));
       } finally {
         setLoading(false);
       }
@@ -258,6 +250,7 @@ export default function TasksList() {
       return item.projectId === selectedProjectsId;
     }
   });
+
   const ActiveData = taskData.filter((item) => {
     return item.taskStatus === 'active' || item.taskStatus === 'waiting';
   });
@@ -277,11 +270,10 @@ export default function TasksList() {
       if (data.status === 200) {
         setSuccess(!success);
         setSelectedRowId(null);
-
-        toast.success('Task Deleted Sucessfully!');
+        toast.success(`${t('task')} ${t('delete successfully')}`);
       }
     } catch (error) {
-      toast.error('Failed To Delete Task');
+      toast.error(`${t('failedDelete')} ${t('task')}`);
     } finally {
       setIsSubmiting(false);
       setShowModalDel(false);
@@ -310,10 +302,10 @@ export default function TasksList() {
         setShowModal(false);
         setSelectedRowId(null);
 
-        toast.success('Task Status Updated Successfully !');
+        toast.error(`${t('task')} ${t('status')} ${t('update successfully')}`);
       }
     } catch (err) {
-      toast.error('Failed To Update Task Status');
+      toast.error(`${t('failedUpdate')} ${t('task')} ${t('status')}`);
     } finally {
       setIsSubmiting(false);
     }
@@ -326,7 +318,7 @@ export default function TasksList() {
         onClick={ModelOpen}
         className="modaleButton btn-color1"
       >
-        Status Update
+        {t('status update')}
       </Button>
       <Button
         variant="outlined"
@@ -334,7 +326,7 @@ export default function TasksList() {
         onClick={ModelOpenDel}
         disabled={isSubmiting}
       >
-        Delete
+        {t('delete')}
       </Button>
     </div>
   );
@@ -357,12 +349,12 @@ export default function TasksList() {
             <ul className="nav-style1">
               <li>
                 <Link to="/admin/task-screen">
-                  <a className="active">Tasks</a>
+                  <a className="active">{t('tasks')}</a>
                 </Link>
               </li>
               <li>
                 <Link to="/admin/task/create-screen">
-                  <a>Create</a>
+                  <a>{t('create')}</a>
                 </Link>
               </li>
             </ul>
@@ -380,7 +372,7 @@ export default function TasksList() {
                     className="dropMenuCon"
                     onClick={() => handleProjectsSelect('', 'All Project')}
                   >
-                    All Project
+                    {t('all')} Project
                   </Dropdown.Item>
                   {ProjectData.map((project, key) => (
                     <Dropdown.Item
@@ -409,20 +401,26 @@ export default function TasksList() {
                     className="dropMenuCon"
                     onClick={() => handleTabSelect('Active Task')}
                   >
-                    <span class="position-relative">Active Task</span>
+                    <span class="position-relative">
+                      {t('active')} {t('task')}
+                    </span>
                   </Dropdown.Item>
                   <Dropdown.Item
                     className="dropMenuCon"
                     onClick={() => handleTabSelect('Parked Task')}
                   >
-                    <span class="position-relative">Parked Task</span>
+                    <span class="position-relative">
+                      {t('parked')} {t('task')}
+                    </span>
                   </Dropdown.Item>
                   <Dropdown.Item
                     active
                     className="dropMenuCon"
                     onClick={() => handleTabSelect('Completed Task')}
                   >
-                    <span class="position-relative">Completed Task</span>
+                    <span class="position-relative">
+                      {t('completed')} {t('task')}
+                    </span>
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
@@ -435,7 +433,11 @@ export default function TasksList() {
                 <Tab
                   className="tab-color"
                   eventKey="Active Task"
-                  title={<span className="position-relative">Active Task</span>}
+                  title={
+                    <span className="position-relative">
+                      {t('active')} {t('task')}
+                    </span>
+                  }
                 >
                   {selectedRowId && renderButtons()}
                   <Modal
@@ -458,16 +460,14 @@ export default function TasksList() {
                       }}
                     >
                       <div className="overlayLoading p-2">
-                        <div className="pb-4">
-                          Make sure you want to delete this task.
-                        </div>
+                        <div className="pb-4">{t('taskDelete')}</div>
                         <Button
                           variant="outlined"
                           onClick={deleteTask}
                           className="globalbtnColor modaleButton"
                           disabled={isSubmiting}
                         >
-                          Confirm
+                          {t('confirm')}
                         </Button>
 
                         <Button
@@ -476,7 +476,7 @@ export default function TasksList() {
                           className="ms-2 globalbtnColor modaleButton"
                           disabled={isSubmiting}
                         >
-                          Cancel
+                          {t('cancel')}
                         </Button>
                       </div>
                     </Box>
@@ -507,7 +507,7 @@ export default function TasksList() {
                               id="taskStatusLabel"
                               className="mb-1 fw-bold"
                             >
-                              Task Status
+                              {t('task')} {t('status')}
                             </InputLabel>
                             <Select
                               labelId="taskStatusLabel"
@@ -521,53 +521,30 @@ export default function TasksList() {
                               onChange={handleStatusUpdate}
                             >
                               <MenuItem className="selecftStyle" value="active">
-                                Running
+                                {t('running')}
                               </MenuItem>
                               <MenuItem
                                 className="selecftStyle"
                                 value="pending"
                               >
-                                Pending
+                                {t('pending')}
                               </MenuItem>
                               <MenuItem
                                 className="selecftStyle"
                                 value="completed"
                               >
-                                Completed
+                                {t('completed')}
                               </MenuItem>
                             </Select>
                           </FormControl>
-                          {/* <Form.Group
-                            className="mb-3"
-                            controlId="formBasicPassword"
-                          >
-                            <Form.Label className="mb-1 fw-bold">
-                              Task Status
-                            </Form.Label>
-                            <Form.Select
-                              className="select"
-                              name="projectStatus"
-                              value={formData.projectStatus}
-                              onChange={handleStatusUpdate}
-                            >
-                              <option className="options" value="active">
-                                Running
-                              </option>
-                              <option className="options" value="completed">
-                                Completed
-                              </option>
-                              <option className="options" value="pending">
-                                Pending
-                              </option>
-                            </Form.Select>
-                          </Form.Group> */}
+
                           <Button
                             variant="outlined"
                             onClick={handleFormSubmit}
                             className="globalbtnColor modaleButton"
                             disabled={isSubmiting}
                           >
-                            Confirm
+                            {t('confirm')}
                           </Button>
                           <Button
                             variant="outlined"
@@ -575,7 +552,7 @@ export default function TasksList() {
                             className="ms-2 globalbtnColor modaleButton"
                             disabled={isSubmiting}
                           >
-                            Cancel
+                            {t('cancel')}
                           </Button>
                         </Form>
                       </div>
@@ -587,21 +564,25 @@ export default function TasksList() {
                   <DataTable
                     rowdata={ActiveData}
                     columns={columns}
-                    label={'Task Is Not Available'}
+                    label={`${t('task')} ${t('Is Not Available')}`}
                     extracss={'tableGrid actionCenter'}
                   />
                 </Tab>
                 <Tab
                   className="tab-color"
                   eventKey="Parked Task"
-                  title={<span className="position-relative">Parked Task</span>}
+                  title={
+                    <span className="position-relative">
+                      {t('parked')} {t('task')}
+                    </span>
+                  }
                 >
                   {selectedRowId && renderButtons()}
                   {lastLogin()}
                   <DataTable
                     rowdata={PendingData}
                     columns={columns}
-                    label={'Task Is Not Available'}
+                    label={`${t('task')} ${t('Is Not Available')}`}
                     extracss={'tableGrid actionCenter'}
                   />
                 </Tab>
@@ -609,7 +590,9 @@ export default function TasksList() {
                   className="tab-color"
                   eventKey="Completed Task"
                   title={
-                    <span className="position-relative">Completed Task</span>
+                    <span className="position-relative">
+                      {t('completed')} {t('task')}
+                    </span>
                   }
                 >
                   {selectedRowId && renderButtons()}
@@ -617,7 +600,7 @@ export default function TasksList() {
                   <DataTable
                     rowdata={CompleteData}
                     columns={columns}
-                    label={'Task Is Not Available'}
+                    label={`${t('task')} ${t('Is Not Available')}`}
                     extracss={'tableGrid actionCenter'}
                   />
                 </Tab>

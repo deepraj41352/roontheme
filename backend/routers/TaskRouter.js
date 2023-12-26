@@ -99,7 +99,7 @@ TaskRouter.post(
         }
         if (project && project.projectName === projectName) {
           res.status(200).json({
-            message: ' A Project With The Same Name Already Exists.',
+            message: 'A Project With The Same Name Already Exists.',
           });
         } else if (task && task.taskName === taskName) {
           res.status(200).json({
