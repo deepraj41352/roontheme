@@ -15,6 +15,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
 import enTranslation from './Language/en.json';
 import nlTranslation from './Language/nl.json';
+import deTranslation from './Language/de.json';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -25,6 +26,7 @@ function App() {
     resources: {
       en: { translation: enTranslation },
       nl: { translation: nlTranslation },
+      de: { translation: deTranslation },
     },
   });
 

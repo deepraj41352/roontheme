@@ -5,6 +5,7 @@
     "welcome": "Bienvenido al chat"
   },
   "task": "Taak",
+  "project": "Project",
   "notification": "Kennisgeving",
   "logout": "Uitloggen",
   "client": "Cliënt",
@@ -50,7 +51,7 @@
   "Yes": "Ja",
   "total": "Totaal",
   "Waiting on you": "Wachten op jou",
-  "Ready to completed": "Klaar om voltooid te worden",
+  "Ready To Completed": "Klaar om voltooid te worden",
   "Number of tasks": "Aantal taken",
   "project create date": "Project aanmaakdatum",
   "Is Not Available": "Is niet beschikbaar",
@@ -120,5 +121,12 @@
   "passerrormsg": "Minimaal 8 tekens, één hoofdletter, één kleine letter, één cijfer, één speciaal teken.",
   "emailerrormsg": "Ongeldig e-mailadres.",
   "registration": "registratie",
-  "mobailerrormsg": "Voer alstublieft een geldig mobiel nummer van 10 cijfers in."
+  "mobailerrormsg": "Voer alstublieft een geldig mobiel nummer van 10 cijfers in.",
+  "profile": "profiel",
+  "profileUpdateFailError": "Mislukt om uw profiel bij te werken",
+  "ProfilePicSizeError": "De foto is groter dan 2 MB. Zorg ervoor dat deze minder dan 2 MB is.",
+  "profilePicUpdateFailError": "Mislukt om uw profielfoto bij te werken",
+  "profilePicSuccessMsg": "Profielfoto Succesvol Bijgewerkt",
+  "profileSuccessMsg": "Profiel Succesvol Bijgewerkt",
+  "registerConfirmationMeg": "We hebben een bevestigingslink naar je e-mail gestuurd"
 }

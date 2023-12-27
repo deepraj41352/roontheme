@@ -18,7 +18,7 @@ export default function ProjectList() {
   const columns = [
     {
       field: 'projectName',
-      headerName: 'Project',
+      headerName: t('project'),
       minWidth: 100,
       flex: 1,
     },
@@ -74,7 +74,7 @@ export default function ProjectList() {
     },
     {
       field: '_id',
-      headerName: 'Project Id',
+      headerName: `${t('project')} Id`,
       minWidth: 250,
       flex: 1,
     },

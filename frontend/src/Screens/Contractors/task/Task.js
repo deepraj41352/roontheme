@@ -21,8 +21,13 @@ export default function ContractorTasksList() {
   const { t } = useTranslation();
   const [isSubmiting, setIsSubmiting] = useState(false);
   const { state } = useContext(Store);
-  const { toggleState, userInfo, projectDatatrue, contractorSuccesstrue } =
-    state;
+  const {
+    toggleState,
+    userInfo,
+    projectDatatrue,
+    contractorSuccesstrue,
+    languageName,
+  } = state;
   const theme = toggleState ? 'dark' : 'light';
   const [formData, setFormData] = useState({
     projectStatus: 'active',
@@ -210,6 +215,10 @@ export default function ContractorTasksList() {
   };
 
   useEffect(() => {
+    setSelectedProjects(`${t('all')} ${t('project')}`);
+  }, [languageName]);
+
+  useEffect(() => {
     setLoading(true);
     const FatchTaskData = async () => {
       try {
@@ -248,7 +257,7 @@ export default function ContractorTasksList() {
   }, [success, projectDatatrue, contractorSuccesstrue]);
 
   const taskData = data.filter((item) => {
-    if (selectedProjects == 'All Project') {
+    if (selectedProjects == `${t('all')} ${t('project')}`) {
       return item;
     } else {
       return item.projectId === selectedProjectsId;
@@ -305,7 +314,9 @@ export default function ContractorTasksList() {
         setSuccess(!success);
         setShowModal(false);
         setSelectedRowId(null);
-        toast.error(`${t('task')} ${t('status')} ${t('update successfully')}`);
+        toast.success(
+          `${t('task')} ${t('status')} ${t('update successfully')}`
+        );
       }
     } catch (err) {
       toast.error(`${t('failedUpdate')} ${t('task')} ${t('status')}`);
@@ -315,7 +326,7 @@ export default function ContractorTasksList() {
   };
 
   const renderButtons = () => (
-    <div className="mt-3">
+    <div className="mt-3 taskBtnContiner">
       <Button
         variant="outlined"
         onClick={ModelOpen}
@@ -373,9 +384,11 @@ export default function ContractorTasksList() {
                 <Dropdown.Menu className="dropMenu dropButton">
                   <Dropdown.Item
                     className="dropMenuCon"
-                    onClick={() => handleProjectsSelect('', 'All Project')}
+                    onClick={() =>
+                      handleProjectsSelect('', `${t('all')} ${t('project')}`)
+                    }
                   >
-                    {t('all')} Project
+                    {`${t('all')} ${t('project')}`}
                   </Dropdown.Item>
                   {ProjectData.map((project, key) => (
                     <Dropdown.Item

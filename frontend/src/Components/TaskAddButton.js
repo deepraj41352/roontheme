@@ -382,7 +382,7 @@ export default function TaskAddButton() {
             <FormControl
               className={dynamicfield ? 'disable mb-3 w-100' : 'mb-3 w-100'}
             >
-              <InputLabel> {t('select')} Project</InputLabel>
+              <InputLabel>{`${t('select')} ${t('project')}`}</InputLabel>
               <Select
                 value={SelectProjectName}
                 onChange={(e) => selectedProjectContractor(e)}
@@ -401,7 +401,7 @@ export default function TaskAddButton() {
                     handleAddNewProject();
                   }}
                 >
-                  <MdAddCircleOutline /> {t('addNew')} Project
+                  <MdAddCircleOutline /> {`${t('addNew')} ${t('project')}`}
                 </MenuItem>
                 {ProjectData &&
                   ProjectData.map((items) => (
@@ -423,7 +423,7 @@ export default function TaskAddButton() {
                     className="mb-1"
                     value={projectName}
                     onChange={(e) => setProjectName(e.target.value)}
-                    label={`Project ${t('name')}`}
+                    label={` ${t('project')} ${t('name')}`}
                     fullWidth
                   />
                 </div>
@@ -438,7 +438,7 @@ export default function TaskAddButton() {
                         className="mb-1"
                         value={projectName}
                         onChange={(e) => setProjectName(e.target.value)}
-                        label="Project Name"
+                        label={` ${t('project')} ${t('name')}`}
                         fullWidth
                       />
                     </div>

@@ -21,7 +21,7 @@ export default function TasksList() {
   const { t } = useTranslation();
   const [isSubmiting, setIsSubmiting] = useState(false);
   const { state } = useContext(Store);
-  const { toggleState, userInfo, projectDatatrue } = state;
+  const { toggleState, userInfo, projectDatatrue, languageName } = state;
   const theme = toggleState ? 'dark' : 'light';
   const [formData, setFormData] = useState({
     projectStatus: 'active',
@@ -181,7 +181,8 @@ export default function TasksList() {
 
   const [ProjectData, setProjectData] = useState([]);
   const [selectedTab, setSelectedTab] = useState('Active Task');
-  const [selectedProjects, setSelectedProjects] = useState('All Projects');
+  console.log('objectlanguageName', languageName);
+  const [selectedProjects, setSelectedProjects] = useState('All Project');
   const [selectedProjectsId, setSelectedProjectsId] = useState();
   const [success, setSuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -211,6 +212,10 @@ export default function TasksList() {
   };
 
   useEffect(() => {
+    setSelectedProjects(`${t('all')} ${t('project')}`);
+  }, [languageName]);
+
+  useEffect(() => {
     setLoading(true);
     const FatchTaskData = async () => {
       try {
@@ -222,7 +227,6 @@ export default function TasksList() {
         setLoading(false);
       }
     };
-
     FatchTaskData();
   }, [success, projectDatatrue]);
 
@@ -244,7 +248,7 @@ export default function TasksList() {
   }, [success, projectDatatrue]);
 
   const taskData = data.filter((item) => {
-    if (selectedProjects == 'All Project') {
+    if (selectedProjects === `${t('all')} ${t('project')}`) {
       return item;
     } else {
       return item.projectId === selectedProjectsId;
@@ -302,7 +306,9 @@ export default function TasksList() {
         setShowModal(false);
         setSelectedRowId(null);
 
-        toast.error(`${t('task')} ${t('status')} ${t('update successfully')}`);
+        toast.success(
+          `${t('task')} ${t('status')} ${t('update successfully')}`
+        );
       }
     } catch (err) {
       toast.error(`${t('failedUpdate')} ${t('task')} ${t('status')}`);
@@ -312,7 +318,7 @@ export default function TasksList() {
   };
 
   const renderButtons = () => (
-    <div className="mt-3">
+    <div className="mt-3 taskBtnContiner">
       <Button
         variant="outlined"
         onClick={ModelOpen}
@@ -370,9 +376,11 @@ export default function TasksList() {
                 <Dropdown.Menu className="dropMenu dropButton">
                   <Dropdown.Item
                     className="dropMenuCon"
-                    onClick={() => handleProjectsSelect('', 'All Project')}
+                    onClick={() =>
+                      handleProjectsSelect('', `${t('all')} ${t('project')}`)
+                    }
                   >
-                    {t('all')} Project
+                    {`${t('all')} ${t('project')}`}
                   </Dropdown.Item>
                   {ProjectData.map((project, key) => (
                     <Dropdown.Item

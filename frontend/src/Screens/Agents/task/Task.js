@@ -26,7 +26,7 @@ export default function AgentTasksList() {
   const [formData, setFormData] = useState({
     projectStatus: 'active',
   });
-  const { toggleState, userInfo } = state;
+  const { toggleState, userInfo, languageName } = state;
   const theme = toggleState ? 'dark' : 'light';
   const [selectedRowId, setSelectedRowId] = useState(null);
 
@@ -188,6 +188,10 @@ export default function AgentTasksList() {
   };
 
   useEffect(() => {
+    setSelectedProjects(`${t('all')} ${t('project')}`);
+  }, [languageName]);
+
+  useEffect(() => {
     setLoading(true);
     const FatchcategoryData = async () => {
       try {
@@ -227,7 +231,7 @@ export default function AgentTasksList() {
   }, [success]);
 
   const taskData = data.filter((item) => {
-    if (selectedProjects == 'All Project') {
+    if (selectedProjects == `${t('all')} ${t('project')}`) {
       return item;
     } else {
       return item.projectId === selectedProjectsId;
@@ -291,7 +295,7 @@ export default function AgentTasksList() {
     }
   };
   const renderButtons = () => (
-    <div className="mt-3">
+    <div className="mt-3 taskBtnContiner">
       <Button
         variant="outlined"
         onClick={ModelOpen}
@@ -337,9 +341,11 @@ export default function AgentTasksList() {
                 <Dropdown.Menu className="dropMenu dropButton">
                   <Dropdown.Item
                     className="dropMenuCon"
-                    onClick={() => handleProjectsSelect('', 'All Project')}
+                    onClick={() =>
+                      handleProjectsSelect('', `${t('all')} ${t('project')}`)
+                    }
                   >
-                    {t('all')} Project
+                    {`${t('all')} ${t('project')}`}
                   </Dropdown.Item>
                   {ProjectData.map((project, key) => (
                     <Dropdown.Item

@@ -268,7 +268,8 @@ export default function ContractorTasksCreate() {
                         }}
                         className="active-option"
                       >
-                        <MdAddCircleOutline /> {t('addNew')} Project
+                        <MdAddCircleOutline />{' '}
+                        {`${t('addNew')} ${t('project')}`}
                       </MenuItem>
                       {ProjectData &&
                         ProjectData.map((items) => (
@@ -288,7 +289,7 @@ export default function ContractorTasksCreate() {
                   <div className="col-md-12">
                     <div className="form-group">
                       <label className="form-label fw-semibold">
-                        Project {t('name')}
+                        {`${t('project')} ${t('name')}`}
                       </label>
                       <input
                         type="text"

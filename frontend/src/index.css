@@ -130,8 +130,8 @@ body {
   object-fit: cover;
 }
 .Nav-image {
-  width: 50px !important;
-  height: 50px !important;
+  width: 40px !important;
+  height: 40px !important;
 }
 .img-fornavs {
   border: 2px solid white;
@@ -1868,4 +1868,8 @@ span[data-tooltip2]:hover::before {
   .TaskBtnFieldLeft {
     margin-bottom: 10px !important;
   }
+}
+.taskBtnContiner {
+  max-width: 900px;
+  margin: 0 auto;
 }

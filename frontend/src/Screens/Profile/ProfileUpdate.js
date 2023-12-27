@@ -5,12 +5,13 @@ import { toast } from 'react-toastify';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import FormSubmitLoader from '../../Util/formSubmitLoader';
+import { useTranslation } from 'react-i18next';
 
 export default function ProfileUpdate() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const [isSubmiting, setIsSubmiting] = useState(false);
-
+  const { t } = useTranslation();
   const [user, setUser] = useState({
     image_url: '',
   });
@@ -23,7 +24,7 @@ export default function ProfileUpdate() {
       const image_url = files[0].size / 1024 / 1024;
       if (image_url > 2) {
         toast.error(
-          'The photo size greater than 2 MB. Make sure less than 2 MB.',
+          t('ProfileUpdateErrorMsg'),
           {
             style: {
               border: '1px solid #ff0033',
@@ -63,11 +64,11 @@ export default function ProfileUpdate() {
         },
       });
 
-      toast.success('Profile Picture Updated Successfully !');
+      toast.success(t('profilePicSuccessMsg'));
       ctxDispatch({ type: 'USER_UPDATE', payload: data.userData });
       localStorage.setItem('userInfo', JSON.stringify(data.userData));
     } catch (err) {
-      toast.error('Failed To Update Your Profile Picture');
+      toast.error(t('profilePicUpdateFailError'));
     } finally {
       setIsSubmiting(false);
     }
@@ -77,12 +78,12 @@ export default function ProfileUpdate() {
       <ul className="nav-style1">
         <li>
           <Link to="/profile-screen">
-            <address>Profile</address>
+            <address>{t('Profile')}</address>
           </Link>
         </li>
         <li>
           <Link to="/profile/picture">
-            <a className="active">Picture</a>
+            <a className="active"> {t('picture')}</a>
           </Link>
         </li>
       </ul>
@@ -92,7 +93,7 @@ export default function ProfileUpdate() {
         <div className="row">
           <div className="col-md-12">
             <div className="form-group">
-              <label className="form-label fw-semibold">Image</label>
+              <label className="form-label fw-semibold"> {t('image')}</label>
               <input
                 disabled={isSubmiting}
                 type="file"
@@ -101,7 +102,7 @@ export default function ProfileUpdate() {
                 name="image_url"
                 onChange={handleChange}
               />
-              <div className="form-text">Upload image size 300x300!</div>
+              <div className="form-text">  {t('Upload image size')} 300x300!</div>
 
               <div className="mt-2">
                 {imagePreview ? (
@@ -126,7 +127,7 @@ export default function ProfileUpdate() {
                   type="submit"
                   disabled={isSubmiting}
                 >
-                  {isSubmiting ? 'UPDATING' : 'UPDATE '}
+                  {isSubmiting ? t('submitting') : t('submit')}
                 </Button>
               </div>
             </div>

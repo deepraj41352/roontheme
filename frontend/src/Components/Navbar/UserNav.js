@@ -1,22 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Container, Dropdown, Image, Nav, Navbar } from "react-bootstrap";
-import { AiOutlineAlignLeft, AiOutlineHome } from "react-icons/ai";
-import Theme from "../Theme";
-import { Store } from "../../Store";
-import { Link } from "react-router-dom";
-import { MdLogout, MdOutlineNotifications } from "react-icons/md";
-import { IoPersonOutline } from "react-icons/io5";
-import { IoMdNotificationsOutline } from "react-icons/io";
-import { VscColorMode } from "react-icons/vsc";
-import truncateText from "../../TruncateText";
-import { BiHelpCircle } from "react-icons/bi";
-import LanguageSwitcher from "../LanguageSwitcher";
-import { useTranslation } from "react-i18next";
+import React, { useContext, useEffect, useState } from 'react';
+import { Container, Dropdown, Image, Nav, Navbar } from 'react-bootstrap';
+import { AiOutlineAlignLeft, AiOutlineHome } from 'react-icons/ai';
+import Theme from '../Theme';
+import { Store } from '../../Store';
+import { Link } from 'react-router-dom';
+import { MdLogout, MdOutlineNotifications } from 'react-icons/md';
+import { IoPersonOutline } from 'react-icons/io5';
+import { IoMdNotificationsOutline } from 'react-icons/io';
+import { VscColorMode } from 'react-icons/vsc';
+import truncateText from '../../TruncateText';
+import { BiHelpCircle } from 'react-icons/bi';
+import LanguageSwitcher from '../LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 export default function UserNav({ toggleSidebar }) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { toggleState, userInfo, NotificationData } = state;
-  const theme = toggleState ? "dark" : "light";
+  const theme = toggleState ? 'dark' : 'light';
   const [isToggled, setIsToggled] = useState(toggleState);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenhelp, setIsOpenhelp] = useState(false);
@@ -34,9 +34,9 @@ export default function UserNav({ toggleSidebar }) {
   };
 
   const signoutHandler = () => {
-    ctxDispatch({ type: "USER_SIGNOUT" });
-    localStorage.removeItem("userInfo");
-    window.location.href = "/";
+    ctxDispatch({ type: 'USER_SIGNOUT' });
+    localStorage.removeItem('userInfo');
+    window.location.href = '/';
   };
 
   const toggleHelpSection = () => {
@@ -44,12 +44,12 @@ export default function UserNav({ toggleSidebar }) {
   };
 
   useEffect(() => {
-    ctxDispatch({ type: "HELPTOGGLE", payload: isOpenhelp });
+    ctxDispatch({ type: 'HELPTOGGLE', payload: isOpenhelp });
   }, [isOpenhelp]);
 
   useEffect(() => {
-    ctxDispatch({ type: "TOGGLE_BTN", payload: isToggled });
-    localStorage.setItem("toggleState", JSON.stringify(isToggled));
+    ctxDispatch({ type: 'TOGGLE_BTN', payload: isToggled });
+    localStorage.setItem('toggleState', JSON.stringify(isToggled));
   }, [isToggled]);
 
   const { t } = useTranslation();
@@ -76,7 +76,7 @@ export default function UserNav({ toggleSidebar }) {
           >
             <Nav
               className="gap-3 align-items-center"
-              style={{ maxHeight: "100px" }}
+              style={{ maxHeight: '100px' }}
               navbarScroll
             >
               <div className="py-2">
@@ -85,7 +85,7 @@ export default function UserNav({ toggleSidebar }) {
               <div className="py-2">
                 <BiHelpCircle
                   className={`fs-4 admin-btn-logo ${theme}-navbar-Btn`}
-                  title={t("help")}
+                  title={t('help')}
                   onClick={toggleHelpSection}
                 />
               </div>
@@ -95,7 +95,7 @@ export default function UserNav({ toggleSidebar }) {
               <Link to="/notification-screen" className="position-relative">
                 <MdOutlineNotifications
                   className={`fs-4 admin-btn-logo ${theme}-navbar-Btn`}
-                  title={t("notification")}
+                  title={t('notification')}
                 />
                 {NotificationData.length > 0 && (
                   <span className="notication-bdg">
@@ -118,7 +118,7 @@ export default function UserNav({ toggleSidebar }) {
                     src={
                       userInfo.profile_picture
                         ? userInfo.profile_picture
-                        : "./avatar.png"
+                        : './avatar.png'
                     }
                     alt="userimg"
                   />
@@ -126,40 +126,40 @@ export default function UserNav({ toggleSidebar }) {
                 <Dropdown.Menu
                   className="dropMenu dropMenuProfile drophover"
                   style={{
-                    transition: "opacity 0.3s ease, transform 0.3s ease",
+                    transition: 'opacity 0.3s ease, transform 0.3s ease',
                   }}
                 >
                   <Dropdown.Item
-                    style={{
-                      paddingRight: "100px",
-                    }}
+                    // style={{
+                    //   paddingRight: "100px",
+                    // }}
                     href="/profile-screen"
                   >
                     <div className="d-flex gap-3 w-100">
                       <div>
                         <div>
-                          {" "}
+                          {' '}
                           <img
                             className="profile-icon-inner Nav-image img-fornavs"
                             src={
                               userInfo.profile_picture
                                 ? userInfo.profile_picture
-                                : "./avatar.png"
+                                : './avatar.png'
                             }
                             alt="userimg"
                           />
                         </div>
                       </div>
                       <div className="d-flex flex-column">
-                        <div> {truncateText(userInfo.first_name, 9)}</div>
-                        <div> {truncateText(userInfo.email, 10)}</div>
+                        <div>{userInfo.first_name}</div>
+                        <div>{userInfo.email} </div>
                       </div>
                     </div>
                   </Dropdown.Item>
                   <hr />
                   <Dropdown.Item href="/profile-screen" className="mb-2">
                     <IoPersonOutline className="fs-4 me-3 pb-1" />
-                    {t("myProfile")}
+                    {t('myProfile')}
                   </Dropdown.Item>
                   <Dropdown.Item href=" /dashboard" className="mb-2">
                     <AiOutlineHome className="fs-4 me-3 pb-1" />
@@ -167,16 +167,16 @@ export default function UserNav({ toggleSidebar }) {
                   </Dropdown.Item>
                   <Dropdown.Item href="/notification-screen" className="mb-2">
                     <IoMdNotificationsOutline className="fs-4 me-3 pb-1 " />
-                    {t("notification")}
+                    {t('notification')}
                   </Dropdown.Item>
                   <Dropdown.Item onClick={handleChangeToggleState}>
                     <VscColorMode className="fs-4 me-3 pb-1 " />
-                    {theme === "light" ? t("light") : t("dark")} {t("mode")}
+                    {theme === 'light' ? t('light') : t('dark')} {t('mode')}
                   </Dropdown.Item>
                   <hr />
                   <Dropdown.Item onClick={signoutHandler}>
                     <MdLogout className="fs-4 me-3 pb-1" />
-                    {t("logout")}
+                    {t('logout')}
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>

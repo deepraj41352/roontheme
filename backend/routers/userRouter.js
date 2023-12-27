@@ -13,13 +13,13 @@ import {
 } from '../util.js';
 import { v2 as cloudinary } from 'cloudinary';
 import streamifier from 'streamifier';
+import { storeNotification } from '../server.js';
+import { Socket, io } from 'socket.io-client';
+import mongoose from 'mongoose';
+// import translate, { TranslateResult } from 'google-translate-api';
 
 const userRouter = express.Router();
 const upload = multer();
-import { storeNotification } from '../server.js';
-
-import { Socket, io } from 'socket.io-client';
-import mongoose from 'mongoose';
 const SocketUrl = process.env.SOCKETURL || 'ws://localhost:8900';
 const socket = io(SocketUrl);
 
@@ -551,6 +551,7 @@ userRouter.get(
     }
   })
 );
+
 userRouter.get(
   '/',
   expressAsyncHandler(async (req, res) => {
@@ -563,4 +564,36 @@ userRouter.get(
     }
   })
 );
+
+// userRouter.get(
+//   '/',
+//   expressAsyncHandler(async (req, res) => {
+//     try {
+//       const users = await User.find().sort({ createdAt: -1 });
+//       const translatedUsers = await Promise.all(
+//         users.map(async (user) => {
+//           const translatedUsername = await translate(user.username, {
+//             from: 'en',
+//             to: 'nl',
+//           });
+//           const translatedEmail = await translate(user.email, {
+//             from: 'en',
+//             to: 'nl',
+//           });
+
+//           return {
+//             ...user.toObject(),
+//             username: translatedUsername.text,
+//             email: translatedEmail.text,
+//           };
+//         })
+//       );
+//       console.log('objecttranslatedUsers', translatedUsers);
+//       res.json(translatedUsers);
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).json({ message: 'Server error' });
+//     }
+//   })
+// );
 export default userRouter;

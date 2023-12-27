@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import RegistrationForm from './Screens/RegistrationScreen';
 import SignUpForm from './Screens/SignInScreen';
+import { useTranslation } from 'react-i18next';
 
 function SignUpAndRegistration() {
   const [isOn, setIsOn] = useState(false);
   const toggleSwitch = () => setIsOn(!isOn);
+  const { t } = useTranslation();
 
   const [register, setRegister] = useState(true ? 'register' : 'login');
   return (
@@ -26,7 +28,7 @@ function SignUpAndRegistration() {
                     animate={{ scale: 1, x: 0 }}
                     exit={{ scale: 0 }}
                   >
-                    Create your account
+                    {t('Create your Account')}
                   </motion.h2>
                 ) : (
                   <motion.h2
@@ -34,7 +36,7 @@ function SignUpAndRegistration() {
                     animate={{ scale: 0.9, x: 0 }}
                     exit={{ scale: 1 }}
                   >
-                    Sign in to RoonBerg
+                    {t('sign in to Roonberg')}
                   </motion.h2>
                 )}
 

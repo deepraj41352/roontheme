@@ -16,13 +16,12 @@ export default function AdminList() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [updateData, setUpdateData] = useState(true);
+  const { state } = useContext(Store);
+  const { userInfo, languageName } = state;
 
   const handleEdit = (rowId) => {
     navigate(`/admin/${rowId}`);
   };
-
-  const { state } = useContext(Store);
-  const { userInfo } = state;
 
   useEffect(() => {
     const FatchAdminData = async () => {

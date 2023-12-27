@@ -21,7 +21,7 @@ export default function ContractorProjectList() {
   const columns = [
     {
       field: 'projectName',
-      headerName: 'Project',
+      headerName: t('project'),
       minWidth: 150,
       flex: 1,
     },
@@ -79,7 +79,7 @@ export default function ContractorProjectList() {
     },
     {
       field: '_id',
-      headerName: 'Project Id',
+      headerName: `${t('project')} Id`,
       minWidth: 250,
       flex: 1,
     },

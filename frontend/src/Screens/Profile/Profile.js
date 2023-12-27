@@ -7,6 +7,7 @@ import { MenuItem, Select } from '@mui/material';
 import { Store } from '../../Store';
 import Validations from '../../Components/Validations';
 import FormSubmitLoader from '../../Util/formSubmitLoader';
+import { useTranslation } from 'react-i18next';
 
 function Profile() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -30,6 +31,7 @@ function Profile() {
     userInfo.country ? userInfo.country : ''
   );
   const [isSubmiting, setIsSubmiting] = useState(false);
+  const { t } = useTranslation();
 
   var countrylist = [
     'Afghanistan',
@@ -259,12 +261,12 @@ function Profile() {
         },
       });
 
-      toast.success('Profile Updated Successfully !');
+      toast.success(t('profileSuccessMsg'));
 
       ctxDispatch({ type: 'USER_UPDATE', payload: data.userData });
       localStorage.setItem('userInfo', JSON.stringify(data.userData));
     } catch (err) {
-      toast.error('Failed To Update Your Profile');
+      toast.error(t('profileUpdateFailError'));
     } finally {
       setIsSubmiting(false);
     }
@@ -275,12 +277,12 @@ function Profile() {
       <ul className="nav-style1">
         <li>
           <Link to="/profile-screen">
-            <a className="active">Profile</a>
+            <a className="active">{t('Profile')}</a>
           </Link>
         </li>
         <li>
           <Link to="/profile/picture">
-            <a>Picture</a>
+            <a> {t('picture')}</a>
           </Link>
         </li>
       </ul>
@@ -289,7 +291,7 @@ function Profile() {
         <div className="row">
           <div className="col-md-12">
             <div className="form-group">
-              <label className="form-label fw-semibold">First Name</label>
+              <label className="form-label fw-semibold">{t('firstname')}</label>
               <input
                 type="text"
                 className="form-control"
@@ -303,7 +305,7 @@ function Profile() {
 
           <div className="col-md-12">
             <div className="form-group">
-              <label className="form-label fw-semibold">Last Name</label>
+              <label className="form-label fw-semibold"> {t('lastname')}</label>
               <input
                 type="text"
                 className="form-control"
@@ -316,7 +318,7 @@ function Profile() {
 
           <div className="col-md-12">
             <div className="form-group">
-              <label className="form-label fw-semibold">Email</label>
+              <label className="form-label fw-semibold">E-mail</label>
               <input
                 type="text"
                 className="form-control cursor"
@@ -332,11 +334,11 @@ function Profile() {
 
           <div className="col-md-12">
             <div className="form-group">
-              <label className="form-label fw-semibold">Mobile No.</label>
+              <label className="form-label fw-semibold"> {t('Mobile Number')}</label>
               <input
                 type="text"
                 className="form-control"
-                placeholder="Mobile No"
+                placeholder={t('Mobile Number')}
                 value={mobileNum}
                 onChange={(e) => setMobileNum(e.target.value)}
               />
@@ -345,28 +347,28 @@ function Profile() {
           </div>
           <div className="col-md-12">
             <div className="form-group">
-              <label className="form-label fw-semibold">Gender</label>
+              <label className="form-label fw-semibold"> {t('Gender')}</label>
               <Select
                 className="form-control"
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
               >
                 <MenuItem value="" disabled>
-                  Select
+                  {t('status')}
                 </MenuItem>
-                <MenuItem value="female">Female</MenuItem>
-                <MenuItem value="male">Male</MenuItem>
-                <MenuItem value="others">Others</MenuItem>
+                <MenuItem value="female">  {t('female')}</MenuItem>
+                <MenuItem value="male"> {t('male')}</MenuItem>
+                <MenuItem value="others"> {t('others')}</MenuItem>
               </Select>
             </div>
           </div>
           <div className="col-md-12">
             <div className="form-group">
-              <label className="form-label fw-semibold">Address</label>
+              <label className="form-label fw-semibold"> {t('address')}</label>
               <input
                 type="text"
                 className="form-control"
-                placeholder="Address"
+                placeholder={t('address')}
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               />
@@ -375,7 +377,7 @@ function Profile() {
 
           <div className="col-md-12">
             <div className="form-group">
-              <label className="form-label fw-semibold">country</label>
+              <label className="form-label fw-semibold"> {t('country')}</label>
               <Select
                 className="form-control"
                 value={country}
@@ -390,7 +392,7 @@ function Profile() {
                 }}
               >
                 <MenuItem value="" disabled>
-                  Select
+                  {t('status')}
                 </MenuItem>
                 {countrylist.map((countryName) => (
                   <MenuItem key={countryName} value={countryName}>
@@ -408,7 +410,7 @@ function Profile() {
               type="submit"
               disabled={isSubmiting}
             >
-              {isSubmiting ? 'SUBMITTING' : 'SUBMIT '}
+              {isSubmiting ? t('submitting') : t('submit')}
             </Button>
           </div>
         </div>

@@ -5,6 +5,7 @@
     "welcome": "Welcome to the chat"
   },
   "task": "Task",
+  "project": "Project",
   "notification": "Notification",
   "logout": "Logout",
   "client": "Client",
@@ -50,7 +51,7 @@
   "Yes": "Yes",
   "total": "Total",
   "Waiting on you": "Waiting on You",
-  "Ready to completed": "Ready to Completed",
+  "Ready To Completed": "Ready to Completed",
   "Number of tasks": "Number of Tasks",
   "project create date": "Project Create Date",
   "Is Not Available": "Is Not Available",
@@ -120,5 +121,12 @@
   "messagePlaceholder": "Type your message here...",
   "passerrormsg": "At least 8 characters,  one uppercase letter, one lowercase letter, one digit , one special character.",
   "mobailerrormsg": "Please enter a valid 10-digit mobile number.",
-  "emailerrormsg": "Invalid email address."
+  "emailerrormsg": "Invalid email address.",
+  "profileUpdateFailError": "Failed to update your profile",
+  "profilePicSizeError": "The photo is larger than 2 MB. Please ensure it is less than 2 MB.",
+  "profilePicUpdateFailError": "Failed to update your profile picture",
+  "profilePicSuccessMsg": "Profile picture updated successfully",
+  "profileSuccessMsg": "Profile updated successfully",
+  "profile": "Profile",
+  "registerConfirmationMeg": "We sent a Confirmation link to your email"
 }

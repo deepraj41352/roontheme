@@ -321,7 +321,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                   }
                 >
                   <AiOutlineProject className="me-3 fs-5" />
-                  <div className="mt-1">Project</div>
+                  <div className="mt-1">{t('project')}</div>
                 </li>
               </Link>
             </motion.li>
@@ -386,7 +386,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                   }
                 >
                   <AiOutlineProject className="me-3 fs-5" />
-                  <div className="mt-1">Project</div>
+                  <div className="mt-1">{t('project')}</div>
                 </li>
               </Link>
             </motion.li>
@@ -451,7 +451,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                   }
                 >
                   <AiOutlineProject className="me-3 fs-5" />
-                  <div className="mt-1">Project</div>
+                  <div className="mt-1">{t('project')}</div>
                 </li>
               </Link>
             </motion.li>
@@ -579,7 +579,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
           >
             <li>
               <VscColorMode className="fs-4 me-3 pb-1 " />
-              {theme === 'light' ? 'Dark' : 'Light'} Mode
+              {theme === 'light' ? t('dark') : t('light')} {t('mode')}
             </li>
           </Link>
         </motion.li>
