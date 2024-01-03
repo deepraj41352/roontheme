@@ -235,7 +235,10 @@ export default function TasksList() {
     const FatchProject = async () => {
       try {
         const { data } = await axios.get(`/api/task/project`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            'Accept-Language': languageName,
+          },
         });
         setProjectData(data);
       } catch (error) {
@@ -245,7 +248,7 @@ export default function TasksList() {
       }
     };
     FatchProject();
-  }, [success, projectDatatrue]);
+  }, [success, projectDatatrue, languageName]);
 
   const taskData = data.filter((item) => {
     if (selectedProjects === `${t('all')} ${t('project')}`) {

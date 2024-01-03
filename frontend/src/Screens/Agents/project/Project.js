@@ -13,7 +13,7 @@ export default function AgentsProjectList() {
   const [error, setError] = useState('');
   const [taskData, SetTaskData] = useState([]);
   const { state } = useContext(Store);
-  const { userInfo, projectDatatrue } = state;
+  const { userInfo, projectDatatrue, languageName } = state;
 
   const columns = [
     {
@@ -119,7 +119,10 @@ export default function AgentsProjectList() {
     const FatchProject = async () => {
       try {
         const { data } = await axios.get(`/api/task/project`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            'Accept-Language': languageName,
+          },
         });
         const projectData = data.filter((item) => {
           return item.agentId.includes(userInfo._id);
@@ -132,7 +135,7 @@ export default function AgentsProjectList() {
       }
     };
     FatchProject();
-  }, [projectDatatrue]);
+  }, [projectDatatrue, languageName]);
 
   return (
     <>

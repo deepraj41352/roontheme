@@ -241,7 +241,10 @@ export default function ContractorTasksList() {
     const FatchProject = async () => {
       try {
         const { data } = await axios.get(`/api/task/project`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            'Accept-Language': languageName,
+          },
         });
         const ContractorProject = data.filter((item) => {
           return item.userId === userInfo._id;
@@ -254,7 +257,7 @@ export default function ContractorTasksList() {
       }
     };
     FatchProject();
-  }, [success, projectDatatrue, contractorSuccesstrue]);
+  }, [success, projectDatatrue, contractorSuccesstrue, languageName]);
 
   const taskData = data.filter((item) => {
     if (selectedProjects == `${t('all')} ${t('project')}`) {

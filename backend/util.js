@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import emailTemplate from './emailTemplate.js';
+import translate from '@iamtraction/google-translate';
 
 dotenv.config();
 
@@ -85,5 +86,37 @@ export const isAdminOrSelf = async (req, res, next) => {
     }
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error', error });
+  }
+};
+
+export const languageChange = async (category, headers, fieldsToTranslate) => {
+  try {
+    const acceptLanguage = headers['accept-language'];
+    const primaryLanguage = acceptLanguage
+      ? acceptLanguage.split(',')[0].split('-')[0]
+      : 'en';
+    const translateCategoryItem = async (categoryItem) => {
+      for (const field of fieldsToTranslate) {
+        const translation = await translate(categoryItem[field], {
+          from: 'en',
+          to: primaryLanguage,
+        });
+        categoryItem[field] = translation.text;
+      }
+
+      return categoryItem;
+    };
+
+    if (Array.isArray(category)) {
+      const translatedCategory = await Promise.all(
+        category.map(translateCategoryItem)
+      );
+      return translatedCategory;
+    } else {
+      const translatedCategory = await translateCategoryItem(category);
+      return translatedCategory;
+    }
+  } catch (error) {
+    return { message: 'Internal Server Error', error };
   }
 };

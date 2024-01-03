@@ -15,7 +15,7 @@ export default function CategoryUpdate() {
   const { t } = useTranslation();
   const { id } = useParams();
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, languageName } = state;
   const [submiting, setsubmiting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -75,7 +75,11 @@ export default function CategoryUpdate() {
     const FatchcategoryData = async () => {
       setIsLoading(true);
       try {
-        const { data } = await axios.get(`/api/category/${id}`);
+        const { data } = await axios.get(`/api/category/${id}`, {
+          headers: {
+            'Accept-Language': languageName,
+          },
+        });
         setUser({
           name: data.categoryName,
           description: data.categoryDescription,

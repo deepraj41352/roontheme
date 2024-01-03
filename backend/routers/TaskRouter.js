@@ -1,5 +1,5 @@
 import express from 'express';
-import { isAuth, sendEmailNotify } from '../util.js';
+import { isAuth, sendEmailNotify, languageChange } from '../util.js';
 import expressAsyncHandler from 'express-async-handler';
 import projectTask from '../Models/projectTaskModel.js';
 import Task from '../Models/taskModel.js';
@@ -35,7 +35,13 @@ TaskRouter.get(
   expressAsyncHandler(async (req, res) => {
     try {
       const projects = await projectTask.find().sort({ createdAt: -1 });
-      res.json(projects);
+      const fieldsToTranslate = ['projectName'];
+      const translatedProject = await languageChange(
+        projects,
+        req.headers,
+        fieldsToTranslate
+      );
+      res.json(translatedProject);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });
@@ -48,7 +54,13 @@ TaskRouter.get(
   expressAsyncHandler(async (req, res) => {
     try {
       const tasks = await Task.find().sort({ createdAt: -1 });
-      res.json(tasks);
+      const fieldsToTranslate = ['taskName', 'taskDescription', 'projectName'];
+      const translatedTask = await languageChange(
+        tasks,
+        req.headers,
+        fieldsToTranslate
+      );
+      res.json(translatedTask);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });

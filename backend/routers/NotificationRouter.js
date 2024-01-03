@@ -1,6 +1,6 @@
 import express from 'express';
 import Notification from '../Models/notificationModel.js';
-import { isAuth } from '../util.js';
+import { isAuth, languageChange } from '../util.js';
 import expressAsyncHandler from 'express-async-handler';
 
 const NotificationRouter = express.Router();
@@ -12,7 +12,13 @@ NotificationRouter.get(
     try {
       const notification = await Notification.find({ userId: req.params.id });
       if (notification) {
-        res.json(notification);
+        const fieldsToTranslate = ['message', 'status'];
+        const translatedNotification = await languageChange(
+          notification,
+          req.headers,
+          fieldsToTranslate
+        );
+        res.json(translatedNotification);
       } else {
         res.status(404).json({ message: 'Notification not found' });
       }

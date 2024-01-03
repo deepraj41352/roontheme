@@ -565,35 +565,4 @@ userRouter.get(
   })
 );
 
-// userRouter.get(
-//   '/',
-//   expressAsyncHandler(async (req, res) => {
-//     try {
-//       const users = await User.find().sort({ createdAt: -1 });
-//       const translatedUsers = await Promise.all(
-//         users.map(async (user) => {
-//           const translatedUsername = await translate(user.username, {
-//             from: 'en',
-//             to: 'nl',
-//           });
-//           const translatedEmail = await translate(user.email, {
-//             from: 'en',
-//             to: 'nl',
-//           });
-
-//           return {
-//             ...user.toObject(),
-//             username: translatedUsername.text,
-//             email: translatedEmail.text,
-//           };
-//         })
-//       );
-//       console.log('objecttranslatedUsers', translatedUsers);
-//       res.json(translatedUsers);
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ message: 'Server error' });
-//     }
-//   })
-// );
 export default userRouter;

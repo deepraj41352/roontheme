@@ -1,7 +1,7 @@
 import express from 'express';
 import Category from '../Models/categoryModel.js';
 import expressAsyncHandler from 'express-async-handler';
-import { isAuth, isAdminOrSelf } from '../util.js';
+import { isAuth, isAdminOrSelf, languageChange } from '../util.js';
 import multer from 'multer';
 import { uploadDoc } from './userRouter.js';
 const upload = multer();
@@ -13,7 +13,13 @@ categoryRouter.get(
   expressAsyncHandler(async (req, res) => {
     try {
       const category = await Category.find().sort({ createdAt: -1 });
-      res.json(category);
+      const fieldsToTranslate = ['categoryName', 'categoryDescription'];
+      const translatedCategory = await languageChange(
+        category,
+        req.headers,
+        fieldsToTranslate
+      );
+      res.json(translatedCategory);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });
@@ -29,10 +35,18 @@ categoryRouter.get(
       const category = await Category.findById(req.params.id).sort({
         createdAt: -1,
       });
+
       if (!category) {
         res.status(400).json({ message: 'category not found' });
       }
-      res.json(category);
+      const fieldsToTranslate = ['categoryName', 'categoryDescription'];
+      const translatedCategory = await languageChange(
+        category,
+        req.headers,
+        fieldsToTranslate
+      );
+
+      res.json(translatedCategory);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });

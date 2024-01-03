@@ -13,7 +13,7 @@ export default function CategoryCreate() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, languageName } = state;
   const [submiting, setsubmiting] = useState(false);
   const [ShowErrorMessage, setShowErrorMessage] = useState(false);
 
@@ -202,6 +202,7 @@ export default function CategoryCreate() {
                 </div>
               </div>
             )}
+
             <div className="col-md-12">
               <div className="form-group">
                 <label className="form-label fw-semibold">
@@ -211,6 +212,7 @@ export default function CategoryCreate() {
                   className="form-control"
                   name="description"
                   value={user.description}
+                  //value={translatedText}
                   onChange={handleChange}
                   rows="6"
                 />

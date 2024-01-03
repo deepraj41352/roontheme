@@ -23,13 +23,17 @@ export default function CategoryList() {
   };
 
   const { state } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, languageName } = state;
 
   useEffect(() => {
     const FatchcategoryData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`/api/category/`);
+        const response = await axios.get(`/api/category/`, {
+          headers: {
+            'Accept-Language': languageName,
+          },
+        });
         const datas = response.data;
         const rowData = datas.map((items) => {
           return {
@@ -53,7 +57,7 @@ export default function CategoryList() {
       }
     };
     FatchcategoryData();
-  }, [updateData]);
+  }, [updateData, languageName]);
 
   const confirmDelete = (Id) => {
     confirmAlert({

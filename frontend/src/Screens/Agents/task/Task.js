@@ -215,7 +215,10 @@ export default function AgentTasksList() {
     const FatchProject = async () => {
       try {
         const { data } = await axios.get(`/api/task/project`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            'Accept-Language': languageName,
+          },
         });
         const projectData = data.filter((item) => {
           return item.agentId.includes(userInfo._id);
@@ -228,7 +231,7 @@ export default function AgentTasksList() {
       }
     };
     FatchProject();
-  }, [success]);
+  }, [success, languageName]);
 
   const taskData = data.filter((item) => {
     if (selectedProjects == `${t('all')} ${t('project')}`) {
