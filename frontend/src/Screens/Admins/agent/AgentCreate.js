@@ -15,7 +15,7 @@ export default function AgentCreate() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { state } = useContext(Store);
-  const { userInfo, validationMsg } = state;
+  const { userInfo, validationMsg, languageName } = state;
   const [submiting, setsubmiting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -70,7 +70,9 @@ export default function AgentCreate() {
       setIsLoading(true);
       try {
         const { data } = await axios.get(`/api/category/`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            'Accept-Language': languageName,
+          },
         });
         setCategoryData(data);
       } catch (error) {
@@ -80,7 +82,7 @@ export default function AgentCreate() {
       }
     };
     FatchCategory();
-  }, []);
+  }, [languageName]);
 
   useEffect(() => {
     const FatchAgentData = async () => {

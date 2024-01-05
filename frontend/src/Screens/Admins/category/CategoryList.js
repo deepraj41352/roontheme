@@ -26,29 +26,21 @@ export default function CategoryList() {
   const { userInfo, languageName } = state;
 
   useEffect(() => {
-    const FatchcategoryData = async () => {
-      setLoading(true);
+    const fetchCategoryData = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(`/api/category/`, {
           headers: {
             'Accept-Language': languageName,
           },
         });
         const datas = response.data;
-        const rowData = datas.map((items) => {
-          return {
-            ...items,
-            _id: items._id,
-            categoryName: items.categoryName,
-            categoryDescription:
-              items.categoryDescription == ''
-                ? 'No description'
-                : items.categoryDescription,
-            categoryImage: items.categoryImage,
-            categoryStatus:
-              items.categoryStatus == true ? t('active') : t('inactive'),
-          };
-        });
+        const rowData = datas.map((item) => ({
+          ...item,
+          categoryDescription: item.categoryDescription || 'No description',
+          categoryStatus: item.categoryStatus ? t('active') : t('inactive'),
+        }));
+
         setCategoryData(rowData);
       } catch (error) {
         setError(t('An Error Occurred'));
@@ -56,7 +48,8 @@ export default function CategoryList() {
         setLoading(false);
       }
     };
-    FatchcategoryData();
+
+    fetchCategoryData();
   }, [updateData, languageName]);
 
   const confirmDelete = (Id) => {

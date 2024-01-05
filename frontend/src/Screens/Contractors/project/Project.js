@@ -104,7 +104,9 @@ export default function ContractorProjectList() {
     setLoding(true);
     const FatchcategoryData = async () => {
       try {
-        const { data } = await axios.get(`/api/task/tasks`);
+        const { data } = await axios.get(`/api/task/tasks`, {
+          headers: { 'Accept-Language': languageName },
+        });
         SetTaskData(data);
       } catch (error) {
         setError(t('An Error Occurred'));
@@ -114,7 +116,7 @@ export default function ContractorProjectList() {
     };
 
     FatchcategoryData();
-  }, [projectDatatrue]);
+  }, [projectDatatrue, languageName]);
 
   useEffect(() => {
     setLoding(true);

@@ -35,13 +35,16 @@ TaskRouter.get(
   expressAsyncHandler(async (req, res) => {
     try {
       const projects = await projectTask.find().sort({ createdAt: -1 });
-      const fieldsToTranslate = ['projectName'];
-      const translatedProject = await languageChange(
-        projects,
-        req.headers,
-        fieldsToTranslate
-      );
-      res.json(translatedProject);
+
+      // const fieldsToTranslate = ['projectName'];
+
+      // const translatedProject = await languageChange(
+      //   projects,
+      //   req.headers,
+      //   fieldsToTranslate
+      // );
+
+      res.json(projects);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });
@@ -54,13 +57,13 @@ TaskRouter.get(
   expressAsyncHandler(async (req, res) => {
     try {
       const tasks = await Task.find().sort({ createdAt: -1 });
-      const fieldsToTranslate = ['taskName', 'taskDescription', 'projectName'];
-      const translatedTask = await languageChange(
-        tasks,
-        req.headers,
-        fieldsToTranslate
-      );
-      res.json(translatedTask);
+      // const fieldsToTranslate = ['taskName', 'taskDescription', 'projectName'];
+      // const translatedTask = await languageChange(
+      //   tasks,
+      //   req.headers,
+      //   fieldsToTranslate
+      // );
+      res.json(tasks);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });

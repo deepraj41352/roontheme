@@ -222,7 +222,9 @@ export default function ContractorTasksList() {
     setLoading(true);
     const FatchTaskData = async () => {
       try {
-        const { data } = await axios.get(`/api/task/tasks`);
+        const { data } = await axios.get(`/api/task/tasks`, {
+          headers: { 'Accept-Language': languageName },
+        });
         const taskData = data.filter((item) => {
           return item.userId === userInfo._id;
         });
@@ -234,7 +236,7 @@ export default function ContractorTasksList() {
       }
     };
     FatchTaskData();
-  }, [success, projectDatatrue, contractorSuccesstrue]);
+  }, [success, projectDatatrue, contractorSuccesstrue, languageName]);
 
   useEffect(() => {
     setLoading(true);

@@ -19,7 +19,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo, NotificationData } = state;
   const [isSmallScreen, setIsSmallScreen] = useState(true);
-  const { toggleState } = state;
+  const { toggleState, languageName } = state;
   const theme = toggleState ? 'dark' : 'light';
   const [newNotification, setnewNotification] = useState([]);
   const { t } = useTranslation();
@@ -55,7 +55,10 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
   useEffect(() => {
     const handleNotification = async (notifyUser, message) => {
       const { data } = await axios.get(`/api/notification/${userInfo._id}`, {
-        headers: { Authorization: ` Bearer ${userInfo.token}` },
+        headers: {
+          Authorization: ` Bearer ${userInfo.token}`,
+          'Accept-Language': languageName,
+        },
       });
       ctxDispatch({ type: 'NOTIFICATION-NULL' });
       data.map((item) => {
@@ -65,7 +68,7 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
     };
     handleNotification();
     // socket.on('notifyUserFrontend', handleNotification);
-  }, []);
+  }, [languageName]);
 
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });

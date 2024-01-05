@@ -49,7 +49,7 @@ const WidgetsDropdown = React.memo(() => {
         setContractor(contractorData);
         setAgent(agentData);
         const { data: taskDatas } = await axios.get('/api/task/tasks', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { 'Accept-Language': languageName },
         });
 
         let projectData;
@@ -81,7 +81,7 @@ const WidgetsDropdown = React.memo(() => {
       }
     };
     fatchUserData();
-  }, []);
+  }, [languageName]);
 
   const isEmpty =
     activeProject.length === 0 &&

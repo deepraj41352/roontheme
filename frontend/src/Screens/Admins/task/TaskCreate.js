@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 export default function TasksCreate() {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, languageName } = state;
   const [submiting, setsubmiting] = useState(false);
   const [projectName, setProjectName] = useState('');
   const [SelectProjectName, setSelectProjectName] = useState('');
@@ -41,7 +41,10 @@ export default function TasksCreate() {
     const FatchProject = async () => {
       try {
         const { data } = await axios.get(`/api/task/project`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            'Accept-Language': languageName,
+          },
         });
 
         if (userInfo.role == 'contractor') {
@@ -59,7 +62,7 @@ export default function TasksCreate() {
       }
     };
     FatchProject();
-  }, []);
+  }, [languageName]);
 
   useEffect(() => {
     const FatchContractorData = async () => {
@@ -78,7 +81,9 @@ export default function TasksCreate() {
     const FatchCategory = async () => {
       try {
         const response = await axios.get(`/api/category/`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            'Accept-Language': languageName,
+          },
         });
         const datas = response.data;
         setCategoryData(datas);
@@ -89,7 +94,7 @@ export default function TasksCreate() {
       }
     };
     FatchCategory();
-  }, []);
+  }, [languageName]);
 
   useEffect(() => {
     const FatchContractorData = async () => {

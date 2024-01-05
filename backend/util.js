@@ -2,7 +2,8 @@ import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import emailTemplate from './emailTemplate.js';
-import translate from '@iamtraction/google-translate';
+// import translate from '@iamtraction/google-translate';
+import translate from 'google-translate-api-x';
 
 dotenv.config();
 
@@ -89,32 +90,83 @@ export const isAdminOrSelf = async (req, res, next) => {
   }
 };
 
-export const languageChange = async (category, headers, fieldsToTranslate) => {
+// export const languageChange = async (data, headers, fieldsToTranslate) => {
+//   try {
+//     const acceptLanguage = headers['accept-language'];
+//     const primaryLanguage = acceptLanguage
+//       ? acceptLanguage.split(',')[0].split('-')[0]
+//       : 'en';
+//     const translateCategoryItem = async (item) => {
+//       for (const field of fieldsToTranslate) {
+//         const translation = await translate(item[field], {
+//           from: 'en',
+//           to: primaryLanguage,
+//         });
+//         item[field] = translation.text;
+//       }
+
+//       return item;
+//     };
+
+//     if (Array.isArray(data)) {
+//       const translatedCategory = await Promise.all(
+//         data.map(translateCategoryItem)
+//       );
+//       return translatedCategory;
+//     } else {
+//       const translatedCategory = await translateCategoryItem(data);
+//       return translatedCategory;
+//     }
+//   } catch (error) {
+//     return { message: 'Internal Server Error', error };
+//   }
+// };
+export const languageChange = async (data, headers, fieldsToTranslate) => {
   try {
     const acceptLanguage = headers['accept-language'];
     const primaryLanguage = acceptLanguage
       ? acceptLanguage.split(',')[0].split('-')[0]
       : 'en';
-    const translateCategoryItem = async (categoryItem) => {
-      for (const field of fieldsToTranslate) {
-        const translation = await translate(categoryItem[field], {
-          from: 'en',
-          to: primaryLanguage,
-        });
-        categoryItem[field] = translation.text;
-      }
 
-      return categoryItem;
+    const translateText = async (text) => {
+      try {
+        const chunks = [];
+        for (let i = 0; i < text.length; i += 400) {
+          chunks.push(text.substring(i, i + 400));
+        }
+        const translatedChunks = await Promise.all(
+          chunks.map((chunk) =>
+            translate(chunk, { from: 'en', to: primaryLanguage })
+          )
+        );
+        const translatedText = translatedChunks
+          .map((chunk) => chunk.text)
+          .join('');
+
+        return translatedText;
+      } catch (error) {
+        console.error('Translation error:', error);
+        throw error;
+      }
     };
 
-    if (Array.isArray(category)) {
-      const translatedCategory = await Promise.all(
-        category.map(translateCategoryItem)
-      );
-      return translatedCategory;
+    const translateDataItem = async (dataItem) => {
+      for (const field of fieldsToTranslate) {
+        if (dataItem[field]) {
+          const translation = await translateText(dataItem[field]);
+          dataItem[field] = translation;
+        }
+      }
+
+      return dataItem;
+    };
+
+    if (Array.isArray(data)) {
+      const translatedData = await Promise.all(data.map(translateDataItem));
+      return translatedData;
     } else {
-      const translatedCategory = await translateCategoryItem(category);
-      return translatedCategory;
+      const translatedData = await translateDataItem(data);
+      return translatedData;
     }
   } catch (error) {
     return { message: 'Internal Server Error', error };

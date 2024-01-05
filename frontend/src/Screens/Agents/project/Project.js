@@ -100,7 +100,9 @@ export default function AgentsProjectList() {
     setLoding(true);
     const FatchtaskData = async () => {
       try {
-        const { data } = await axios.get(`/api/task/tasks`);
+        const { data } = await axios.get(`/api/task/tasks`, {
+          headers: { 'Accept-Language': languageName },
+        });
         const tasks = data.filter((item) => {
           return item.agentId === userInfo._id;
         });
@@ -112,7 +114,7 @@ export default function AgentsProjectList() {
       }
     };
     FatchtaskData();
-  }, [projectDatatrue]);
+  }, [projectDatatrue, languageName]);
 
   useEffect(() => {
     setLoding(true);

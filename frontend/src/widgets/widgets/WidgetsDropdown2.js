@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 
 const WidgetsDropdown = React.memo(() => {
   const { state } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, languageName } = state;
   const [projectData, setProjectData] = useState([]);
   const [activeProject, setActiveProject] = useState([]);
   const [quedProject, setQuedProject] = useState([]);
@@ -32,7 +32,7 @@ const WidgetsDropdown = React.memo(() => {
       try {
         setLoading(true);
         const { data: taskDatas } = await axios.get('/api/task/tasks', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { 'Accept-Language': languageName },
         });
         let taskData;
 
@@ -65,7 +65,7 @@ const WidgetsDropdown = React.memo(() => {
       }
     };
     fatchUserData();
-  }, []);
+  }, [languageName]);
 
   const isEmpty =
     activeProject.length === 0 &&

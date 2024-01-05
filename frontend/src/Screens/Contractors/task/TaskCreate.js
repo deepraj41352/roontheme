@@ -16,7 +16,7 @@ export default function ContractorTasksCreate() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, languageName } = state;
   const [submiting, setsubmiting] = useState(false);
   const [projectName, setProjectName] = useState('');
   const [SelectProjectName, setSelectProjectName] = useState('');
@@ -39,7 +39,10 @@ export default function ContractorTasksCreate() {
     const FatchProject = async () => {
       try {
         const { data } = await axios.get(`/api/task/project`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            'Accept-Language': languageName,
+          },
         });
 
         if (userInfo.role == 'contractor') {
@@ -64,7 +67,9 @@ export default function ContractorTasksCreate() {
     const FatchCategory = async () => {
       try {
         const response = await axios.get(`/api/category/`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            'Accept-Language': languageName,
+          },
         });
         const datas = response.data;
         setCategoryData(datas);
@@ -75,7 +80,7 @@ export default function ContractorTasksCreate() {
       }
     };
     FatchCategory();
-  }, [isModelOpen]);
+  }, [isModelOpen, languageName]);
 
   useEffect(() => {
     const FatchContractorData = async () => {

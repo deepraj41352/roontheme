@@ -23,13 +23,15 @@ export default function AgentList() {
   };
 
   const { state } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, languageName } = state;
 
   useEffect(() => {
     const FatchCategory = async () => {
       try {
         const { data } = await axios.get(`/api/category/`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            'Accept-Language': languageName,
+          },
         });
         setCategoryData(data);
       } catch (error) {
@@ -37,7 +39,7 @@ export default function AgentList() {
       }
     };
     FatchCategory();
-  }, []);
+  }, [languageName]);
 
   useEffect(() => {
     const FatchAgentData = async () => {

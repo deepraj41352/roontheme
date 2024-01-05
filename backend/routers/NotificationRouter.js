@@ -12,13 +12,13 @@ NotificationRouter.get(
     try {
       const notification = await Notification.find({ userId: req.params.id });
       if (notification) {
-        const fieldsToTranslate = ['message', 'status'];
-        const translatedNotification = await languageChange(
-          notification,
-          req.headers,
-          fieldsToTranslate
-        );
-        res.json(translatedNotification);
+        //   const fieldsToTranslate = ['message', 'status'];
+        //   const translatedNotification = await languageChange(
+        //     notification,
+        //     req.headers,
+        //     fieldsToTranslate
+        //   );
+        res.json(notification);
       } else {
         res.status(404).json({ message: 'Notification not found' });
       }

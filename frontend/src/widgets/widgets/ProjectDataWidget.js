@@ -23,6 +23,7 @@ export default function ProjectDataWidget() {
     contractorSuccesstrue,
     projectDatatrue,
     sidebar,
+    languageName,
   } = state;
   const theme = toggleState ? 'dark' : 'light';
 
@@ -157,7 +158,7 @@ export default function ProjectDataWidget() {
     const FatchcategoryData = async () => {
       try {
         const { data: taskDatas } = await axios.get('/api/task/tasks', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { 'Accept-Language': languageName },
         });
         let taskData;
 
@@ -181,14 +182,16 @@ export default function ProjectDataWidget() {
     };
 
     FatchcategoryData();
-  }, [contractorSuccesstrue, projectDatatrue]);
+  }, [contractorSuccesstrue, projectDatatrue, languageName]);
 
   useEffect(() => {
     setLoading(true);
     const FatchCategory = async () => {
       try {
         const response = await axios.get(`/api/category/`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            'Accept-Language': languageName,
+          },
         });
         const datas = response.data;
         setCategoryData(datas);
@@ -199,14 +202,17 @@ export default function ProjectDataWidget() {
       }
     };
     FatchCategory();
-  }, [contractorSuccesstrue, projectDatatrue]);
+  }, [contractorSuccesstrue, projectDatatrue, languageName]);
 
   useEffect(() => {
     setLoading(true);
     const FatchProject = async () => {
       try {
         const { data } = await axios.get(`/api/task/project`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            'Accept-Language': languageName,
+          },
         });
         let ContractorProject;
 
@@ -225,7 +231,7 @@ export default function ProjectDataWidget() {
       }
     };
     FatchProject();
-  }, [contractorSuccesstrue, projectDatatrue]);
+  }, [contractorSuccesstrue, projectDatatrue, languageName]);
 
   let ContractorTask;
 

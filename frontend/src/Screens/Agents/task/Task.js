@@ -195,7 +195,9 @@ export default function AgentTasksList() {
     setLoading(true);
     const FatchcategoryData = async () => {
       try {
-        const { data } = await axios.get(`/api/task/tasks`);
+        const { data } = await axios.get(`/api/task/tasks`, {
+          headers: { 'Accept-Language': languageName },
+        });
         const taskData = data.filter((item) => {
           return item.agentId === userInfo._id;
         });
@@ -208,7 +210,7 @@ export default function AgentTasksList() {
     };
 
     FatchcategoryData();
-  }, [success]);
+  }, [success, languageName]);
 
   useEffect(() => {
     setLoading(true);

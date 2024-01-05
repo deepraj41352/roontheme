@@ -20,7 +20,7 @@ function ChatBotScreen({ onClose }) {
   const [loading, setLoading] = useState(false);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { toggleState, userInfo, helpToggle } = state;
+  const { toggleState, userInfo, helpToggle, languageName } = state;
   const theme = toggleState ? 'dark' : 'light';
   const [isOpen, setIsOpen] = useState(true);
   function lastLoginDate(lastLogin) {
@@ -53,8 +53,9 @@ function ChatBotScreen({ onClose }) {
   const FatchcategoryData = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`/api/task/tasks`);
-      console.log('dataa', data);
+      const { data } = await axios.get(`/api/task/tasks`, {
+        headers: { 'Accept-Language': languageName },
+      });
       return data;
     } catch (error) {
       toast.error(error.data?.message);
@@ -78,7 +79,10 @@ function ChatBotScreen({ onClose }) {
     try {
       setLoading(true);
       const { data } = await axios.get(`/api/task/project`, {
-        headers: { Authorization: `Bearer ${userInfo.token}` },
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+          'Accept-Language': languageName,
+        },
       });
       return data;
     } catch (error) {

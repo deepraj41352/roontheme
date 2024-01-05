@@ -28,7 +28,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function TaskAddButton() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, languageName } = state;
   const [loading, setLoading] = useState(true);
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [isSubmiting, setIsSubmiting] = useState(false);
@@ -60,7 +60,9 @@ export default function TaskAddButton() {
     const FatchCategory = async () => {
       try {
         const response = await axios.get(`/api/category/`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            'Accept-Language': languageName,
+          },
         });
         const datas = response.data;
         setCategoryData(datas);
@@ -71,16 +73,18 @@ export default function TaskAddButton() {
       }
     };
     FatchCategory();
-  }, [isModelOpen]);
+  }, [isModelOpen, languageName]);
 
   useEffect(() => {
     setLoading(true);
     const FatchProject = async () => {
       try {
         const { data } = await axios.get(`/api/task/project`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            'Accept-Language': languageName,
+          },
         });
-
         if (userInfo.role == 'contractor') {
           const ContractorProject = data.filter((item) => {
             return item.userId === userInfo._id;
@@ -96,7 +100,7 @@ export default function TaskAddButton() {
       }
     };
     FatchProject();
-  }, [isModelOpen]);
+  }, [isModelOpen, languageName]);
 
   useEffect(() => {
     const FatchContractorData = async () => {

@@ -16,7 +16,7 @@ export default function AgentUpdate() {
   const { t } = useTranslation();
   const { id } = useParams();
   const { state } = useContext(Store);
-  const { userInfo, validationMsg } = state;
+  const { userInfo, validationMsg, languageName } = state;
   const [submiting, setsubmiting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -41,7 +41,9 @@ export default function AgentUpdate() {
       setIsLoading(true);
       try {
         const { data } = await axios.get(`/api/category/`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: {
+            'Accept-Language': languageName,
+          },
         });
         setCategoryData(data);
       } catch (error) {
@@ -51,7 +53,7 @@ export default function AgentUpdate() {
       }
     };
     FatchCategory();
-  }, [id]);
+  }, [id, languageName]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;

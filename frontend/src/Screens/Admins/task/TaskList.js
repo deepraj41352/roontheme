@@ -219,7 +219,11 @@ export default function TasksList() {
     setLoading(true);
     const FatchTaskData = async () => {
       try {
-        const { data } = await axios.get(`/api/task/tasks`);
+        const { data } = await axios.get(`/api/task/tasks`, {
+          headers: {
+            'Accept-Language': languageName,
+          },
+        });
         SetData(data);
       } catch (error) {
         setError(t('An Error Ocurred'));
@@ -228,7 +232,7 @@ export default function TasksList() {
       }
     };
     FatchTaskData();
-  }, [success, projectDatatrue]);
+  }, [success, projectDatatrue, languageName]);
 
   useEffect(() => {
     setLoading(true);

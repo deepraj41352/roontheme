@@ -53,7 +53,7 @@ MessageRouter.post('/', upload.single('media'), async (req, res) => {
 
     const newMessage = new Message(req.body);
     const savedMessage = await newMessage.save();
-    console.log("messages 1", savedMessage)
+    console.log('messages 1', savedMessage);
     res.status(200).json(savedMessage);
   } catch (err) {
     res.status(500).json(err);
@@ -65,15 +65,13 @@ MessageRouter.get('/:conversationId', async (req, res) => {
     const messages = await Message.find({
       conversationId: req.params.conversationId,
     });
-    const fieldsToTranslate = ['text'];
-    const translatedMessages = await languageChange(
-      messages,
-      req.headers,
-      fieldsToTranslate
-    );
-    console.log("messages", messages)
-    res.status(200).json(translatedMessages);
-
+    // const fieldsToTranslate = ['text'];
+    // const translatedMessages = await languageChange(
+    //   messages,
+    //   req.headers,
+    //   fieldsToTranslate
+    // );
+    res.status(200).json(messages);
   } catch (err) {
     res.status(500).json(err);
   }

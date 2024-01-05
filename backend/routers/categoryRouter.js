@@ -13,13 +13,13 @@ categoryRouter.get(
   expressAsyncHandler(async (req, res) => {
     try {
       const category = await Category.find().sort({ createdAt: -1 });
-      const fieldsToTranslate = ['categoryName', 'categoryDescription'];
-      const translatedCategory = await languageChange(
-        category,
-        req.headers,
-        fieldsToTranslate
-      );
-      res.json(translatedCategory);
+      // const fieldsToTranslate = ['categoryName', 'categoryDescription'];
+      // const translatedCategory = await languageChange(
+      //   category,
+      //   req.headers,
+      //   fieldsToTranslate
+      // );
+      res.json(category);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });
@@ -39,14 +39,14 @@ categoryRouter.get(
       if (!category) {
         res.status(400).json({ message: 'category not found' });
       }
-      const fieldsToTranslate = ['categoryName', 'categoryDescription'];
-      const translatedCategory = await languageChange(
-        category,
-        req.headers,
-        fieldsToTranslate
-      );
+      // const fieldsToTranslate = ['categoryName', 'categoryDescription'];
+      // const translatedCategory = await languageChange(
+      //   category,
+      //   req.headers,
+      //   fieldsToTranslate
+      // );
 
-      res.json(translatedCategory);
+      res.json(category);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });
