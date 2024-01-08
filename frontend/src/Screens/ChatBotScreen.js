@@ -14,13 +14,15 @@ import { toast } from 'react-toastify';
 import { IoSendSharp } from 'react-icons/io5';
 import { ColorRing } from 'react-loader-spinner';
 import { RxCross1 } from 'react-icons/rx';
+import { useTranslation } from 'react-i18next';
 
 function ChatBotScreen({ onClose }) {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { toggleState, userInfo, helpToggle, languageName } = state;
+  const { toggleState, userInfo, helpToggle } = state;
   const theme = toggleState ? 'dark' : 'light';
   const [isOpen, setIsOpen] = useState(true);
   function lastLoginDate(lastLogin) {
@@ -30,7 +32,7 @@ function ChatBotScreen({ onClose }) {
     const minutesAgo = Math.floor((now - lastLoginDate) / (1000 * 60));
     const hours = Math.floor(minutesAgo / 60);
     const remainingMinutes = minutesAgo % 60;
-    const formattedLastLogin = `Last Login: ${
+    const formattedLastLogin = `${t('last login')}: ${
       hours > 0 ? `${hours} ${hours === 1 ? 'Hour' : 'Hours'}` : ''
     }${hours > 0 && remainingMinutes > 0 ? ', ' : ''}${
       remainingMinutes > 0
@@ -41,6 +43,12 @@ function ChatBotScreen({ onClose }) {
     return formattedLastLogin;
   }
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSendMessage(e, message);
+    }
+  };
   const onCloseHelp = async () => {
     if (helpToggle == true) {
       setIsOpen(false);
@@ -53,9 +61,8 @@ function ChatBotScreen({ onClose }) {
   const FatchcategoryData = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`/api/task/tasks`, {
-        headers: { 'Accept-Language': languageName },
-      });
+      const { data } = await axios.get(`/api/task/tasks`);
+      console.log('dataa', data);
       return data;
     } catch (error) {
       toast.error(error.data?.message);
@@ -79,10 +86,7 @@ function ChatBotScreen({ onClose }) {
     try {
       setLoading(true);
       const { data } = await axios.get(`/api/task/project`, {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-          'Accept-Language': languageName,
-        },
+        headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       return data;
     } catch (error) {
@@ -124,72 +128,88 @@ function ChatBotScreen({ onClose }) {
   };
   //Messages
   // ------------------UserStepMSg-------------
-  const U_Msg1 = 'Select your choice';
+  const U_Msg1 = t('selectYourChoice');
   // -----------userSteps-------------
   const userStep1 = [
     {
       id: 'u1',
-      label: 'Himself',
-      action: () => handleButtonUser1('Himself', userInfo),
+      label: t('himself'),
+      action: () => handleButtonUser1(t('himself'), userInfo),
     },
-    { id: 'u2', label: 'Admin', action: () => handleButtonUser7('Admin') },
+    {
+      id: 'u2',
+      label: t('admin'),
+      action: () => handleButtonUser7(t('admin')),
+    },
     {
       id: 'u3',
-      label: 'Contractor',
-      action: () => handleButtonUser5('Contractor'),
+      label: t('client'),
+      action: () => handleButtonUser5(t('client')),
     },
-    { id: 'u4', label: 'Agent', action: () => handleButtonUser2('Agent') },
+    {
+      id: 'u4',
+      label: t('agent'),
+      action: () => handleButtonUser2(t('agent')),
+    },
   ];
   const userStep2 = [
     {
       id: 'u1',
-      label: 'Himself',
-      action: () => handleButtonUser1('Himself', userInfo),
+      label: t('himself'),
+      action: () => handleButtonUser1(t('himself'), userInfo),
     },
     {
       id: 'u3',
-      label: 'Contractor',
-      action: () => handleButtonUser5('Contractor'),
+      label: t('client'),
+      action: () => handleButtonUser5(t('client')),
     },
-    { id: 'u4', label: 'Agent', action: () => handleButtonUser2('Agent') },
+    {
+      id: 'u4',
+      label: t('agent'),
+      action: () => handleButtonUser2(t('agent')),
+    },
   ];
   const userStep3 = [
     {
       id: 'u1',
-      label: 'Himself',
-      action: () => handleButtonUser1('Himself', userInfo),
+      label: t('himself'),
+      action: () => handleButtonUser1(t('himself'), userInfo),
     },
 
-    { id: 'u4', label: 'Agent', action: () => handleButtonUser2('Agent') },
+    {
+      id: 'u4',
+      label: t('agent'),
+      action: () => handleButtonUser2(t('agent')),
+    },
   ];
   const userStep4 = [
     {
       id: 'u1',
-      label: 'Himself',
-      action: () => handleButtonUser1('Himself', userInfo),
+      label: t('himself'),
+      action: () => handleButtonUser1(t('himself'), userInfo),
     },
     {
       id: 'u3',
-      label: 'Contractor',
-      action: () => handleButtonUser5('Contractor'),
+      label: t('client'),
+      action: () => handleButtonUser5(t('client')),
     },
   ];
 
   const taskStep1 = [
     {
       id: 't1',
-      label: 'Active Task',
-      action: () => handleButtonTask2('Active Task'),
+      label: t('activeTask'),
+      action: () => handleButtonTask2(t('activeTask')),
     },
     {
       id: 't2',
-      label: 'Parked Task',
-      action: () => handleButtonTask2('Parked Task'),
+      label: t('parkedTask'),
+      action: () => handleButtonTask2(t('parkedTask')),
     },
     {
       id: 't3',
-      label: 'Completed Task',
-      action: () => handleButtonTask2('Completed Task'),
+      label: t('completedTask'),
+      action: () => handleButtonTask2(t('completedTask')),
     },
   ];
 
@@ -204,24 +224,24 @@ function ChatBotScreen({ onClose }) {
     },
     {
       id: 1.2,
-      label: 'Task',
-      action: () => handleButtonTask1('Task'),
+      label: t('task'),
+      action: () => handleButtonTask1(t('task')),
     },
     {
       id: 1.3,
-      label: 'User',
-      action: () => handleButtonUser('User', U_Msg1),
+      label: t('users'),
+      action: () => handleButtonUser(t('users'), U_Msg1),
     },
   ];
   const [chatHistory, setChatHistory] = useState([
-    { sender: 'Bot', message: `Hi ${userInfo.first_name} ` },
-    { sender: 'Bot', message: 'Welcome to Roonberg ' },
-    { sender: 'Bot', message: 'How can I help you?' },
+    { sender: 'Bot', message: `${t('greeting')} ${userInfo.first_name} ` },
+    { sender: 'Bot', message: t('welcomeToRoonberg') },
+    { sender: 'Bot', message: t('howCanIHelp') },
     {
       sender: 'Bot',
       message: (
-        <div className="d-flex flex-column w-50">
-          <div> {`Select the field you want information about.`}</div>
+        <div className="d-flex flex-column">
+          <div>{t('selectFieldForInfo')}</div>
           <div className="globalBtnParentDiv">
             {initialMsg.map((button) => (
               <Button
@@ -252,11 +272,11 @@ function ChatBotScreen({ onClose }) {
   const getRandomNumber = () => Math.floor(Math.random() * 5) + 1;
   const randomNumber = getRandomNumber();
   const botResponses = [
-    "I'm sorry, I didn't understand your question.",
-    'Could you please provide more details?',
-    'Sorry, please reframe your question',
-    "I'm not sure I can help with that.",
-    'Please try asking in a different way.',
+    t('sorryNotUnderstand'),
+    t('moreDetails'),
+    t('reframeQuestion'),
+    t('notSureCanHelp'),
+    t('tryDifferentWay'),
   ];
   const randomBotResponse = botResponses[randomNumber - 1];
   const handleSendMessage = (e, message) => {
@@ -274,19 +294,19 @@ function ChatBotScreen({ onClose }) {
         setChatHistory([
           ...chatHistory,
           { sender: 'You', message },
-          { sender: 'Bot', message: 'Welcome to Roonberg' },
+          { sender: 'Bot', message: t('welcomeToRoonberg') },
           {
             sender: 'Bot',
-            message: 'Roonberg can help you to manage your tasks easily.',
+            message: t('roonbergTaskManagement'),
           },
         ]);
-      } else if (lowercasedMessage.includes('agent')) {
+      } else if (lowercasedMessage.includes(t('chat.agent'))) {
         handleButtonUser2('notRequire');
       } else if (lowercasedMessage.includes('project')) {
         handleButtonProject1('notRequire');
-      } else if (lowercasedMessage.includes('task')) {
+      } else if (lowercasedMessage.includes(t('chat.task'))) {
         handleButtonTask1('notRequire');
-      } else if (lowercasedMessage.includes('user')) {
+      } else if (lowercasedMessage.includes(t('chat.user'))) {
         handleButtonUser('notRequire', U_Msg1);
       } else {
         setChatHistory([
@@ -321,7 +341,7 @@ function ChatBotScreen({ onClose }) {
         sender: 'Bot',
         message: (
           <>
-            <div className="w-50">
+            <div>
               {`${Msg}`}
               <div className="globalBtnParentDiv">
                 {userStep.map((button) => (
@@ -354,12 +374,18 @@ function ChatBotScreen({ onClose }) {
         message: (
           <div>
             <div>
-              <p>First Name : {`${userInfo.first_name}`} </p>
-              <p>Last Name : {`${userInfo.last_name}`} </p>
+              <p>
+                {t('firstname')} : {`${userInfo.first_name}`}{' '}
+              </p>
+              <p>
+                {t('lastname')} : {`${userInfo.last_name}`}{' '}
+              </p>
               <p>Email : {`${userInfo.email}`} </p>
-              <p>Role : {userInfo.role} </p>
+              <p>
+                {t('role')} : {userInfo.role}{' '}
+              </p>
               <p>{lastLoginDate(userInfo.lastLogin)} </p>
-              <Link to="/profile-screen">Go to Profile</Link>
+              <Link to="/profile-screen">{t('goToProfile')}</Link>
             </div>
           </div>
         ),
@@ -406,8 +432,8 @@ function ChatBotScreen({ onClose }) {
             <div>
               {filteredData1inner.length > 0 ? (
                 <>
-                  <div className="w-50">
-                    {`Select Agent`}
+                  <div>
+                    {`${t('select')} ${t('agent')} `}
                     <div className="globalBtnParentDiv">
                       {filteredData1inner.map((item) => (
                         <Button
@@ -433,7 +459,7 @@ function ChatBotScreen({ onClose }) {
                   </div>
                 </>
               ) : (
-                'No Agent found'
+                t('noAgentFound')
               )}
             </div>
           ),
@@ -483,8 +509,8 @@ function ChatBotScreen({ onClose }) {
             <div>
               {filteredData2.length > 0 ? (
                 <>
-                  <div className="w-50">
-                    {`Select Contractor`}
+                  <div>
+                    {`${t('select')} ${t('client')} `}
                     <div className="globalBtnParentDiv">
                       {filteredData2.map((item) => (
                         <Button
@@ -506,7 +532,7 @@ function ChatBotScreen({ onClose }) {
                   </div>
                 </>
               ) : (
-                'No Contractor found'
+                t('noClientFound')
               )}
             </div>
           ),
@@ -533,8 +559,8 @@ function ChatBotScreen({ onClose }) {
             <div>
               {fetchedData.length > 0 ? (
                 <>
-                  <div className="w-50">
-                    {`Select Admin`}
+                  <div>
+                    {`${t('select')} ${t('admin')} `}
                     <div className="globalBtnParentDiv">
                       {fetchedData.map((item) => (
                         <Button
@@ -556,7 +582,7 @@ function ChatBotScreen({ onClose }) {
                   </div>
                 </>
               ) : (
-                'No Admin found'
+                t('noAdminFound')
               )}
             </div>
           ),
@@ -580,8 +606,8 @@ function ChatBotScreen({ onClose }) {
           sender: 'Bot',
           message: (
             <>
-              <div className="w-50">
-                {`Select Category`}
+              <div>
+                {`${t('select')} ${t('category')} `}
                 <div className="globalBtnParentDiv">
                   {taskStep1.map((button) => (
                     <Button
@@ -615,15 +641,15 @@ function ChatBotScreen({ onClose }) {
       const fetchedData = await FatchcategoryData();
       console.log('222', fetchedData);
       let filteredData1 = [];
-      if (buttonLabel == 'Active Task') {
+      if (buttonLabel == t('activeTask')) {
         filteredData1 = fetchedData.filter(
           (item) => item.taskStatus == 'waiting'
         );
-      } else if (buttonLabel == 'Parked Task') {
+      } else if (buttonLabel == t('parkedTask')) {
         filteredData1 = fetchedData.filter(
           (item) => item.taskStatus == 'pending'
         );
-      } else if (buttonLabel == 'Completed Task') {
+      } else if (buttonLabel == t('completedTask')) {
         filteredData1 = fetchedData.filter(
           (item) => item.taskStatus == 'completed'
         );
@@ -655,8 +681,8 @@ function ChatBotScreen({ onClose }) {
             <div>
               {filteredData2.length > 0 ? (
                 <>
-                  <div className="w-50">
-                    {`Select Task`}
+                  <div>
+                    {`${t('select')} ${t('task')}`}
                     <div className="globalBtnParentDiv">
                       {filteredData2.map((item) => (
                         <Button
@@ -678,7 +704,7 @@ function ChatBotScreen({ onClose }) {
                   </div>
                 </>
               ) : (
-                'No Task found'
+                t('noTaskFound')
               )}
             </div>
           ),
@@ -703,15 +729,15 @@ function ChatBotScreen({ onClose }) {
       console.log('2233', filteredData);
 
       let filteredData1 = [];
-      if (buttonLabel == 'Active Task') {
+      if (buttonLabel == t('activeTask')) {
         filteredData1 = filteredData.filter(
           (item) => item.taskStatus == 'waiting'
         );
-      } else if (buttonLabel == 'Parked Task') {
+      } else if (buttonLabel == t('parkedTask')) {
         filteredData1 = filteredData.filter(
           (item) => item.taskStatus == 'pending'
         );
-      } else if (buttonLabel == 'Completed Task') {
+      } else if (buttonLabel == t('completedTask')) {
         filteredData1 = filteredData.filter(
           (item) => item.taskStatus == 'completed'
         );
@@ -741,8 +767,8 @@ function ChatBotScreen({ onClose }) {
             <div>
               {filteredData2.length > 0 ? (
                 <>
-                  <div className="w-50">
-                    {`Select Task`}
+                  <div>
+                    {`${t('select')} ${t('task')}`}
                     <div className="globalBtnParentDiv">
                       {filteredData2.map((item) => (
                         <Button
@@ -764,7 +790,7 @@ function ChatBotScreen({ onClose }) {
                   </div>
                 </>
               ) : (
-                'No Task found'
+                t('noTaskFound')
               )}
             </div>
           ),
@@ -789,15 +815,15 @@ function ChatBotScreen({ onClose }) {
       console.log('2233', filteredData);
 
       let filteredData1 = [];
-      if (buttonLabel == 'Active Task') {
+      if (buttonLabel == t('activeTask')) {
         filteredData1 = filteredData.filter(
           (item) => item.taskStatus == 'waiting'
         );
-      } else if (buttonLabel == 'Parked Task') {
+      } else if (buttonLabel == t('parkedTask')) {
         filteredData1 = filteredData.filter(
           (item) => item.taskStatus == 'pending'
         );
-      } else if (buttonLabel == 'Completed Task') {
+      } else if (buttonLabel == t('completedTask')) {
         filteredData1 = filteredData.filter(
           (item) => item.taskStatus == 'completed'
         );
@@ -827,8 +853,8 @@ function ChatBotScreen({ onClose }) {
             <div>
               {filteredData2.length > 0 ? (
                 <>
-                  <div className="w-50">
-                    {`Select Task`}
+                  <div>
+                    {`${t('select')} ${t('task')}`}
                     <div className="globalBtnParentDiv">
                       {filteredData2.map((item) => (
                         <Button
@@ -850,7 +876,7 @@ function ChatBotScreen({ onClose }) {
                   </div>
                 </>
               ) : (
-                'No Task found'
+                t('noTaskFound')
               )}
             </div>
           ),
@@ -883,15 +909,15 @@ function ChatBotScreen({ onClose }) {
       }
 
       let filteredData1 = [];
-      if (buttonLabel == 'Active Task') {
+      if (buttonLabel == t('activeTask')) {
         filteredData1 = filteredData.filter(
           (item) => item.taskStatus == 'waiting'
         );
-      } else if (buttonLabel == 'Parked Task') {
+      } else if (buttonLabel == t('parkedTask')) {
         filteredData1 = filteredData.filter(
           (item) => item.taskStatus == 'pending'
         );
-      } else if (buttonLabel == 'Completed Task') {
+      } else if (buttonLabel == t('completedTask')) {
         filteredData1 = filteredData.filter(
           (item) => item.taskStatus == 'completed'
         );
@@ -907,8 +933,8 @@ function ChatBotScreen({ onClose }) {
             <div>
               {filteredData1.length > 0 ? (
                 <>
-                  <div className="w-50">
-                    {`Select Task`}
+                  <div>
+                    {`${t('select')} ${t('task')}`}
                     <div className="globalBtnParentDiv">
                       {filteredData1.map((item) => (
                         <Button
@@ -930,7 +956,7 @@ function ChatBotScreen({ onClose }) {
                   </div>
                 </>
               ) : (
-                'No Task found'
+                t('noTaskFound')
               )}
             </div>
           ),
@@ -974,10 +1000,10 @@ function ChatBotScreen({ onClose }) {
         {
           sender: 'Bot',
           message: (
-            <div className="w-50">
+            <div>
               {filteredData1.length > 0 ? (
                 <>
-                  {`Select Task`}
+                  {`${t('select')} ${t('task')}`}
                   <div className="globalBtnParentDiv">
                     {filteredData1.map((item) => (
                       <Button
@@ -998,7 +1024,7 @@ function ChatBotScreen({ onClose }) {
                   </div>
                 </>
               ) : (
-                'No Task found'
+                t('noTaskFound')
               )}
             </div>
           ),
@@ -1041,29 +1067,29 @@ function ChatBotScreen({ onClose }) {
         {
           sender: 'Bot',
           message: (
-            <div className="w-50">
-              {`Select Category`}
+            <div>
+              {`${t('select')} ${t('category')} `}
               <div className="globalBtnParentDiv">
                 <Button
                   className="chatBot-globalBtn"
-                  onClick={() => handleButtonProject6('Active Task', id)}
+                  onClick={() => handleButtonProject6(t('activeTask'), id)}
                   variant="secondary"
                 >
-                  Active Task
+                  {t('activeTask')}
                 </Button>
                 <Button
                   className="chatBot-globalBtn"
-                  onClick={() => handleButtonProject6('Parked Task', id)}
+                  onClick={() => handleButtonProject6(t('parkedTask'), id)}
                   variant="secondary"
                 >
-                  Parked Task
+                  {t('parkedTask')}
                 </Button>
                 <Button
                   className="chatBot-globalBtn"
-                  onClick={() => handleButtonProject6('Completed Task', id)}
+                  onClick={() => handleButtonProject6(t('completedTask'), id)}
                   variant="secondary"
                 >
-                  Completed Task
+                  {t('completedTask')}
                 </Button>
               </div>
             </div>
@@ -1111,10 +1137,10 @@ function ChatBotScreen({ onClose }) {
           sender: 'Bot',
           message: (
             <>
-              <div className="w-50">
+              <div>
                 {filteredData.length > 0 ? (
                   <>
-                    {`Select Project`}
+                    {`${t('select')} Project`}
                     <div className="globalBtnParentDiv">
                       {filteredData.map((item) => (
                         <Button
@@ -1135,7 +1161,7 @@ function ChatBotScreen({ onClose }) {
                     </div>
                   </>
                 ) : (
-                  'No Project found'
+                  t('noProjectFound')
                 )}
               </div>
             </>
@@ -1162,36 +1188,42 @@ function ChatBotScreen({ onClose }) {
         message: (
           <div>
             <div>
-              <p>First Name : {`${filteredData2.first_name}`} </p>
-              <p>Last Name : {`${filteredData2.last_name}`} </p>
+              <p>
+                {t('firstname')} : {`${filteredData2.first_name}`}{' '}
+              </p>
+              <p>
+                {t('lastname')} : {`${filteredData2.last_name}`}{' '}
+              </p>
               <p>Email : {`${filteredData2.email}`} </p>
-              <p>Role : {`${filteredData2.role}`} </p>
+              <p>
+                {t('role')} {`${filteredData2.role}`}{' '}
+              </p>
               <p>{lastLoginDate(filteredData2.lastLogin)} </p>
             </div>
             <div>
-              <div className="w-50">
-                {`Select Category`}
+              <div>
+                {`${t('select')} ${t('category')} `}
                 <div className="globalBtnParentDiv">
                   <Button
                     className="chatBot-globalBtn"
-                    onClick={() => handleButtonUser9('Active Task', id)}
+                    onClick={() => handleButtonUser9(t('activeTask'), id)}
                     variant="secondary"
                   >
-                    Active Task
+                    {t('activeTask')}
                   </Button>
                   <Button
                     className="chatBot-globalBtn"
-                    onClick={() => handleButtonUser9('Parked Task', id)}
+                    onClick={() => handleButtonUser9(t('parkedTask'), id)}
                     variant="secondary"
                   >
-                    Parked Task
+                    {t('parkedTask')}
                   </Button>
                   <Button
                     className="chatBot-globalBtn"
-                    onClick={() => handleButtonUser9('Completed Task', id)}
+                    onClick={() => handleButtonUser9(t('completedTask'), id)}
                     variant="secondary"
                   >
-                    Completed Task
+                    {t('completedTask')}
                   </Button>
                 </div>
               </div>
@@ -1215,35 +1247,41 @@ function ChatBotScreen({ onClose }) {
         message: (
           <div>
             <div>
-              <p>First Name : {`${fetchedData.first_name}`} </p>
-              <p>Last Name : {`${fetchedData.last_name}`} </p>
+              <p>
+                {t('firstname')} : {`${fetchedData.first_name}`}{' '}
+              </p>
+              <p>
+                {t('lastname')} : {`${fetchedData.last_name}`}{' '}
+              </p>
               <p>Email : {`${fetchedData.email}`} </p>
-              <p>Role : {`${fetchedData.role}`} </p>
+              <p>
+                {t('role')} {`${fetchedData.role}`}{' '}
+              </p>
               <p>{lastLoginDate(fetchedData.lastLogin)} </p>
             </div>
-            <div className="w-50">
-              {`Select Category`}
+            <div>
+              {`${t('select')} ${t('category')} `}
               <div className="globalBtnParentDiv">
                 <Button
                   className="chatBot-globalBtn"
-                  onClick={() => handleButtonTask4('Active Task', id)}
+                  onClick={() => handleButtonTask4(t('activeTask'), id)}
                   variant="secondary"
                 >
-                  Active Task
+                  {t('activeTask')}
                 </Button>
                 <Button
                   className="chatBot-globalBtn"
-                  onClick={() => handleButtonTask4('Parked Task', id)}
+                  onClick={() => handleButtonTask4(t('parkedTask'), id)}
                   variant="secondary"
                 >
-                  Parked Task
+                  {t('parkedTask')}
                 </Button>
                 <Button
                   className="chatBot-globalBtn"
-                  onClick={() => handleButtonTask4('Completed Task', id)}
+                  onClick={() => handleButtonTask4(t('completedTask'), id)}
                   variant="secondary"
                 >
-                  Completed Task
+                  {t('completedTask')}
                 </Button>
               </div>
             </div>
@@ -1266,10 +1304,16 @@ function ChatBotScreen({ onClose }) {
         message: (
           <div>
             <div>
-              <p>First Name : {`${fetchedData.first_name}`} </p>
-              <p>Last Name : {`${fetchedData.last_name}`} </p>
+              <p>
+                {t('firstname')} : {`${fetchedData.first_name}`}{' '}
+              </p>
+              <p>
+                {t('lastname')} : {`${fetchedData.last_name}`}{' '}
+              </p>
               <p>Email : {`${fetchedData.email}`} </p>
-              <p>Role : {`${fetchedData.role}`} </p>
+              <p>
+                {t('role')} : {`${fetchedData.role}`}{' '}
+              </p>
               <p>{lastLoginDate(fetchedData.lastLogin)} </p>
             </div>
           </div>
@@ -1296,11 +1340,20 @@ function ChatBotScreen({ onClose }) {
         message: (
           <div>
             <div>
-              <p>First Name : {`${filteredData1.first_name}`} </p>
-              <p>Last Name : {`${filteredData1.last_name}`} </p>
+              <p>
+                {t('firstname')} : {`${filteredData1.first_name}`}{' '}
+              </p>
+              <p>
+                {t('lastname')} : {`${filteredData1.last_name}`}{' '}
+              </p>
               <p>Email : {`${filteredData1.email}`} </p>
-              <p>Role : {`${filteredData1.role}`} </p>
-              <p>Status : {`${filteredData1.userStatus}`} </p>
+              <p>
+                {t('role')} {`${filteredData1.role}`}{' '}
+              </p>
+              <p>
+                {' '}
+                {t('status')} : {`${filteredData1.userStatus}`}{' '}
+              </p>
               <p>{lastLoginDate(filteredData1.lastLogin)} </p>
               {/* <div>
                 {filteredData2.map((item) => (
@@ -1312,29 +1365,29 @@ function ChatBotScreen({ onClose }) {
                 ))}
               </div> */}
             </div>
-            <div className="w-50">
-              {`Select Category`}
+            <div>
+              {`${t('select')} ${t('category')} `}
               <div className="globalBtnParentDiv">
                 <Button
                   className="chatBot-globalBtn"
-                  onClick={() => handleButtonUser9('Active Task', id)}
+                  onClick={() => handleButtonUser9(t('activeTask'), id)}
                   variant="secondary"
                 >
-                  Active Task
+                  {t('activeTask')}
                 </Button>
                 <Button
                   className="chatBot-globalBtn"
-                  onClick={() => handleButtonUser9('Parked Task', id)}
+                  onClick={() => handleButtonUser9(t('parkedTask'), id)}
                   variant="secondary"
                 >
-                  Parked Task
+                  {t('parkedTask')}
                 </Button>
                 <Button
                   className="chatBot-globalBtn"
-                  onClick={() => handleButtonUser9('Completed Task', id)}
+                  onClick={() => handleButtonUser9(t('completedTask'), id)}
                   variant="secondary"
                 >
-                  Completed Task
+                  {t('completedTask')}
                 </Button>
               </div>
             </div>
@@ -1359,13 +1412,31 @@ function ChatBotScreen({ onClose }) {
         message: (
           <div>
             <div>
-              <p>Task Name : {`${filteredData1.taskName}`} </p>
-              <p>Task Description : {`${filteredData1.taskDescription}`} </p>
-              <p>Task Status : {`${filteredData1.taskStatus}`} </p>
-              <p>Created At : {`${filteredData1.createdAt}`} </p>
-              <p>Project Name : {`${filteredData1.projectName}`} </p>
-              <p>Client Name : {`${filteredData1.userName}`} </p>
-              <p>Agent Name : {`${filteredData1.agentName}`} </p>
+              <p>
+                {`${t('task')} ${t('name')} `} : {`${filteredData1.taskName}`}{' '}
+              </p>
+              <p>
+                {`${t('task')} ${t('description')} `} :
+                {`${filteredData1.taskDescription}`}
+              </p>
+              <p>
+                {`${t('task')} ${t('status')} `} :{' '}
+                {`${filteredData1.taskStatus}`}{' '}
+              </p>
+              <p>
+                {`${t('createdAt')}`} : {lastLoginDate(filteredData1.createdAt)}{' '}
+              </p>
+              <p>
+                Project {`${t('name')}`} : {`${filteredData1.projectName}`}{' '}
+              </p>
+              <p>
+                {' '}
+                {`${t('client')} ${t('name')} `} : {`${filteredData1.userName}`}{' '}
+              </p>
+              <p>
+                {' '}
+                {`${t('agent')} ${t('name')} `} : {`${filteredData1.agentName}`}{' '}
+              </p>
               <Link to={`/chatWindowScreen/${filteredData1._id}`}>
                 {filteredData1.taskName} Link
               </Link>
@@ -1391,15 +1462,23 @@ function ChatBotScreen({ onClose }) {
         message: (
           <div>
             <div>
-              <p>Project Name: {`${filteredData1.projectName}`} </p>
-              <p>Created At: {`${filteredData1.createdAt}`} </p>
-              <p>Updated At: {`${filteredData1.updatedAt}`} </p>
+              <p>
+                Project {`${t('name')}`}: {`${filteredData1.projectName}`}{' '}
+              </p>
+              <p>
+                {`${t('createdAt')}`} : {lastLoginDate(filteredData1.createdAt)}{' '}
+              </p>
+              <p>
+                {`${t('updatedAt')}`}: {lastLoginDate(filteredData1.updatedAt)}{' '}
+              </p>
               <Button
                 className="chatBot-globalBtn"
-                onClick={() => handleButtonProject5('Tasks', filteredData1._id)}
+                onClick={() =>
+                  handleButtonProject5(t('tasks'), filteredData1._id)
+                }
                 variant="secondary"
               >
-                {`${filteredData1.projectName}`} Tasks
+                {`${filteredData1.projectName}`} {`${t('tasks')}`}
               </Button>
             </div>
           </div>
@@ -1414,7 +1493,7 @@ function ChatBotScreen({ onClose }) {
         <CardHeader className={`text-center chatbot-header ${theme}chatHead`}>
           <div className="d-flex justify-content-center">
             <div className={`flex-centre w-100 ${theme}backbtn`}>
-              Roonberg Help
+              Roonberg {t('help')}
             </div>
             <div>
               {loading ? (
@@ -1459,12 +1538,12 @@ function ChatBotScreen({ onClose }) {
                       alt="B"
                     ></img>
                   </div>{' '}
-                  <div className="w-100">{chat.message}</div>
+                  <div className="bot-msgtext">{chat.message}</div>
                 </div>
               ) : (
-                <div className="d-flex gap-1">
-                  <div className="w-100"> {chat.message}</div>
-                  <div className="chatbot-user-icon me-1">
+                <div className="d-flex justify-content-end text-justify gap-1">
+                  <div className="user-msgtext"> {chat.message}</div>
+                  <div className="chatbot-user-icon ms-1">
                     <img
                       className="chatbot-user-icon-inner"
                       src={userInfo.profile_picture}
@@ -1475,7 +1554,10 @@ function ChatBotScreen({ onClose }) {
             </div>
           ))}
         </CardBody>
-        <CardFooter className={`${theme}chatFoot`}>
+        <div className="d-flex justify-content-center">
+          <div className="line-style"></div>
+        </div>
+        <CardFooter className={`${theme}chatFoot pt-3 pb-3  border-0`}>
           <Form
             className="d-flex gap-2 align-items-center "
             onSubmit={(e) => handleSendMessage(e, message)}
@@ -1483,20 +1565,22 @@ function ChatBotScreen({ onClose }) {
             <Form.Group className=" w-100 " controlId="formBasicEmail">
               <Form.Control
                 type="text"
+                as="textarea"
                 value={message}
-                className="height-inputBox"
+                onKeyDown={handleKeyDown}
+                className={`${theme}-height-inputBox`}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Type your message..."
+                placeholder={t('messagePlaceholder')}
                 autoComplete="off" // Add this line to disable autocomplete
               />
             </Form.Group>
-            <Button
+            {/* <Button
               className={`ms-2 ${theme}-send-Btn-help`}
               // onClick={() => handleSendMessage(message)}
               type="submit"
             >
               <IoSendSharp />
-            </Button>
+            </Button> */}
           </Form>
         </CardFooter>
       </Card>

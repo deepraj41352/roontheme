@@ -2,7 +2,10 @@
   "greeting": "hallo",
   "bye": "Auf Wiedersehen",
   "chat": {
-    "welcome": "Willkommen im Chat"
+    "task": "Aufgabe",
+    "client": "Kunde",
+    "agent": "Agent",
+    "user": "Benutzer"
   },
   "task": "Aufgabe",
   "project": "Projekt",
@@ -124,5 +127,28 @@
   "messagePlaceholder": "Hier Ihre Nachricht eingeben...",
   "Write task description": "Beschreiben Sie die Aufgabe...",
   "passerrormsg": "Mindestens 8 Zeichen, ein Großbuchstabe, ein Kleinbuch",
-  "Project": "Projekt"
+  "Project": "Projekt",
+  "sorryNotUnderstand": "Es tut mir leid, ich habe Ihre Frage nicht verstanden.",
+  "moreDetails": "Könnten Sie bitte mehr Details angeben?",
+  "reframeQuestion": "Entschuldigung, bitte formulieren Sie Ihre Frage um.",
+  "notSureCanHelp": "Ich bin mir nicht sicher, ob ich damit helfen kann.",
+  "tryDifferentWay": "Bitte versuchen Sie, die Frage anders zu stellen.",
+  "selectYourChoice": "Wählen Sie Ihre Option",
+  "selectFieldForInfo": "Wählen Sie das Feld aus, zu dem Sie Informationen wünschen.",
+  "howCanIHelp": "Wie kann ich Ihnen helfen?",
+  "welcomeToRoonberg": "Willkommen bei Roonberg",
+  "roonbergTaskManagement": "Roonberg kann Ihnen helfen, Ihre Aufgaben einfach zu verwalten.",
+  "himself": "Selbst",
+  "category": "Kategorie",
+  "updatedAt": "Aktualisiert am",
+  "createdAt": "Erstellt am",
+  "noTaskFound": "Keine Aufgabe gefunden",
+  "noAdminFound": "Kein Administrator gefunden",
+  "noClientFound": "Kein Kunde gefunden",
+  "noAgentFound": "Kein Agent gefunden",
+  "noProjectFound": "Kein Projekt gefunden",
+  "activeTask": "Aktive Aufgabe",
+  "parkedTask": "Geparkte Aufgabe",
+  "completedTask": "Abgeschlossene Aufgabe",
+  "goToProfile": "Zum Profil gehen"
 }

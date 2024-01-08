@@ -2,7 +2,10 @@
   "greeting": "Hello",
   "bye": "Goodbye",
   "chat": {
-    "welcome": "Welcome to the chat"
+    "task": "task",
+    "client": "client",
+    "agent": "agent",
+    "user": "user"
   },
   "task": "Task",
   "project": "Project",
@@ -128,5 +131,28 @@
   "profilePicSuccessMsg": "Profile picture updated successfully",
   "profileSuccessMsg": "Profile updated successfully",
   "profile": "Profile",
-  "registerConfirmationMeg": "We sent a Confirmation link to your email"
+  "registerConfirmationMeg": "We sent a Confirmation link to your email",
+  "sorryNotUnderstand": "I'm sorry, I didn't understand your question.",
+  "moreDetails": "Could you please provide more details?",
+  "reframeQuestion": "Sorry, please reframe your question.",
+  "notSureCanHelp": "I'm not sure I can help with that.",
+  "tryDifferentWay": "Please try asking in a different way.",
+  "selectYourChoice": "Select your choice",
+  "selectFieldForInfo": "Select the field you want information about.",
+  "howCanIHelp": "How can I help you?",
+  "welcomeToRoonberg": "Welcome to Roonberg",
+  "roonbergTaskManagement": "Roonberg can help you to manage your tasks easily.",
+  "himself": "Himself",
+  "category": "Category",
+  "updatedAt": "Updated At",
+  "createdAt": "Created At",
+  "noTaskFound": "No Task found",
+  "noAdminFound": "No Admin found",
+  "noClientFound": "No Client found",
+  "noAgentFound": "No Agent found",
+  "noProjectFound": "No Project found",
+  "activeTask": "Active Task",
+  "parkedTask": "Parked Task",
+  "completedTask": "Completed Task",
+  "goToProfile": "Go to Profile"
 }

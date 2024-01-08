@@ -2,7 +2,10 @@
   "greeting": "halo",
   "bye": "Adiós",
   "chat": {
-    "welcome": "Bienvenido al chat"
+    "task": "taak",
+    "client": "cliënt",
+    "agent": "tussenpersoon",
+    "user": "gebruiker"
   },
   "task": "Taak",
   "project": "Project",
@@ -128,5 +131,28 @@
   "profilePicUpdateFailError": "Mislukt om uw profielfoto bij te werken",
   "profilePicSuccessMsg": "Profielfoto Succesvol Bijgewerkt",
   "profileSuccessMsg": "Profiel Succesvol Bijgewerkt",
-  "registerConfirmationMeg": "We hebben een bevestigingslink naar je e-mail gestuurd"
+  "registerConfirmationMeg": "We hebben een bevestigingslink naar je e-mail gestuurd",
+  "sorryNotUnderstand": "Het spijt me, ik begreep uw vraag niet.",
+  "moreDetails": "Kunt u alstublieft meer details geven?",
+  "reframeQuestion": "Sorry, wilt u uw vraag opnieuw formuleren?",
+  "notSureCanHelp": "Ik ben niet zeker of ik daarbij kan helpen.",
+  "tryDifferentWay": "Probeer alstublieft op een andere manier te vragen.",
+  "selectYourChoice": "Selecteer uw keuze",
+  "selectFieldForInfo": "Selecteer het veld waarover u informatie wilt ontvangen.",
+  "howCanIHelp": "Hoe kan ik u helpen?",
+  "welcomeToRoonberg": "Welkom bij Roonberg",
+  "roonbergTaskManagement": "Roonberg kan u helpen uw taken eenvoudig te beheren.",
+  "himself": "Zichzelf",
+  "category": "Categorie",
+  "updatedAt": "Bijgewerkt op",
+  "createdAt": "Aangemaakt op",
+  "noTaskFound": "Geen taak gevonden",
+  "noAdminFound": "Geen beheerder gevonden",
+  "noClientFound": "Geen klant gevonden",
+  "noAgentFound": "Geen agent gevonden",
+  "noProjectFound": "Geen Project gevonden",
+  "activeTask": "Actieve taak",
+  "parkedTask": "Geparkeerde taak",
+  "completedTask": "Voltooide taak",
+  "goToProfile": "Ga naar profiel"
 }

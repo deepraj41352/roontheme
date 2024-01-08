@@ -1694,7 +1694,7 @@ span[data-tooltip2]:hover::before {
   height: 80vh;
   position: absolute;
   bottom: 42px;
-  width: 40%;
+  width: 370px;
   right: 56px;
   z-index: 20;
 }
@@ -1702,8 +1702,8 @@ span[data-tooltip2]:hover::before {
   cursor: pointer;
 }
 .chatbot-body {
-  min-height: calc(80vh - 105px) !important;
-  height: calc(80vh - 105px) !important;
+  min-height: calc(80vh - 145px) !important;
+  height: calc(80vh - 145px) !important;
   overflow-y: auto;
 }
 .chatbot-user-icon {
@@ -1740,8 +1740,17 @@ span[data-tooltip2]:hover::before {
   display: flex;
   flex-wrap: wrap;
 }
-.height-inputBox {
-  height: 38px !important;
+.light-height-inputBox {
+  /* height: 38px !important */
+  height: 70px !important;
+  border: 1px solid rgb(216, 220, 222) !important;
+  background-color: white !important;
+}
+.dark-height-inputBox {
+  /* height: 38px !important */
+  height: 70px !important;
+  border: 1px solid rgb(216, 220, 222) !important;
+  background-color: white !important;
 }
 .img-loader-bot {
   background: none;
@@ -1749,8 +1758,15 @@ span[data-tooltip2]:hover::before {
 .chatbot-header {
   height: 41px;
 }
-.height-inputBox:focus {
-  border: 1px solid #86b7fe !important;
+.light-height-inputBox:focus {
+  /* border: 1px solid #86b7fe !important; */
+  border-color: rgb(104, 115, 125);
+  box-shadow: rgba(153, 153, 153, 0.4) 0px 0px 0px 0.214286rem !important;
+}
+.dark-height-inputBox:focus {
+  /* border: 1px solid #86b7fe !important; */
+  border-color: rgb(104, 115, 125);
+  box-shadow: rgba(153, 153, 153, 0.4) 0px 0px 0px 0.214286rem !important;
 }
 .help-sbtn {
   display: none;
@@ -1872,4 +1888,34 @@ span[data-tooltip2]:hover::before {
 .taskBtnContiner {
   max-width: 900px;
   margin: 0 auto;
+}
+
+.bot-msgtext {
+  display: inline-block;
+  /* white-space: pre-wrap; */
+  border-radius: 1.14286rem;
+  line-height: 1.14286rem;
+  padding: 0.571429rem 0.857143rem;
+  background-color: rgb(233, 235, 237);
+  overflow-wrap: break-word !important;
+  max-width: 15.6429rem !important;
+}
+.user-msgtext {
+  display: inline-block;
+  white-space: pre-wrap;
+  border-radius: 1.14286rem;
+  line-height: 1.14286rem;
+  padding: 0.571429rem 0.857143rem;
+  max-width: 12.5rem;
+  overflow-wrap: break-word !important;
+  background-color: rgb(47, 57, 65) !important;
+  color: white;
+}
+.text-justify {
+  text-align: justify;
+}
+.line-style {
+  box-shadow: rgb(255, 255, 255) 0px 0px 0.857143rem 0.571429rem;
+  height: 0px;
+  width: 92%;
 }
