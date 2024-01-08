@@ -14,6 +14,7 @@ import { BiTask } from 'react-icons/bi';
 import { VscColorMode } from 'react-icons/vsc';
 import { useTranslation } from 'react-i18next';
 import { BiHelpCircle } from 'react-icons/bi';
+import LanguageSwitcher from './LanguageSwitcher';
 
 function Sidebar({ sidebarVisible, setSidebarVisible }) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -145,7 +146,11 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
         !sidebarVisible ? '' : 'visible'
       } `}
     >
-      <div className={`${theme}-blank-box`}></div>
+      <div className={`${theme}-blank-box d-flex align-items-center`}>
+        <div className="ms-3 disNonePro">
+          <LanguageSwitcher />
+        </div>
+      </div>
       <ImCross
         className="sidebarCrossBtn"
         onClick={handleResponsiveSidebarVisable}
