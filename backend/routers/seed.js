@@ -14,6 +14,11 @@ const seedRouter = express.Router();
 seedRouter.get('/', async (req, res) => {
   await User.deleteMany({});
   await Category.deleteMany({});
+  await Conversation.deleteMany({});
+  await Message.deleteMany({});
+  await Notification.deleteMany({});
+  await projectTask.deleteMany({});
+  await Task.deleteMany({});
 
   const updatedCategoryData = await Promise.all(
     data.category.map(async (el) => {

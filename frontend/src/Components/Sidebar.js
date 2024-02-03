@@ -24,34 +24,19 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
   const theme = toggleState ? 'dark' : 'light';
   const [newNotification, setnewNotification] = useState([]);
   const { t } = useTranslation();
-  // const socketUrl = process.env.REACT_APP_SOCKETURL;
-  // const socket = io(socketUrl);
-  // socket.emit('connectionForNotify', () => {
-  //   console.log('oiuhjioyhi');
-  // });
 
   const [isToggled, setIsToggled] = useState(toggleState);
   const handleChangeToggleState = () => {
     setIsToggled(!isToggled);
   };
-  const [activeTab, setActiveTab] = useState(
-    localStorage.getItem('activeTab') || 'dashboard'
-  );
+  const [activeTab, setActiveTab] = useState('dashboard');
+  console.log('object', localStorage.getItem('activeTab'));
   useEffect(() => {
-    localStorage.setItem('activeTab', activeTab);
+    const lastPathSegment =
+      window.location.pathname.split('/').filter(Boolean).pop() || 'dashboard';
+    localStorage.setItem('activeTab', lastPathSegment);
+    setActiveTab(localStorage.getItem('activeTab'));
   }, [activeTab]);
-
-  // useEffect(() => {
-  //   const handleNotification = (notifyUser, message) => {
-  //     if (notifyUser == userInfo._id) {
-  //       ctxDispatch({ type: 'NOTIFICATION', payload: { notifyUser, message } });
-  //     }
-  //   };
-  //   socket.on('notifyProjectFrontend', handleNotification);
-  //   return () => {
-  //     socket.off('notifyProjectFrontend', handleNotification);
-  //   };
-  // }, []);
 
   useEffect(() => {
     const handleNotification = async (notifyUser, message) => {
@@ -98,42 +83,6 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
       setSidebarVisible(!sidebarVisible);
     }
   };
-
-  // useEffect(() => {
-  //   const fetchNotificationData = async () => {
-  //     // ctxDispatch({ type: 'NOTIFICATION-NULL' });
-  //     try {
-  //       const { data } = await axios.get(`/api/notification/${userInfo._id}`, {
-  //         headers: { Authorization: `Bearer ${userInfo.token}` },
-  //       });
-  //       const unseenNotifications = data.filter(
-  //         (notification) => notification.status === 'unseen'
-  //       );
-  //       setnewNotification(unseenNotifications);
-  //       // const NotifyData = response.data;
-  //       // ctxDispatch({ type: 'NOTIFICATION-NULL' });
-
-  //       // NotifyData.map((item) => {
-  //       //   if (item.status == 'unseen')
-  //       //     ctxDispatch({ type: 'NOTIFICATION', payload: { item } });
-  //       // });
-  //     } catch (error) {
-  //       console.error('Error fetching notification data:', error);
-  //     }
-  //   };
-
-  //   fetchNotificationData();
-  // }, [NotificationData]);
-
-  // const uniqueNotificationData = [...new Set(NotificationData)];
-
-  // useEffect(() => {
-  //   const noteData = [...NotificationData];
-  //   const data = noteData.filter((note) => {
-  //     if (note.notificationId) {
-  //     }
-  //   });
-  // }, []);
 
   useEffect(() => {
     ctxDispatch({ type: 'TOGGLE_BTN', payload: isToggled });
@@ -202,11 +151,13 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
               className={`${theme}-text-decoration-none`}
               onClick={() => {
                 handlSmallScreeneClick();
-                setActiveTab('admin');
+                setActiveTab('admin-screen');
               }}
             >
               <li
-                className={activeTab === 'admin' ? 'activeBack liCon' : 'liCon'}
+                className={
+                  activeTab === 'admin-screen' ? 'activeBack liCon' : 'liCon'
+                }
               >
                 <MdOutlineGroups2 className="me-3 fs-5" />
                 <div className="mt-1">{t('admin')}</div>
@@ -233,12 +184,12 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                 className={`${theme}-text-decoration-none`}
                 onClick={() => {
                   handlSmallScreeneClick();
-                  setActiveTab('agent');
+                  setActiveTab('agent-screen');
                 }}
               >
                 <li
                   className={
-                    activeTab === 'agent' ? 'activeBack liCon' : 'liCon'
+                    activeTab === 'agent-screen' ? 'activeBack liCon' : 'liCon'
                   }
                 >
                   <HiUserGroup className="me-3 fs-5" />
@@ -262,12 +213,12 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                 className={`${theme}-text-decoration-none`}
                 onClick={() => {
                   handlSmallScreeneClick();
-                  setActiveTab('contractor');
+                  setActiveTab('client-screen');
                 }}
               >
                 <li
                   className={
-                    activeTab === 'contractor' ? 'activeBack liCon' : 'liCon'
+                    activeTab === 'client-screen' ? 'activeBack liCon' : 'liCon'
                   }
                 >
                   <MdGroup className="me-3 fs-5" />
@@ -291,12 +242,14 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                 className={`${theme}-text-decoration-none`}
                 onClick={() => {
                   handlSmallScreeneClick();
-                  setActiveTab('category');
+                  setActiveTab('category-screen');
                 }}
               >
                 <li
                   className={
-                    activeTab === 'category' ? 'activeBack liCon' : 'liCon'
+                    activeTab === 'category-screen'
+                      ? 'activeBack liCon'
+                      : 'liCon'
                   }
                 >
                   <FaListUl className="me-3 fs-5" />
@@ -320,12 +273,14 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                 className={`${theme}-text-decoration-none`}
                 onClick={() => {
                   handlSmallScreeneClick();
-                  setActiveTab('adminProject');
+                  setActiveTab('project-screen');
                 }}
               >
                 <li
                   className={
-                    activeTab === 'adminProject' ? 'activeBack liCon' : 'liCon'
+                    activeTab === 'project-screen'
+                      ? 'activeBack liCon'
+                      : 'liCon'
                   }
                 >
                   <AiOutlineProject className="me-3 fs-5" />
@@ -349,12 +304,12 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                 className={`${theme}-text-decoration-none`}
                 onClick={() => {
                   handlSmallScreeneClick();
-                  setActiveTab('adminTasks');
+                  setActiveTab('task-screen');
                 }}
               >
                 <li
                   className={
-                    activeTab === 'adminTasks' ? 'activeBack liCon' : 'liCon'
+                    activeTab === 'task-screen' ? 'activeBack liCon' : 'liCon'
                   }
                 >
                   <BiTask className="me-3 fs-5" />
@@ -383,12 +338,12 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                 className={`${theme}-text-decoration-none`}
                 onClick={() => {
                   handlSmallScreeneClick();
-                  setActiveTab('contractorProject');
+                  setActiveTab('project-screen');
                 }}
               >
                 <li
                   className={
-                    activeTab === 'contractorProject'
+                    activeTab === 'project-screen'
                       ? 'activeBack liCon'
                       : 'liCon'
                   }
@@ -414,14 +369,12 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                 className={`${theme}-text-decoration-none`}
                 onClick={() => {
                   handlSmallScreeneClick();
-                  setActiveTab('contractorTasks');
+                  setActiveTab('task-screen');
                 }}
               >
                 <li
                   className={
-                    activeTab === 'contractorTasks'
-                      ? 'activeBack liCon'
-                      : 'liCon'
+                    activeTab === 'task-screen' ? 'activeBack liCon' : 'liCon'
                   }
                 >
                   <BiTask className="me-3 fs-5" />
@@ -450,12 +403,14 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                 className={`${theme}-text-decoration-none`}
                 onClick={() => {
                   handlSmallScreeneClick();
-                  setActiveTab('agentProject');
+                  setActiveTab('project-screen');
                 }}
               >
                 <li
                   className={
-                    activeTab === 'agentProject' ? 'activeBack liCon' : 'liCon'
+                    activeTab === 'project-screen'
+                      ? 'activeBack liCon'
+                      : 'liCon'
                   }
                 >
                   <AiOutlineProject className="me-3 fs-5" />
@@ -479,12 +434,12 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
                 className={`${theme}-text-decoration-none`}
                 onClick={() => {
                   handlSmallScreeneClick();
-                  setActiveTab('agentTasks');
+                  setActiveTab('task-screen');
                 }}
               >
                 <li
                   className={
-                    activeTab === 'agentTasks' ? 'activeBack liCon' : 'liCon'
+                    activeTab === 'task-screen' ? 'activeBack liCon' : 'liCon'
                   }
                 >
                   <BiTask className="me-3 fs-5" />
@@ -511,12 +466,12 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
             className={`${theme}-text-decoration-none`}
             onClick={() => {
               handlSmallScreeneClick();
-              setActiveTab('notificationScreen');
+              setActiveTab('notification-screen');
             }}
           >
             <li
               className={
-                activeTab === 'notificationScreen'
+                activeTab === 'notification-screen'
                   ? 'activeBack d-flex'
                   : 'd-flex'
               }
@@ -551,10 +506,10 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
             className={`${theme}-text-decoration-none disNonePro`}
             onClick={() => {
               handlSmallScreeneClick();
-              setActiveTab('profile');
+              setActiveTab('profile-screen');
             }}
           >
-            <li className={activeTab === 'profile' ? 'activeBack' : ''}>
+            <li className={activeTab === 'profile-screen' ? 'activeBack' : ''}>
               <img
                 className="profile-icon2 profile-icon-inner fs-5 img-fornavs"
                 src={
@@ -609,12 +564,12 @@ function Sidebar({ sidebarVisible, setSidebarVisible }) {
             className={`${theme}-text-decoration-none disNonePro`}
             onClick={() => {
               handlSmallScreeneClick();
-              setActiveTab('helpScreen');
+              setActiveTab('help-screen');
             }}
           >
             <li
               className={
-                activeTab === 'helpScreen' ? 'activeBack liCon' : 'liCon'
+                activeTab === 'help-screen' ? 'activeBack liCon' : 'liCon'
               }
             >
               <BiHelpCircle className="me-3 fs-5" />

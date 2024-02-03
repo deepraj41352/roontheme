@@ -1,6 +1,6 @@
 import './App.css';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useContext, useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
@@ -16,6 +16,7 @@ import i18n from 'i18next';
 import enTranslation from './Language/en.json';
 import nlTranslation from './Language/nl.json';
 import deTranslation from './Language/de.json';
+import axios from 'axios';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -41,6 +42,27 @@ function App() {
       payload: sidebarVisible,
     });
   };
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const { data } = await axios.get('/is-auth', {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+      } catch (err) {
+        if (err.response && err.response.status === 401) {
+          ctxDispatch({ type: 'USER_SIGNOUT' });
+          localStorage.removeItem('userInfo');
+          localStorage.removeItem('activeTab');
+          window.location.href = '/';
+        } else {
+          toast.error(err.response?.data?.message, { autoClose: 2000 });
+        }
+      }
+    };
+
+    checkAuth();
+  }, []);
 
   return (
     <I18nextProvider i18n={i18n}>

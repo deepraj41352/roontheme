@@ -1299,7 +1299,7 @@ span[data-tooltip]:hover::before {
   position: absolute;
   top: -14px;
   left: 7px;
-  padding: 0px 5px;
+  padding: 3px 5px;
   color: #8a9097;
 }
 .dropButton {
@@ -1918,4 +1918,7 @@ span[data-tooltip2]:hover::before {
   box-shadow: rgb(255, 255, 255) 0px 0px 0.857143rem 0.571429rem;
   height: 0px;
   width: 92%;
+}
+.ql-editor {
+  min-height: 130px;
 }

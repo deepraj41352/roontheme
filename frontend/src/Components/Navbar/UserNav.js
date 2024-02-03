@@ -36,6 +36,7 @@ export default function UserNav({ toggleSidebar }) {
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
+    localStorage.removeItem('activeTab');
     window.location.href = '/';
   };
 

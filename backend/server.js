@@ -19,6 +19,7 @@ import fs from 'fs';
 import { Server } from 'socket.io';
 import { uploadDoc } from './routers/userRouter.js';
 import TaskRouter from './routers/TaskRouter.js';
+import { isAuth } from './util.js';
 
 dotenv.config();
 mongoose
@@ -74,7 +75,9 @@ app.use('/api/conversation', conversationRouter);
 app.use('/api/message', MessageRouter);
 app.use('/api/notification', NotificationRouter);
 app.use('/api/task', TaskRouter);
-
+app.get('/is-auth', isAuth, (req, res) => {
+  res.send({ message: 'Authentication successful', user: req.user });
+});
 app.get('/api', (req, res) => {
   res.send('Welcome to Roonberg World');
 });
